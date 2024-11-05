@@ -1,0 +1,114 @@
+<div class="flex h-screen bg-gray-100">
+
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Vehículos Registrados</h1>
+
+        <!-- Add Car Button -->
+        <div class="mb-4">
+            <button class="bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition-colors">
+                Agregar Carro
+            </button>
+        </div>
+
+        <!-- Cars Table -->
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h2 class="text-xl font-semibold text-gray-700 mb-4">Listado de Vehículos</h2>
+            <table class="min-w-full bg-white border border-gray-300">
+                <thead class="bg-gray-200">
+                    <tr>
+                        <th class="py-3 px-4 border-b text-left text-gray-700">ID</th>
+                        <th class="py-3 px-4 border-b text-left text-gray-700">Marca</th>
+                        <th class="py-3 px-4 border-b text-left text-gray-700">Modelo</th>
+                        <th class="py-3 px-4 border-b text-left text-gray-700">Año</th>
+                        <th class="py-3 px-4 border-b text-left text-gray-700">Color</th>
+                        <th class="py-3 px-4 border-b text-left text-gray-700">Tipo de Combustible</th>
+                        <th class="py-3 px-4 border-b text-left text-gray-700">Precio Diario</th>
+                        <th class="py-3 px-4 border-b text-left text-gray-700">Disponibilidad</th>
+                        <th class="py-3 px-4 border-b text-left text-gray-700">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Example Car Row -->
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="py-2 px-4 border-b">1</td>
+                        <td class="py-2 px-4 border-b">Toyota</td>
+                        <td class="py-2 px-4 border-b">Corolla</td>
+                        <td class="py-2 px-4 border-b">2020</td>
+                        <td class="py-2 px-4 border-b">Rojo</td>
+                        <td class="py-2 px-4 border-b">Gasolina</td>
+                        <td class="py-2 px-4 border-b">$50.00</td>
+                        <td class="py-2 px-4 border-b">Disponible</td>
+                        <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-600 text-white py-1 px-3 rounded-md hover:bg-blue-700 transition-colors">
+                                Editar
+                            </button>
+                            <button class="bg-red-600 text-white py-1 px-3 rounded-md hover:bg-red-700 transition-colors">
+                                Eliminar
+                            </button>
+                            <button class="bg-yellow-600 text-white py-1 px-3 rounded-md hover:bg-yellow-700 transition-colors">
+                                Mantenimiento
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="py-2 px-4 border-b">2</td>
+                        <td class="py-2 px-4 border-b">Honda</td>
+                        <td class="py-2 px-4 border-b">Civic</td>
+                        <td class="py-2 px-4 border-b">2019</td>
+                        <td class="py-2 px-4 border-b">Negro</td>
+                        <td class="py-2 px-4 border-b">Diesel</td>
+                        <td class="py-2 px-4 border-b">$60.00</td>
+                        <td class="py-2 px-4 border-b">Rentado</td>
+                        <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-600 text-white py-1 px-3 rounded-md hover:bg-blue-700 transition-colors">
+                                Editar
+                            </button>
+                            <button class="bg-red-600 text-white py-1 px-3 rounded-md hover:bg-red-700 transition-colors">
+                                Eliminar
+                            </button>
+                            <button class="bg-yellow-600 text-white py-1 px-3 rounded-md hover:bg-yellow-700 transition-colors">
+                                Mantenimiento
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="py-2 px-4 border-b">3</td>
+                        <td class="py-2 px-4 border-b">Nissan</td>
+                        <td class="py-2 px-4 border-b">Altima</td>
+                        <td class="py-2 px-4 border-b">2021</td>
+                        <td class="py-2 px-4 border-b">Blanco</td>
+                        <td class="py-2 px-4 border-b">Híbrido</td>
+                        <td class="py-2 px-4 border-b">$70.00</td>
+                        <td class="py-2 px-4 border-b">En Mantenimiento</td>
+                        <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-600 text-white py-1 px-3 rounded-md hover:bg-blue-700 transition-colors">
+                                Editar
+                            </button>
+                            <button class="bg-red-600 text-white py-1 px-3 rounded-md hover:bg-red-700 transition-colors">
+                                Eliminar
+                            </button>
+                            <button class="bg-yellow-600 text-white py-1 px-3 rounded-md hover:bg-yellow-700 transition-colors">
+                                Mantenimiento
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Page Number Controls -->
+            <div class="flex justify-center mt-4">
+                <nav class="flex space-x-1">
+                    <button class="bg-blue-600 text-white px-3 py-1 rounded-md hover:bg-blue-700 transition-colors">1</button>
+                    <button class="bg-gray-200 text-gray-700 px-3 py-1 rounded-md hover:bg-gray-300 transition-colors">2</button>
+                    <button class="bg-gray-200 text-gray-700 px-3 py-1 rounded-md hover:bg-gray-300 transition-colors">3</button>
+                    <button class="bg-gray-200 text-gray-700 px-3 py-1 rounded-md hover:bg-gray-300 transition-colors">4</button>
+                    <button class="bg-gray-200 text-gray-700 px-3 py-1 rounded-md hover:bg-gray-300 transition-colors">5</button>
+                    <button class="bg-gray-200 text-gray-700 px-3 py-1 rounded-md hover:bg-gray-300 transition-colors">…</button>
+                    <button class="bg-gray-200 text-gray-700 px-3 py-1 rounded-md hover:bg-gray-300 transition-colors">10</button>
+                </nav>
+            </div>
+        </div>
+    </main>
+</div>

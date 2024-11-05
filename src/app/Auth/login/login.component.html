@@ -1,0 +1,38 @@
+<!-- Include Google Fonts for Poppins -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Full-screen login form with professional colors and subtle animations -->
+<div class="w-screen h-screen flex justify-center items-center bg-gradient-to-r from-gray-200 via-gray-300 to-gray-400" style="font-family: 'Poppins', sans-serif;">
+    <form class="p-10 bg-white rounded-lg flex justify-center items-center flex-col shadow-xl transform transition-transform duration-300 hover:scale-105" (ngSubmit)="login()">
+      <!-- Service page icon/logo -->
+      <div class="flex flex-col items-center mb-5">
+        <img src="/img/logo-2.jpg" class="w-24 h-22 mb-3" alt="Services Logo">
+        <p class="text-3xl font-bold text-gray-800">Inicia Sesion</p>
+      </div>
+  
+      <!-- Welcome message -->
+      <p class="mb-4 text-lg text-gray-600 font-medium">Bienvenido a nuestra pagina</p>
+  
+      <!-- User input with subtle shadow and animation on focus -->
+      <input type="email" name="email" [(ngModel)]="usuario" 
+             class="mb-4 p-3 w-80 border border-gray-300 rounded-lg shadow-md focus:border-green-400 focus:ring-2 focus:ring-green-200 outline-none transition-all duration-300"
+             placeholder="Correo electrónico" required>
+  
+      <!-- Password input with subtle shadow and animation on focus -->
+      <input type="password" name="password" [(ngModel)]="contrasena" 
+             class="mb-4 p-3 w-80 border border-gray-300 rounded-lg shadow-md focus:border-green-400 focus:ring-2 focus:ring-green-200 outline-none transition-all duration-300" 
+             placeholder="Contraseña" required>
+  
+      <!-- Login button with dynamic hover effect -->
+      <button class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg w-80 transition-transform transform hover:scale-110 hover:shadow-lg mb-4" 
+              type="submit">
+        Iniciar Sesión
+      </button>
+  
+      <!-- Register link with smooth color transition -->
+      <p class="text-gray-600">
+        ¿No tienes cuenta? 
+        <a href="/registro" class="text-green-600 hover:text-green-800 font-medium transition-colors duration-300">Regístrate</a>
+      </p>
+    </form>
+</div>

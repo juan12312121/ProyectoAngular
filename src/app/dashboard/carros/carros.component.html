@@ -1,0 +1,86 @@
+<div class="flex h-screen bg-gray-100">
+    <!-- Sidebar -->
+    <aside class="sidebar bg-gray-800 text-white w-80 flex-shrink-0 flex flex-col">
+        <!-- Logo and Title -->
+        <div class="p-6 flex items-center bg-gray-900">
+            <img src="img/toyota.jpg" alt="Logo" class="w-16 h-16 mr-4"> <!-- Replace with your logo path -->
+            <span class="text-2xl font-bold">Renta de Carros</span>
+        </div>
+
+        <!-- User Greeting -->
+        <div class="p-6 bg-gray-700 text-gray-300 border-t border-gray-600">
+            <p class="text-lg font-semibold">Hola, <span id="user-name">Juan Pérez</span></p>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="mt-6 flex-1">
+            <a routerLink="/dashboard" class="block p-4 rounded-md hover:bg-blue-600 transition-colors">Dashboard</a>
+            <a routerLink="/clientes" class="block p-4 rounded-md hover:bg-blue-600 transition-colors">Clientes</a>
+            <a routerLink="/vehiculos" class="block p-4 rounded-md hover:bg-blue-600 transition-colors">Vehículos</a>
+            <a routerLink="/reservas" class="block p-4 rounded-md hover:bg-blue-600 transition-colors">Reservas</a>
+            <a routerLink="/reportes" class="block p-4 rounded-md hover:bg-blue-600 transition-colors">Reportes</a>
+        </nav>
+
+        <!-- Logout Button -->
+        <div class="p-6 mt-auto bg-gray-800 border-t border-gray-600">
+            <a routerLink="/logout" class="block p-4 text-center bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors">Cerrar sesión</a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-8 overflow-auto">
+        <!-- Rental Detail Card -->
+        <div class="max-w-5xl mx-auto bg-white shadow-xl rounded-lg overflow-hidden">
+            <!-- Header Section -->
+            <div class="p-6 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
+                <h1 class="text-3xl font-bold">Detalles de la Renta</h1>
+                <span class="text-gray-500 text-lg">#R-123456</span>
+            </div>
+
+            <!-- Image Section -->
+            <div class="p-4">
+                <img src="img/toyota.jpg" alt="Car Image" class="w-full h-70 object-cover rounded-md border border-gray-300 shadow-sm"> <!-- Replace with actual image path -->
+            </div>
+
+            <!-- Details Section -->
+            <div class="p-6">
+                <!-- Vehicle Information -->
+                <section class="bg-gray-50 p-4 rounded-lg shadow-sm mb-6 border border-gray-200">
+                    <h2 class="text-xl font-semibold mb-4 border-b border-gray-300 pb-2">Información del Vehículo</h2>
+                    <div class="space-y-2">
+                        <p><strong>Marca:</strong> Toyota</p>
+                        <p><strong>Modelo:</strong> Camry</p>
+                        <p><strong>Año:</strong> 2022</p>
+                        <p><strong>Color:</strong> Rojo</p>
+                    </div>
+                </section>
+
+                <!-- Rental Details -->
+                <section class="bg-gray-50 p-4 rounded-lg shadow-sm mb-6 border border-gray-200">
+                    <h2 class="text-xl font-semibold mb-4 border-b border-gray-300 pb-2">Detalles de la Renta</h2>
+                    <div class="space-y-2">
+                        <p><strong>Fecha de Renta:</strong> 15 de septiembre de 2024</p>
+                        <p><strong>Fecha de Devolución:</strong> 22 de septiembre de 2024</p>
+                        <p><strong>Precio por Día:</strong> $50</p>
+                    </div>
+                </section>
+
+                <!-- Customer Information -->
+                <section class="bg-gray-50 p-4 rounded-lg shadow-sm mb-6 border border-gray-200">
+                    <h2 class="text-xl font-semibold mb-4 border-b border-gray-300 pb-2">Información del Cliente</h2>
+                    <div class="space-y-2">
+                        <p><strong>Nombre:</strong> Juan Pérez</p>
+                        <p><strong>Teléfono:</strong> (123) 456-7890</p>
+                        <p><strong>Correo Electrónico:</strong> juan.perez</p>
+                    </div>
+                </section>
+
+                <!-- Action Buttons -->
+                <div class="flex justify-end space-x-4 mt-6">
+                    <a routerLink="/reservas" class="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-colors">Volver</a>
+                    <a routerLink="/editar-renta" class="bg-yellow-600 text-white px-6 py-3 rounded-md hover:bg-yellow-700 transition-colors">Editar</a>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
