@@ -3,8 +3,9 @@ import { Injectable, signal } from '@angular/core';
 import { Observable, catchError, tap, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
 
+
 export interface Car {
-  id: number;  // Asegúrate de que este campo esté incluido
+  id: number;
   marca: string;
   modelo: string;
   anio: number;
@@ -16,14 +17,19 @@ export interface Car {
   descripcion: string;
   kilometraje: number;
   imagen: string;
-  puertas: number;   // Asegúrate de que el modelo tenga todas las propiedades necesarias
+  puertas: number;
   pasajeros: number;
+  reviews: { user: string; comment: string }[];  // Propiedad de comentarios o reseñas
+  relatedCars: Car[];  // Autos relacionados
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class CarrosService {
+  getAllRentalTypes() {
+    throw new Error('Method not implemented.');
+  }
   private apiUrl = 'http://localhost:3500/carros';
   public carAddedSignal = signal<boolean>(false); 
 
@@ -31,6 +37,9 @@ export class CarrosService {
 
   private getAuthHeaders(): HttpHeaders {
     const token = this.authService.getToken();
+    if (!token) {
+      throw new Error('Token no encontrado');
+    }
     return new HttpHeaders({
       'Authorization': `Bearer ${token}`,
     });
@@ -48,9 +57,9 @@ export class CarrosService {
       .pipe(catchError(this.handleError));
   }
 
-  // Obtener carros visibles para usuarios
+  // Obtener carros visibles para usuarios (no requiere autenticación)
   getUserCars(): Observable<Car[]> {
-    return this.http.get<Car[]>(`${this.apiUrl}/usuario`, { headers: this.getAuthHeaders() })
+    return this.http.get<Car[]>(`${this.apiUrl}/usuario`)
       .pipe(catchError(this.handleError));
   }
 
@@ -63,13 +72,32 @@ export class CarrosService {
       );
   }
 
+  saveCarIdToLocalStorage(id: number): void {
+    localStorage.setItem('selectedCarId', id.toString());
+  }
+  
+
+getCarIdFromLocalStorage(): number | null {
+  const carId = localStorage.getItem('selectedCarId');
+  return carId && !isNaN(parseInt(carId, 10)) ? parseInt(carId, 10) : null;
+}
+
   getCarro(id: number): Observable<Car> {
-    console.log('Obteniendo datos del carro desde el servicio para el ID:', id);
-    return this.http.get<Car>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() })
+    if (isNaN(id) || id <= 0) {
+      console.error('ID de carro inválido:', id);
+      return throwError(() => new Error('ID de carro no válido'));
+    }
+  
+    const headers = this.getAuthHeaders();  // Si se necesita cabecera de autenticación
+    return this.http.get<Car>(`${this.apiUrl}/${id}`, { headers: headers || undefined })
       .pipe(
-        catchError(this.handleError)
+        tap((carro: Car) => {
+          console.log('Carro recibido:', carro); // Log del carro recibido
+        }),
+        catchError(this.handleError) // Manejo de errores
       );
   }
+  
 
   // Actualizar un carro por ID
   updateCar(id: number, carData: FormData): Observable<Car> {
@@ -82,6 +110,8 @@ export class CarrosService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() })
       .pipe(catchError(this.handleError));
   }
+
+
 
   // Manejo de errores
   private handleError(error: any): Observable<never> {

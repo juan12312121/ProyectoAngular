@@ -4,13 +4,15 @@
         <ul class="flex space-x-4">
             <li><a class="hover:text-blue-400 transition duration-300 ease-in-out" href="/usuario">Principal</a></li>
             <li><a class="hover:text-blue-400 transition duration-300 ease-in-out" href="/carros">Carros</a></li>
-            <li><a class="hover:text-blue-400 transition duration-300 ease-in-out" href="/historial">Historial</a></li>
+            <li><a class="hover:text-blue-400 transition duration-300 ease-in-out" href="/historial-reservas">Historial</a></li>
             <li class="relative group">
                 <a (click)="toggleProfileDropdown()" class="hover:text-blue-400 transition duration-300 ease-in-out cursor-pointer">Perfil</a>
                 <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg transition-opacity duration-300 z-50"
                     [ngClass]="{'opacity-0 pointer-events-none': !isProfileDropdownOpen, 'opacity-100': isProfileDropdownOpen}">
+                    <!-- Opciones de perfil según si está logueado o no -->
                     <a *ngIf="!isLoggedIn" href="/login" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Iniciar Sesión</a>
                     <a *ngIf="!isLoggedIn" href="/registro" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Registrarse</a>
+                    <a *ngIf="isLoggedIn" href="/perfil" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Mi Perfil</a>
                     <a *ngIf="isLoggedIn" (click)="logout()" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Cerrar Sesión</a>
                 </div>
             </li>

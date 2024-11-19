@@ -15,7 +15,7 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
 export default class CarrosRegistradosComponent implements OnInit {
   carros: Car[] = [];
   currentPage: number = 1;
-  itemsPerPage: number = 15; 
+  itemsPerPage: number = 10; 
   totalItems: number = 0; 
   totalPages: number = 0; 
   paginatedCarros: Car[] = []; 

@@ -1,7 +1,8 @@
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { Component, effect, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgxPaginationModule } from 'ngx-pagination';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../core/services/auth.service';
 import { Car, CarrosService } from '../../core/services/carros.service';
@@ -10,7 +11,7 @@ import { NavbarComponent } from '../navbar/navbar.component';
 @Component({
   selector: 'app-carros',
   standalone: true,
-  imports: [CommonModule,NavbarComponent, FormsModule],
+  imports: [CommonModule, NavbarComponent, FormsModule, NgxPaginationModule],
   providers: [CurrencyPipe],
   templateUrl: './carros.component.html',
 })
@@ -23,7 +24,8 @@ export default class CarrosComponent implements OnInit, OnDestroy {
     categorias: new Set<string>(),
     years: new Set<number>(),
   };
-  selectedPrice: number = 1000; // Default max price
+  selectedPrice: number = 1000;
+  p: number = 1;
   isProfileDropdownOpen = false;
   isNotificationDropdownOpen = false;
   notifications: string[] = [];
@@ -38,16 +40,10 @@ export default class CarrosComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.checkLoginStatus();
-    this.loadNotifications();
+    // Obtener el estado de autenticación
+    this.isLoggedIn = this.authService.isAuthenticated();
+    // Cargar carros independientemente del estado de autenticación
     this.loadUserCars();
-
-    // Effect to reload cars when a new one is added
-    effect(() => {
-      if (this.carrosService.carAddedSignal()) { // Invocando la señal
-        this.loadUserCars(); // Reload cars when a new one is added
-      }
-    });
   }
 
   loadUserCars() {
@@ -72,15 +68,13 @@ export default class CarrosComponent implements OnInit, OnDestroy {
 
   applyFilters() {
     this.filteredCarros = this.carros.filter((car) => {
-      const matchesMarca =
-        this.filters.marcas.size === 0 || this.filters.marcas.has(car.marca);
-      const matchesModelo =
-        this.filters.modelos.size === 0 || this.filters.modelos.has(car.modelo);
-      const matchesCategoria =
-        this.filters.categorias.size === 0 || this.filters.categorias.has(car.categoria);
+      const matchesMarca = this.filters.marcas.size === 0 || this.filters.marcas.has(car.marca);
+      const matchesModelo = this.filters.modelos.size === 0 || this.filters.modelos.has(car.modelo);
+      const matchesCategoria = this.filters.categorias.size === 0 || this.filters.categorias.has(car.categoria);
+      const matchesYear = this.filters.years.size === 0 || this.filters.years.has(car.anio);
       const matchesPrice = car.precio_diaro <= this.selectedPrice;
 
-      return matchesMarca && matchesModelo && matchesCategoria && matchesPrice;
+      return matchesMarca && matchesModelo && matchesCategoria && matchesYear && matchesPrice;
     });
   }
 
@@ -111,10 +105,6 @@ export default class CarrosComponent implements OnInit, OnDestroy {
     this.applyFilters();
   }
 
-  filterByPrice() {
-    this.applyFilters();
-  }
-
   toggleYear(year: number) {
     if (this.filters.years.has(year)) {
       this.filters.years.delete(year);
@@ -124,38 +114,12 @@ export default class CarrosComponent implements OnInit, OnDestroy {
     this.applyFilters();
   }
 
-  toggleProfileDropdown() {
-    this.isProfileDropdownOpen = !this.isProfileDropdownOpen;
-    this.isNotificationDropdownOpen = false;
-  }
-
-  toggleNotificationDropdown() {
-    this.isNotificationDropdownOpen = !this.isNotificationDropdownOpen;
-    this.isProfileDropdownOpen = false;
-  }
-
-  logout() {
-    this.authService.logout();
-    this.isLoggedIn = false;
-
-    Swal.fire({
-      icon: 'success',
-      title: 'Cierre de sesión exitoso',
-      text: 'Has cerrado sesión correctamente.',
-      confirmButtonText: 'Aceptar',
-    });
-  }
-
-  checkLoginStatus() {
-    this.isLoggedIn = this.authService.isLoggedIn();
-  }
-
-  loadNotifications() {
-    this.notifications = ['Notificación 1', 'Notificación 2', 'Notificación 3'];
+  filterByPrice() {
+    this.applyFilters();
   }
 
   verDetalles(carro: Car) {
-    console.log('Carro pasado a verDetalles:', carro); // Registra el objeto carro
+    console.log('Carro pasado a verDetalles:', carro);
     if (carro && carro.id !== undefined) {
       this.router.navigate(['/detalle-carro', carro.id]);
     } else {
@@ -168,7 +132,21 @@ export default class CarrosComponent implements OnInit, OnDestroy {
       });
     }
   }
+
   ngOnDestroy(): void {
-    // No need for manual cleanup since we're using effects
+    // No es necesario hacer limpieza manual
+  }
+
+  isDescriptionExpanded: { [id: number]: boolean } = {};
+
+  toggleDescription(id: number) {
+    this.isDescriptionExpanded[id] = !this.isDescriptionExpanded[id];
+  }
+
+  truncateText(text: string, length: number) {
+    if (text.length > length) {
+      return text.substring(0, length) + '...';
+    }
+    return text;
   }
 }

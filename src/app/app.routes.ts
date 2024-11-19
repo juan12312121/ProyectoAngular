@@ -7,24 +7,34 @@ export const routes: Routes = [
     {
         path: 'admin',
         loadComponent: () => import('./admin/admin-dashboard/admin-dashboard.component'),
+        canActivate: [AuthGuard],
     },
     // Ruta para Carros Registrados (protegida para administradores)
     {
         path: 'admin/carros-registrados',
         loadComponent: () => import('./admin/carros-registrados/carros-registrados.component'),
-        canActivate: [AuthGuard], // Protege la ruta con AuthGuard
+        canActivate: [AuthGuard],
     },
     // Ruta para Agregar Carro (protegida para administradores)
     {
         path: 'admin/agregar-carro',
         loadComponent: () => import('./admin/agregar-carro/agregar-carro.component'),
-        canActivate: [AuthGuard], // Protege esta ruta con AuthGuard
+        canActivate: [AuthGuard], 
     },
     {
         path: 'admin/editar-carro/:id',
         loadComponent: () => import('./admin/editar-carro/editar-carro.component'),
-        canActivate: [AuthGuard], // Protege esta ruta con AuthGuard
+        canActivate: [AuthGuard], 
       },
+
+      {
+        path: 'clientes',
+        loadComponent: () => import('./admin/clientes/clientes.component'),
+        canActivate: [AuthGuard], 
+      },
+
+
+
     // Ruta para la sección de usuarios
     {
         path: 'usuario',
@@ -44,7 +54,11 @@ export const routes: Routes = [
         loadComponent: () => import('./Auth/registro/registro.component'),
     },
     {
-         path: 'detalle-carro/:id', loadComponent: () => import('./usuario/detalle-carro/detalle-carro.component') 
+        path: 'detalle-carro/:id',
+        loadComponent: () => import('./usuario/detalle-carro/detalle-carro.component')
+      },
+    {
+        path: 'historial-reservas', loadComponent: () => import('./usuario/historial/historial.component')
     },
     // Redirección a la página principal
     {

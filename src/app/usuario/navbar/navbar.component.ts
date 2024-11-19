@@ -1,14 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router'; // Importar Router
 import Swal from 'sweetalert2'; // Importar SweetAlert2
-import { AuthService } from '../../core/services/auth.service'; // Actualiza la ruta de importación según sea necesario
+import { AuthService } from '../../core/services/auth.service'; // Asegúrate de que la ruta sea correcta
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css'
+  styleUrls: ['./navbar.component.css'] // Corrige el nombre a styleUrls
 })
 export class NavbarComponent {
   isProfileDropdownOpen = false;
@@ -16,7 +17,7 @@ export class NavbarComponent {
   notifications: string[] = [];
   isLoggedIn = false; // Cambia esto según el estado de la sesión del usuario
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {} // Inyectar Router
 
   toggleProfileDropdown() {
     this.isProfileDropdownOpen = !this.isProfileDropdownOpen;
@@ -39,6 +40,9 @@ export class NavbarComponent {
       title: 'Cierre de sesión exitoso',
       text: 'Has cerrado sesión correctamente.',
       confirmButtonText: 'Aceptar'
+    }).then(() => {
+      // Redirigir a la página de usuario después de que se cierre la alerta
+      this.router.navigate(['/usuario']); // Ajusta la ruta según sea necesario
     });
   }
 
@@ -56,5 +60,4 @@ export class NavbarComponent {
     // Aquí puedes cargar notificaciones desde el servicio o API
     this.notifications = ['Notificación 1', 'Notificación 2', 'Notificación 3']; // Datos de prueba
   }
-
 }

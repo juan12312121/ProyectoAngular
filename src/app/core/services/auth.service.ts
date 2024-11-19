@@ -9,6 +9,8 @@ import { catchError, Observable, tap, throwError } from 'rxjs';
 export class AuthService {
   private LOGIN_URL = 'http://localhost:3500/usuario/login'; // URL de la API para login
   private REGISTER_URL = 'http://localhost:3500/usuario/registro'; // URL de la API para registro
+  private userId: number | null = null;
+
   private tokenKey = 'authToken';
   private userRoleKey = 'userRole';
 
@@ -142,4 +144,24 @@ export class AuthService {
   isLoggedIn(): boolean {
     return this.isAuthenticated(); // Puedes reutilizar el método isAuthenticated
   }
+
+  getUserId(): number | null {
+    return this.userId || (localStorage.getItem('userId') ? parseInt(localStorage.getItem('userId')!) : null);
+  }
+
+  // Método para verificar si el token es válido
+  isTokenValid(): boolean {
+    const token = this.getToken();
+    return token ? this.isAuthenticated() : false;
+  }
+
+  setUserId(userId: number): void {
+    this.userId = userId;  // Asignamos el userId como número
+    localStorage.setItem('userId', userId.toString());  // Guardamos como cadena en localStorage
+  }
+
+ 
+  
+
+ 
 }

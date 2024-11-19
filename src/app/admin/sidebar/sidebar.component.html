@@ -6,9 +6,8 @@
     <span class="ml-2 text-lg font-semibold">RentaDrives</span>
   </div>
 
-  <!-- User greeting -->
   <div class="flex flex-col items-center justify-center p-4 bg-gray-700">
-    <p class="text-sm">Hola, {{ userName }}</p>
+    <p class="text-sm">Hola, {{ userName }} - Role: {{ isAdminUser ? 'Admin' : 'User' }}</p>
   </div>
 
   <!-- Navigation links -->
