@@ -33,6 +33,26 @@ export const routes: Routes = [
         canActivate: [AuthGuard], 
       },
 
+      {
+        path: 'empleados',
+        loadComponent: () => import('./admin/empleados/empleados.component'),
+        canActivate: [AuthGuard],
+      },
+
+      {path:'reservas', loadComponent: () => import('./admin/reservas/reservas.component'), canActivate: [AuthGuard]},
+
+      {path: 'agregar-empleados', loadComponent: () => import('./admin/registrar-empleados/registrar-empleados.component'), canActivate: [AuthGuard]},
+
+      {path: 'promociones', loadComponent: () => import('./admin/promociones/promociones.component'), canActivate: [AuthGuard]},
+
+      {path: 'anadir-promocion', loadComponent: () => import('./admin/anadir-promocion/anadir-promocion.component'),
+        canActivate: [AuthGuard]
+      },
+
+      { path: 'acutalizar-promocion/:id', loadComponent: () => import('./admin/actualizar-promocion/actualizar-promocion.component'),
+        canActivate: [AuthGuard]
+      },
+
 
 
     // Ruta para la sección de usuarios

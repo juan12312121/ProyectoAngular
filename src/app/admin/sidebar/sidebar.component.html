@@ -1,89 +1,80 @@
-<!-- Sidebar Navigation links -->
-<div class="flex flex-col h-screen bg-gray-800 text-white w-64">
+<div class="flex flex-col h-screen bg-gradient-to-b from-[#2f3b55] to-[#4f6a91] text-white w-64 shadow-lg border-r-2 border-[#4f6a91]">
   <!-- Logo -->
-  <div class="flex items-center justify-center p-4 bg-gray-900">
-    <img src="img/logo-2.jpg" alt="Logo" class="h-10 w-10 rounded-full animate-bounce" />
-    <span class="ml-2 text-lg font-semibold">RentaDrives</span>
+  <div class="flex items-center justify-center p-5 bg-[#4f6a91] border-b-2 border-[#2f3b55]">
+    <img src="img/logo-2.jpg" alt="Logo" class="h-16 w-16 rounded-full animate-pulse" />
+    <span class="ml-3 text-2xl font-semibold text-[#f5f5f5]">RentaDrives</span>
   </div>
 
-  <div class="flex flex-col items-center justify-center p-4 bg-gray-700">
-    <p class="text-sm">Hola, {{ userName }} - Role: {{ isAdminUser ? 'Admin' : 'User' }}</p>
+  <!-- User Info -->
+  <div class="flex flex-col items-center justify-center p-5 bg-[#2f3b55] border-b-2 border-[#4f6a91]">
+    <p class="text-md font-medium text-center">Hola, {{ nombre_completo }}</p>
+    <p class="text-xs text-center text-[#c1c1c1]">Role: {{ isAdminUser ? 'Admin' : 'User' }}</p>
   </div>
 
   <!-- Navigation links -->
-  <nav class="flex-1 p-4">
-    <ul>
-      <li class="mb-4">
+  <nav class="flex-1 p-5 overflow-auto">
+    <ul class="space-y-5">
+      <li>
         <a 
           routerLink="/admin" 
           routerLinkActive="active-link" 
-          class="block text-lg p-2 rounded transition-all duration-200 transform hover:scale-105 hover:bg-gray-700"
-        >
+          class="block text-xl p-3 rounded-md transition-all duration-300 transform hover:scale-105 hover:bg-[#4f6a91] hover:text-[#2f3b55] font-semibold">
           Dashboard
         </a>
       </li>
-      <li class="mb-4">
+      <li>
         <a 
           routerLink="/admin/carros-registrados" 
           routerLinkActive="active-link" 
-          class="block text-lg p-2 rounded transition-all duration-200 transform hover:scale-105 hover:bg-gray-700"
-        >
+          class="block text-xl p-3 rounded-md transition-all duration-300 transform hover:scale-105 hover:bg-[#4f6a91] hover:text-[#2f3b55] font-semibold">
           Carros Registrados
         </a>
       </li>
-      
-      
-      <li class="mb-4">
+      <li>
         <a 
           routerLink="/clientes" 
           routerLinkActive="active-link" 
-          class="block text-lg p-2 rounded transition-all duration-200 transform hover:scale-105 hover:bg-gray-700"
-        >
+          class="block text-xl p-3 rounded-md transition-all duration-300 transform hover:scale-105 hover:bg-[#4f6a91] hover:text-[#2f3b55] font-semibold">
           Clientes
         </a>
       </li>
-      <li class="mb-4">
+      <li>
         <a 
           routerLink="/empleados" 
           routerLinkActive="active-link" 
-          class="block text-lg p-2 rounded transition-all duration-200 transform hover:scale-105 hover:bg-gray-700"
-        >
+          class="block text-xl p-3 rounded-md transition-all duration-300 transform hover:scale-105 hover:bg-[#4f6a91] hover:text-[#2f3b55] font-semibold">
           Empleados
         </a>
       </li>
-      <li class="mb-4">
+      <li>
         <a 
           routerLink="/reservas" 
           routerLinkActive="active-link" 
-          class="block text-lg p-2 rounded transition-all duration-200 transform hover:scale-105 hover:bg-gray-700"
-        >
+          class="block text-xl p-3 rounded-md transition-all duration-300 transform hover:scale-105 hover:bg-[#4f6a91] hover:text-[#2f3b55] font-semibold">
           Reservas
         </a>
       </li>
-      <li class="mb-4">
+      <li>
         <a 
           routerLink="/promociones" 
           routerLinkActive="active-link" 
-          class="block text-lg p-2 rounded transition-all duration-200 transform hover:scale-105 hover:bg-gray-700"
-        >
+          class="block text-xl p-3 rounded-md transition-all duration-300 transform hover:scale-105 hover:bg-[#4f6a91] hover:text-[#2f3b55] font-semibold">
           Promociones
         </a>
       </li>
-      <li class="mb-4">
+      <li>
         <a 
           routerLink="/incidencias" 
           routerLinkActive="active-link" 
-          class="block text-lg p-2 rounded transition-all duration-200 transform hover:scale-105 hover:bg-gray-700"
-        >
+          class="block text-xl p-3 rounded-md transition-all duration-300 transform hover:scale-105 hover:bg-[#4f6a91] hover:text-[#2f3b55] font-semibold">
           Incidencias
         </a>
       </li>
-      <li class="mb-4">
+      <li>
         <a 
           routerLink="/reportes" 
           routerLinkActive="active-link" 
-          class="block text-lg p-2 rounded transition-all duration-200 transform hover:scale-105 hover:bg-gray-700"
-        >
+          class="block text-xl p-3 rounded-md transition-all duration-300 transform hover:scale-105 hover:bg-[#4f6a91] hover:text-[#2f3b55] font-semibold">
           Reportes
         </a>
       </li>
@@ -91,9 +82,9 @@
   </nav>
 
   <!-- Logout button for admin -->
-  <div class="p-4">
+  <div class="p-5 mt-auto">
     <button *ngIf="isAdmin()" (click)="logoutAdmin()" 
-      class="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded transition-all duration-200 transform hover:scale-105">
+      class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-md transition-all duration-300 transform hover:scale-105 hover:shadow-xl font-semibold">
       Cerrar sesión
     </button>
   </div>

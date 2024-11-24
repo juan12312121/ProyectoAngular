@@ -1,42 +1,49 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import Swal from 'sweetalert2'; // Importar SweetAlert2
+import { AuthService } from '../../core/services/auth.service';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 
 interface Cliente {
   id: number;
-  nombre: string;
+  nombre_completo: string;
+  nombre_usuario: string;
   correo: string;
-  telefono: string;
-  fechaRegistro: string;
+  fecha_creacion: string;
 }
 
 @Component({
   selector: 'app-clientes',
   standalone: true,
-  imports: [SidebarComponent,CommonModule],
+  imports: [SidebarComponent, CommonModule],
   templateUrl: './clientes.component.html',
-  styleUrls: ['./clientes.component.css']
+  styleUrls: ['./clientes.component.css'],
 })
-export default class ClientesComponent {
+export default class ClientesComponent implements OnInit {
+verHistorial(arg0: number) {
+throw new Error('Method not implemented.');
+}
+  clientes: Cliente[] = []; // Full list of clients
+  currentPage: number = 1; // Current page for pagination
+  itemsPerPage: number = 7; // Number of clients per page
+  totalItems: number = 0; // Total number of clients
+  totalPages: number = 0; // Total number of pages for pagination
+  paginatedClientes: Cliente[] = []; // Clients for the current page
 
-  // Datos de los clientes (en un escenario real, estos vendrían de un API)
-  clientes: Cliente[] = [
-    { id: 1, nombre: 'Juan Pérez', correo: 'juanperez@email.com', telefono: '123456789', fechaRegistro: '2024-01-01' },
-    { id: 2, nombre: 'María López', correo: 'marialopez@email.com', telefono: '987654321', fechaRegistro: '2023-03-15' },
-    { id: 3, nombre: 'Carlos Gómez', correo: 'carlosgomez@email.com', telefono: '555666777', fechaRegistro: '2024-02-20' },
-    { id: 4, nombre: 'Ana Sánchez', correo: 'anasanchez@email.com', telefono: '888999000', fechaRegistro: '2023-11-10' },
-    // Agrega más clientes si es necesario...
-  ];
+  constructor(private authService: AuthService) {}
 
-  // Paginación
-  currentPage: number = 1;
-  itemsPerPage: number = 10;
-  totalItems: number = this.clientes.length;
-  totalPages: number = Math.ceil(this.totalItems / this.itemsPerPage);
-  paginatedClientes: Cliente[] = this.clientes.slice(0, this.itemsPerPage);
+  ngOnInit(): void {
+    // Fetching users with role 1 (Admin, for example)
+    this.authService.getUsersByRole(1).subscribe((data) => {
+      this.clientes = data; // Assuming the response is an array of clients
+      this.totalItems = this.clientes.length;
+      this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage); // Calculate total pages
+      this.paginatedClientes = this.clientes.slice(0, this.itemsPerPage); // Slice the first page
+    });
+  }
 
-  // Cambiar de página
-  onPageChange(page: number) {
+  // Change the page and fetch paginated data
+  onPageChange(page: number): void {
     if (page < 1 || page > this.totalPages) {
       return;
     }
@@ -44,5 +51,43 @@ export default class ClientesComponent {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
     this.paginatedClientes = this.clientes.slice(startIndex, endIndex);
+  }
+
+  // Eliminar usuario con confirmación de SweetAlert2
+  deleteUser(clienteId: number): void {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'Este cambio no se puede deshacer.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Lógica para eliminar al cliente
+        this.authService.deleteUser(clienteId).subscribe(
+          () => {
+            Swal.fire(
+              'Eliminado!',
+              'El cliente ha sido eliminado.',
+              'success'
+            );
+            // Actualiza la lista de clientes después de la eliminación
+            this.clientes = this.clientes.filter(cliente => cliente.id !== clienteId);
+            this.totalItems = this.clientes.length;
+            this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage); // Recalculamos las páginas
+            this.paginatedClientes = this.clientes.slice(0, this.itemsPerPage); // Re-renderizar los clientes de la primera página
+          },
+          () => {
+            Swal.fire(
+              'Error',
+              'Hubo un problema al eliminar al cliente.',
+              'error'
+            );
+          }
+        );
+      }
+    });
   }
 }

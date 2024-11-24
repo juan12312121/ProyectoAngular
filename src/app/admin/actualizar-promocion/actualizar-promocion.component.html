@@ -1,0 +1,92 @@
+<div class="flex h-screen bg-[#F0F4FF]">
+    <!-- Sidebar -->
+    <app-sidebar></app-sidebar>
+
+    <!-- Main content -->
+    <main class="flex-1 p-5 overflow-y-auto">
+        <!-- Formulario para actualizar promoción -->
+        <div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+            <h1 class="text-3xl font-bold text-[#161a2d] mb-6">Actualizar Promoción</h1>
+
+            <!-- Formulario -->
+            <form (ngSubmit)="onSubmit()" #promotionForm="ngForm">
+
+                <!-- Código de Promoción -->
+                <div class="mb-6">
+                    <label for="codigo_promocion" class="block text-[#161a2d] font-medium mb-2">Código de Promoción</label>
+                    <input
+                        type="text"
+                        id="codigo_promocion"
+                        name="codigo_promocion"
+                        class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4f52ba] transition duration-300"
+                        [(ngModel)]="codigo_promocion"
+                    />
+                </div>
+
+                <!-- Descripción -->
+                <div class="mb-6">
+                    <label for="descripcion" class="block text-[#161a2d] font-medium mb-2">Descripción</label>
+                    <textarea
+                        id="descripcion"
+                        name="descripcion"
+                        class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4f52ba] transition duration-300"
+                        [(ngModel)]="descripcion"
+                    ></textarea>
+                </div>
+
+                <!-- Descuento -->
+                <div class="mb-6">
+                    <label for="descuento" class="block text-[#161a2d] font-medium mb-2">Descuento (%)</label>
+                    <input
+                        type="number"
+                        id="descuento"
+                        name="descuento"
+                        class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4f52ba] transition duration-300"
+                        [(ngModel)]="descuento"
+                        min="1"
+                        max="100"
+                    />
+                </div>
+
+                <!-- Fecha de Inicio -->
+                <div class="mb-6">
+                    <label for="fecha_inicio" class="block text-[#161a2d] font-medium mb-2">Fecha de Inicio</label>
+                    <input
+                        type="date"
+                        id="fecha_inicio"
+                        name="fecha_inicio"
+                        class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4f52ba] transition duration-300"
+                        [(ngModel)]="fecha_inicio"
+                    />
+                </div>
+
+                <!-- Fecha de Fin -->
+                <div class="mb-8">
+                    <label for="fecha_fin" class="block text-[#161a2d] font-medium mb-2">Fecha de Fin</label>
+                    <input
+                        type="date"
+                        id="fecha_fin"
+                        name="fecha_fin"
+                        class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4f52ba] transition duration-300"
+                        [(ngModel)]="fecha_fin"
+                    />
+                </div>
+
+                <!-- Mensaje de advertencia -->
+                <div *ngIf="!isFormValid()" class="text-yellow-600 mb-4">
+                    <p>Por favor, completa todos los campos correctamente antes de enviar.</p>
+                </div>
+
+                <!-- Botón de enviar -->
+                <div class="flex justify-end">
+                    <button
+                        type="submit"
+                        class="bg-[#48bb78] text-white px-6 py-3 rounded-md hover:bg-[#38a169] transition duration-300 transform hover:scale-105"
+                    >
+                        Actualizar Promoción
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+</div>

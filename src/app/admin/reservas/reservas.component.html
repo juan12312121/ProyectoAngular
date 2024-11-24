@@ -1,0 +1,131 @@
+<div class="flex bg-[#F0F4FF]">
+  <app-sidebar></app-sidebar>
+
+  <div class="flex justify-center items-start py-8 min-h-screen bg-[#F0F4FF] w-full">
+    <main class="w-full max-w-7xl bg-white p-8 rounded-lg shadow-lg">
+      <h1 class="text-3xl font-semibold mb-8 text-center text-primary-color">
+        Reservas Hechas
+      </h1>
+
+      <div class="reservas">
+        <!-- Mensaje de error -->
+        <div *ngIf="errorMessage" class="error-message text-red-500 mb-4">
+          <p>{{ errorMessage }}</p>
+        </div>
+
+        <!-- Indicador de carga -->
+        <div *ngIf="isLoading" class="text-center text-lg text-gray-500">
+          <p>Cargando reservas...</p>
+        </div>
+
+        <!-- Tabla de reservas -->
+        <div *ngIf="reservations.length > 0" class="overflow-x-auto">
+          <table class="w-full table-auto border-collapse border border-gray-300">
+            <thead class="bg-gray-100 text-gray-700">
+              <tr>
+                <th class="px-4 py-2 border border-gray-300">Imagen</th>
+                <th class="px-4 py-2 border border-gray-300">ID Carro</th>
+                <th class="px-4 py-2 border border-gray-300">Marca y Modelo</th>
+                <th class="px-4 py-2 border border-gray-300">Color</th>
+                <th class="px-4 py-2 border border-gray-300">Usuario</th>
+                <th class="px-4 py-2 border border-gray-300">ID Reserva</th>
+                <th class="px-4 py-2 border border-gray-300">Estado</th>
+                <th class="px-4 py-2 border border-gray-300">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let reservation of reservations | slice:(currentPage - 1) * pageSize : currentPage * pageSize"
+                class="hover:bg-gray-50"
+              >
+                <!-- Imagen -->
+                <td class="px-4 py-2 border border-gray-300">
+                  <img
+                    *ngIf="reservation.imagen"
+                    [src]="'http://localhost:3500/uploads/' + reservation.imagen"
+                    alt="{{ reservation.marca }} {{ reservation.modelo }}"
+                    class="w-24 h-16 object-cover rounded-md"
+                  />
+                  <img
+                    *ngIf="!reservation.imagen"
+                    src="/img/default.jpg"
+                    alt="Imagen no disponible"
+                    class="w-24 h-16 object-cover rounded-md"
+                  />
+                </td>
+
+                <!-- Información de la reserva -->
+                <td class="px-4 py-2 border border-gray-300 text-center">
+                  {{ reservation.id }}
+                </td>
+                <td class="px-4 py-2 border border-gray-300 text-center">
+                  {{ reservation.marca }} {{ reservation.modelo }}
+                </td>
+                <td class="px-4 py-2 border border-gray-300 text-center">
+                  {{ reservation.color }}
+                </td>
+                <td class="px-4 py-2 border border-gray-300 text-center">
+                  {{ reservation.usuario }}
+                </td>
+                <td class="px-4 py-2 border border-gray-300 text-center">
+                  {{ reservation.id_reserva }}
+                </td>
+                <td class="px-4 py-2 border border-gray-300 text-center text-green-600 font-medium">
+                  Disponible
+                </td>
+
+                <!-- Botones de acción -->
+                <td class="px-4 py-2 border border-gray-300 text-center space-x-2">
+                  <button
+                    class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition duration-300"
+                    (click)="acceptReservation(reservation.id_reserva)"
+                  >
+                    Aceptar
+                  </button>
+                  <button
+                    class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition duration-300"
+                    (click)="rejectReservation(reservation.id_reserva)"
+                  >
+                    Rechazar
+                  </button>
+                  <button
+                    class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition duration-300"
+                    (click)="viewDetails(reservation.id_reserva)"
+                  >
+                    Detalles
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Mensaje cuando no hay reservas -->
+        <p *ngIf="!isLoading && reservations.length === 0" class="text-center text-lg text-gray-500 mt-6">
+          No hay reservas disponibles.
+        </p>
+
+        <!-- Paginación -->
+        <div class="flex justify-center mt-6 items-center gap-4">
+          <button
+            (click)="changePage(currentPage - 1)"
+            [disabled]="currentPage === 1"
+            class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300 disabled:bg-gray-300 disabled:cursor-not-allowed"
+          >
+            Anterior
+          </button>
+          <span class="text-lg text-gray-600">
+            Página {{ currentPage }} de {{ totalPages }}
+          </span>
+          <button
+            (click)="changePage(currentPage + 1)"
+            [disabled]="currentPage === totalPages"
+            class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300 disabled:bg-gray-300 disabled:cursor-not-allowed"
+          >
+            Siguiente
+          </button>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>

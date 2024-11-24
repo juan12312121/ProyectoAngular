@@ -12,7 +12,7 @@ export class AuthGuard implements CanActivate {
     if (this.authService.isAuthenticated() && this.authService.isAdmin()) {
       return true; // Permite el acceso si está autenticado y es admin
     }
-    this.router.navigate(['/login']); // Redirige a la página de login si no es admin
+    this.router.navigate(['/usuario']); // Redirige a la página de login si no es admin
     return false;
   }
 }

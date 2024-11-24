@@ -37,8 +37,8 @@ export default class DetalleCarroComponent implements OnInit {
   todayDate: string = new Date().toISOString().split('T')[0];
   userId: number | null = null;
   isAuthenticated: boolean = false;
-  selectedRentType: string = '';  // Selected rent type
-  rentalTypes: string[] = [];     // Array to store rent types from the API
+  selectedRentType: string = '';  
+  rentalTypes: string[] = [];   
   totalPrice: number = 0;
   dailyPrice: number = 0;
 

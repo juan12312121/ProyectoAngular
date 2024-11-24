@@ -1,0 +1,49 @@
+<!-- Notification Button -->
+<div class="absolute top-6 right-6">
+    <button 
+      id="notificationButton" 
+      class="relative p-3 bg-blue-600 text-white rounded-full hover:bg-blue-500 focus:outline-none transition-colors"
+      (click)="toggleNotifications()">
+      <!-- Notification Bell Icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" stroke="currentColor" fill="none">
+        <path 
+          d="M12 22c1.104 0 2-.896 2-2H10c0 1.104.896 2 2 2zm6-6V9c0-3.313-2.687-6-6-6S6 5.687 6 9v7H4v2h16v-2h-2z" 
+          stroke-width="2" 
+          stroke-linejoin="round" 
+          stroke-linecap="round">
+        </path>
+      </svg>
+      <!-- Unread Notifications Counter -->
+      <span *ngIf="unreadNotifications > 0" class="absolute top-0 right-0 bg-red-600 text-white text-xs font-bold rounded-full px-2 py-1">
+        {{ unreadNotifications }}
+      </span>
+    </button>
+  </div>
+  
+  <!-- Notifications Window -->
+  <div *ngIf="isNotificationsVisible" class="absolute top-12 right-6 bg-white shadow-lg rounded-lg w-80 p-6 z-50 max-h-96 overflow-y-auto transition-all duration-300">
+    <h3 class="font-semibold text-lg mb-4 text-gray-900">Notificaciones</h3>
+  
+    <!-- Notification Filters -->
+    <div class="mb-4">
+      <label for="notificationFilter" class="block text-sm text-gray-600">Filtrar por tipo</label>
+      <select id="notificationFilter" [(ngModel)]="notificationFilter" class="w-full p-3 border rounded-md bg-gray-50 text-gray-800">
+        <option value="all">Todas</option>
+        <option value="reservation">Nueva Reserva</option>
+        <option value="delivery">Entrega de Vehículo</option>
+        <option value="rentalExpired">Fecha de Renta Pasada</option>
+        <option value="payment">Pago Realizado</option>
+      </select>
+    </div>
+  
+    <!-- Notification List -->
+    <ul class="space-y-2">
+      <li *ngFor="let notification of filteredNotifications" 
+          [ngClass]="{'bg-gray-100': notification.status === 'read'}" 
+          (click)="markAsRead(notification)" 
+          class="cursor-pointer py-3 px-4 hover:bg-gray-200 rounded-lg transition-colors duration-200">
+        {{ notification.message }}
+      </li>
+    </ul>
+  </div>
+  

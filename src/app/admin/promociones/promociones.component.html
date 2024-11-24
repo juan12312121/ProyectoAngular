@@ -1,0 +1,80 @@
+<div class="flex h-screen bg-[#F0F4FF]">
+  <!-- Sidebar -->
+  <app-sidebar></app-sidebar>
+
+  <!-- Main content -->
+  <main class="flex-1 p-5 overflow-y-auto">
+    <!-- Page Title and Add Promotion Button -->
+    <div class="mb-6 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-[#161a2d] mb-6">Promociones</h1>
+      <div class="flex justify-start">
+        <button 
+          (click)="addPromotion()" 
+          class="bg-[#48bb78] text-white px-4 py-2 rounded hover:bg-[#38a169] transition duration-300">
+          Agregar promoción
+        </button>
+      </div>
+    </div>
+
+    <!-- Promotions Table -->
+    <div class="bg-white p-5 rounded-lg shadow-md mb-6">
+      <h2 class="text-xl font-semibold text-[#4a5568] mb-4">Listado de Promociones</h2>
+      <table class="w-full border-collapse mb-4 text-left">
+        <thead>
+          <tr>
+            <th class="border p-3 bg-[#edf2f7] text-[#4a5568]">Código</th>
+            <th class="border p-3 bg-[#edf2f7] text-[#4a5568]">Descripción</th>
+            <th class="border p-3 bg-[#edf2f7] text-[#4a5568]">Fechas</th>
+            <th class="border p-3 bg-[#edf2f7] text-[#4a5568]">Descuento (%)</th>
+            <th class="border p-3 bg-[#edf2f7] text-[#4a5568]">Estado</th>
+            <th class="border p-3 bg-[#edf2f7] text-[#4a5568]">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let promotion of promotions" class="hover:bg-[#f7fafc] transition duration-300">
+            <td class="border p-3">{{ promotion.codigo_promocion }}</td>
+            <td class="border p-3">{{ promotion.descripcion }}</td>
+            <td class="border p-3">{{ promotion.fecha_inicio | date }} - {{ promotion.fecha_fin | date }}</td>
+            <td class="border p-3">{{ promotion.descuento }}%</td>
+            <td class="border p-3 text-center">
+              <button 
+                (click)="togglePromotionStatus(promotion)" 
+                class="bg-[#4f52ba] text-white py-1 px-4 rounded-lg transition duration-300 hover:bg-[#3e46a0]">
+                {{ promotion.estado === 'activo' ? 'Desactivar' : 'Activar' }}
+              </button>
+            </td>
+            <td class="border p-3 text-center flex justify-center space-x-3">
+              <button 
+                (click)="deletePromotion(promotion.id_promocion)" 
+                class="bg-red-600 text-white px-4 py-2 rounded-lg transition duration-300 hover:bg-red-500">
+                Eliminar
+              </button>
+              <button 
+                (click)="updatePromotion(promotion)" 
+                class="bg-blue-600 text-white px-4 py-2 rounded-lg transition duration-300 hover:bg-blue-500">
+                Actualizar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Pagination -->
+      <div class="flex justify-center mb-4">
+        <button 
+          (click)="previousPage()" 
+          [disabled]="currentPage === 1" 
+          class="bg-[#4299e1] text-white px-4 py-2 rounded hover:bg-[#3182ce] transition duration-300">
+          Anterior
+        </button>
+        <span class="mx-2">Página {{ currentPage }} de {{ totalPages }}</span>
+        <button 
+          (click)="nextPage()" 
+          [disabled]="currentPage === totalPages" 
+          class="bg-[#4299e1] text-white px-4 py-2 rounded hover:bg-[#3182ce] transition duration-300">
+          Siguiente
+        </button>
+      </div>
+    </div>
+  </main>
+</div>

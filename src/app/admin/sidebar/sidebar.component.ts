@@ -13,7 +13,7 @@ import { AuthService } from '../../core/services/auth.service';
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit {
-  userName: string = ''; // Nombre de usuario inicializado
+  nombre_completo: string = ''; // Nombre de usuario inicializado
   isAdminUser: boolean = false; // Estado para saber si el usuario es admin
   token: string | null = ''; // Nueva propiedad para almacenar el token
   decodedToken: any = null; // Variable para almacenar el token decodificado
@@ -34,8 +34,8 @@ export class SidebarComponent implements OnInit {
   private getUserName(): void {
     // Obtener el nombre de usuario desde el servicio AuthService
     const user = this.authService.getUserName();
-    this.userName = user ? user : 'Usuario no autenticado'; // En caso de no encontrar usuario
-    console.log("Nombre de usuario obtenido del AuthService:", this.userName);
+    this.nombre_completo = user ? user : 'Usuario no autenticado'; // En caso de no encontrar usuario
+    console.log("Nombre de usuario obtenido del AuthService:", this.nombre_completo);
   }
 
   private checkIfAdmin(): void {
@@ -78,7 +78,7 @@ export class SidebarComponent implements OnInit {
   }
 
   private clearUserData(): void {
-    this.userName = '';  // Limpiar información de usuario al hacer logout
+    this.nombre_completo = '';  // Limpiar información de usuario al hacer logout
     this.isAdminUser = false; // Limpiar estado de admin
     this.token = ''; // Limpiar token al hacer logout
     this.decodedToken = null; // Limpiar token decodificado

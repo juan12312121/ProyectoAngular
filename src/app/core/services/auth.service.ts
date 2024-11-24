@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, Observable, tap, throwError } from 'rxjs';
@@ -9,12 +9,33 @@ import { catchError, Observable, tap, throwError } from 'rxjs';
 export class AuthService {
   private LOGIN_URL = 'http://localhost:3500/usuario/login'; // URL de la API para login
   private REGISTER_URL = 'http://localhost:3500/usuario/registro'; // URL de la API para registro
+  private USERS_BY_ROLE_URL = 'http://localhost:3500/usuario/usuario/role/';
   private userId: number | null = null;
 
   private tokenKey = 'authToken';
   private userRoleKey = 'userRole';
 
   constructor(private httpClient: HttpClient, private router: Router) {}
+
+// Método para eliminar un usuario
+deleteUser(id: number): Observable<any> {
+  const url = `http://localhost:3500/usuario/users/${id}`;  // Cambia aquí para incluir '/usuario'
+  const token = localStorage.getItem('authToken');
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+  return this.httpClient.delete<any>(url, { headers }).pipe(
+    tap(response => {
+      console.log('Usuario eliminado:', response);
+    }),
+    catchError(error => {
+      console.error('Error al eliminar el usuario:', error);
+      return throwError(() => new Error('No se pudo eliminar el usuario.'));
+    })
+  );
+}
+
+
+
 
   // Método para login
   login(username: string, password: string): Observable<any> {
@@ -47,22 +68,68 @@ export class AuthService {
     }
   }
 
-  // Método para registro
   register(nombreCompleto: string, username: string, correo: string, password: string, confirmarContrasena: string, rol: number): Observable<any> {
+    const userRole = this.getUserRole();  // Obtenemos el rol del usuario que está realizando el registro
+  
+    // Verificamos que las contraseñas coincidan
     if (password !== confirmarContrasena) {
       return throwError(() => new Error('Las contraseñas no coinciden'));
     }
+  
+    // Lógica para usuarios con rol 10 (administrador)
+    if (userRole === 10) {
+      // Los administradores pueden registrar con cualquier rol
+      return this.httpClient.post<any>(this.REGISTER_URL, { nombreCompleto, username, correo, password, rol }).pipe(
+        tap(response => {
+          console.log('Registro exitoso:', response);
+          this.router.navigate(['/login']); // Redirigir al login después de un registro exitoso
+        }),
+        catchError(error => {
+          console.error('Error en el registro:', error);
+          return throwError(() => new Error('Error en el registro'));
+        })
+      );
+    }
+  
+    // Lógica para usuarios con rol 1 (usuarios normales)
+    if (userRole === 1) {
+      // Los usuarios solo pueden registrarse a sí mismos (rol 1)
+      if (rol !== 1) {
+        return throwError(() => new Error('Solo puedes registrarte con tu propio rol.'));
+      }
+  
+      return this.httpClient.post<any>(this.REGISTER_URL, { nombreCompleto, username, correo, password, rol }).pipe(
+        tap(response => {
+          console.log('Registro exitoso:', response);
+          this.router.navigate(['/login']); // Redirigir al login después de un registro exitoso
+        }),
+        catchError(error => {
+          console.error('Error en el registro:', error);
+          return throwError(() => new Error('Error en el registro'));
+        })
+      );
+    }
+  
+    // Si el rol no es 1 ni 10, devolver un error
+    return throwError(() => new Error('Acción no permitida.'));
+  }
+  
 
-    return this.httpClient.post<any>(this.REGISTER_URL, { nombreCompleto, username, correo, password, rol }).pipe(
-      tap(response => {
-        console.log('Registro exitoso:', response);
-      }),
+
+  getUsersByRole(role: number): Observable<any> {
+    const url = `${this.USERS_BY_ROLE_URL}${role}`;
+    const token = localStorage.getItem('authToken');  // Retrieve token from localStorage or sessionStorage
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);  // Include token in the request header
+
+    return this.httpClient.get<any>(url, { headers }).pipe(
       catchError(error => {
-        console.error('Error en el registro:', error);
-        return throwError(() => new Error('Error en el registro'));
+        console.error('Error al obtener los usuarios:', error);
+        return throwError(() => new Error('No se pudo obtener los usuarios.'));
       })
     );
   }
+
+  
 
   // Métodos para gestionar tokens y roles
   private setToken(token: string): void {
@@ -127,11 +194,11 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
-    return this.getUserRole() === 10; // Cambia este valor según tu lógica de rol
+    return this.getUserRole() === 10; // verificar si es admin
   }
 
   isUser(): boolean {
-    return this.getUserRole() === 1; // Cambia este valor según tu lógica de rol
+    return this.getUserRole() === 1; // verificar si es usuario
   }
 
   logout(): void {
@@ -160,6 +227,7 @@ export class AuthService {
     localStorage.setItem('userId', userId.toString());  // Guardamos como cadena en localStorage
   }
 
+  
  
   
 
