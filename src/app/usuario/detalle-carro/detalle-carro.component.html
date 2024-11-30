@@ -27,6 +27,9 @@
               [alt]="car.marca + ' ' + car.modelo"
               class="w-full h-full object-cover rounded-lg shadow-lg"
             />
+            <div class="absolute top-2 right-2 text-white bg-black opacity-50 p-2 rounded-full">
+              <i class="fa fa-image"></i> <!-- Icon for car image -->
+            </div>
           </div>
 
           <!-- Car Information Section -->
@@ -36,7 +39,7 @@
             <h1
               class="text-blue-600 text-4xl font-semibold mb-4 hover:underline"
             >
-              {{ car.marca }} - {{ car.modelo }} ({{ car.anio }})
+              <i class="fa fa-car"></i> {{ car.marca }} - {{ car.modelo }} ({{ car.anio }})
             </h1>
             <p class="text-gray-700 mb-5">{{ car.descripcion }}</p>
 
@@ -45,23 +48,23 @@
               class="info-section mb-5 p-4 border rounded-lg bg-gray-50 shadow"
             >
               <h2 class="text-xl font-semibold mb-2 border-b pb-2">
-                Información del Vehículo
+                <i class="fa fa-info-circle"></i> Información del Vehículo
               </h2>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <p class="text-gray-700">
-                  <strong>Color:</strong> {{ car.color }}
+                  <i class="fa fa-paint-brush"></i> <strong>Color:</strong> {{ car.color }}
                 </p>
                 <p class="text-gray-700">
-                  <strong>Puertas:</strong> {{ car.puertas }}
+                  <i class="fa fa-door-open"></i> <strong>Puertas:</strong> {{ car.puertas }}
                 </p>
                 <p class="text-gray-700">
-                  <strong>Pasajeros:</strong> {{ car.pasajeros }}
+                  <i class="fa fa-users"></i> <strong>Pasajeros:</strong> {{ car.pasajeros }}
                 </p>
               </div>
             </section>
 
             <div class="mb-6">
-              <h3 class="text-lg font-semibold mb-4">Tipo de Reserva</h3>
+              <h3 class="text-lg font-semibold mb-4"><i class="fa fa-calendar-alt"></i> Tipo de Reserva</h3>
               <select
                 class="w-full p-3 border border-gray-300 rounded-lg mb-6"
                 [(ngModel)]="selectedRentType"
@@ -71,20 +74,18 @@
                   {{ rentType }}
                 </option>
               </select>
-            
-            
             </div>
             
             <div class="mt-4 text-lg font-semibold text-gray-800">
-              Precio Diario:
-              <span class="text-blue-600">{{ car.precio_diaro}}</span>
+              <i class="fa fa-dollar-sign"></i> Precio Diario:
+              <span class="text-blue-600">{{ car.precio_diaro }}</span>
             </div>
-            
-              
 
             <div class="flex space-x-4 mb-6">
               <div class="w-full">
-                <label for="start-date" class="block text-sm font-semibold text-gray-700">Fecha de inicio</label>
+                <label for="start-date" class="block text-sm font-semibold text-gray-700">
+                  <i class="fa fa-calendar-day"></i> Fecha de inicio
+                </label>
                 <input
                   id="start-date"
                   type="date"
@@ -95,7 +96,9 @@
               </div>
             
               <div class="w-full">
-                <label for="end-date" class="block text-sm font-semibold text-gray-700">Fecha de fin</label>
+                <label for="end-date" class="block text-sm font-semibold text-gray-700">
+                  <i class="fa fa-calendar-week"></i> Fecha de fin
+                </label>
                 <input
                   id="end-date"
                   type="date"
@@ -105,69 +108,33 @@
                 />
               </div>
             </div>
-            
 
             <!-- Action Buttons -->
             <div class="flex gap-4 mt-5">
               <button
-              (click)="createReservation()"
-              class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-500 transition"
-            >
-              Reservar Ahora
-            </button>
+                (click)="createReservation()"
+                class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-500 transition"
+              >
+                <i class="fa fa-check-circle"></i> Reservar Ahora
+              </button>
 
               <button
                 (click)="goBack()"
                 class="back-btn bg-gray-600 text-white py-2 px-4 rounded-lg transition duration-200 hover:opacity-90 transform hover:scale-105"
               >
-                Volver a Carros
+                <i class="fa fa-arrow-left"></i> Volver a Carros
               </button>
             </div>
           </div>
         </div>
 
         <!-- Car Reviews Section -->
-      <section>
-        <app-reviews></app-reviews>
+        <section>
+          <app-reviews></app-reviews>
         </section>
 
         <!-- Related Cars Section -->
-        <section
-          class="related-cars-section bg-white p-6 rounded-lg shadow-md mt-10"
-        >
-          <h2 class="text-2xl font-semibold mb-4 text-primary">
-            Carros Relacionados
-          </h2>
-          <ng-container
-            *ngIf="relatedCars && relatedCars.length > 0; else noRelatedCars"
-          >
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div
-                *ngFor="let relatedCar of relatedCars"
-                class="car-card border rounded-lg p-4 hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1"
-              >
-                <img
-                  [src]="relatedCar.imagen"
-                  [alt]="relatedCar.marca + ' ' + relatedCar.modelo"
-                  class="w-full h-32 object-cover rounded-md mb-2"
-                />
-                <h3 class="text-gray-800 font-semibold text-lg">
-                  {{ relatedCar.marca }} - {{ relatedCar.modelo }}
-                </h3>
-                <p class="text-gray-600">Año: {{ relatedCar.anio }}</p>
-                <button
-                  class="mt-2 text-blue-500 hover:text-blue-700 font-medium transition-colors duration-200"
-                  (click)="viewCarDetails(relatedCar.id)"
-                >
-                  Ver Detalles
-                </button>
-              </div>
-            </div>
-          </ng-container>
-          <ng-template #noRelatedCars>
-            <p class="text-gray-600">No hay carros relacionados disponibles.</p>
-          </ng-template>
-        </section>
+        <!-- Optionally, add related cars here -->
       </ng-container>
     </div>
   </ng-template>

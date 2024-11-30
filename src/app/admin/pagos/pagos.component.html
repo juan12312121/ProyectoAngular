@@ -1,0 +1,46 @@
+<div class="flex min-h-screen bg-[#F0F4FF]">
+    <app-sidebar></app-sidebar>
+  
+    <!-- Main content -->
+    <div class="flex-1 p-8">
+      <!-- Error message -->
+      <div *ngIf="error" class="bg-red-500 text-white p-4 rounded-md mb-4">
+        <p>{{ error }}</p>
+      </div>
+  
+      <!-- Table of pagos -->
+      <div *ngIf="!error">
+        <h2 class="text-2xl font-bold mb-4">Lista de Pagos</h2>
+  
+        <!-- If there are no payments -->
+        <div *ngIf="pagos.length === 0">
+          <p>No hay pagos disponibles.</p>
+        </div>
+  
+        <!-- If there are payments -->
+        <div *ngIf="pagos.length > 0">
+          <table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
+            <thead class="bg-[#4f6a91] text-white">
+              <tr>
+                <th class="px-4 py-2 text-left">ID Pago</th>
+                <th class="px-4 py-2 text-left">Método de Pago</th>
+                <th class="px-4 py-2 text-left">Monto</th>
+                <th class="px-4 py-2 text-left">Fecha de Pago</th>
+                <th class="px-4 py-2 text-left">ID Carro</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let pago of pagos">
+                <td class="px-4 py-2 border-b">{{ pago.id }}</td>
+                <td class="px-4 py-2 border-b">{{ pago.metodo_pago }}</td>
+                <td class="px-4 py-2 border-b">{{ pago.monto | currency }}</td>
+                <td class="px-4 py-2 border-b">{{ pago.fecha_pago | date }}</td>
+                <td class="px-4 py-2 border-b">{{ pago.id_carro }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  

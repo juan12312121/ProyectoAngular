@@ -53,9 +53,27 @@ export const routes: Routes = [
         canActivate: [AuthGuard]
       },
 
+      {path: 'resenas', loadComponent: () => import('./admin/resenas-hechas/resenas-hechas.component'),
+        canActivate: [AuthGuard]},
+
+        { 
+            path: 'carro-mantenimiento', 
+            loadComponent: () => import('./admin/carros-matenimiento/carros-matenimiento.component'), 
+            canActivate: [AuthGuard] 
+          },
+
+          {path: 'incidencias', loadComponent: () => import('./admin/incidencias/incidencias.component')},
+
+          
+          {path: 'pagos-admin', loadComponent: () => import('./admin/pagos/pagos.component'),
+            canActivate: [AuthGuard]
+          },
 
 
     // Ruta para la sección de usuarios
+
+    {path: 'pago/:id_reserva', loadComponent: () => import('./usuario/vista-pago/vista-pago.component')},
+
     {
         path: 'usuario',
         loadComponent: () => import('./usuario/pagina-principal/pagina-principal.component'),
@@ -80,17 +98,26 @@ export const routes: Routes = [
     {
         path: 'historial-reservas', loadComponent: () => import('./usuario/historial/historial.component')
     },
+    {path: 'perfil', loadComponent: () => import('./usuario/perfil/perfil.component')},
+    {path: 'editar-usario', loadComponent: () => import('./usuario/editar-usuario/editar-usuario.component')},
     // Redirección a la página principal
-    {
+   {
         path: '',
         redirectTo: 'usuario', // Redirige a la ruta de usuario
         pathMatch: 'full', // Asegura que la redirección solo ocurra si la ruta está vacía
     },
     // Ruta por defecto para manejar rutas no definidas
-    {
-        path: '**',
-        redirectTo: 'usuario', // Redirige a la ruta de usuario para cualquier ruta no encontrada
+  // {
+    //    path: '**',
+      // redirectTo: 'usuario', // Redirige a la ruta de usuario para cualquier ruta no encontrada
+    //},
+
+    {path: 'chofer',
+        loadComponent: () => import('./choferes/principal/principal.component'),
+        canActivate: [AuthGuard]
     },
+
+    {path: 'reservas-asignadas', loadComponent: () => import('./choferes/reservas-asignadas/reservas-asignadas.component')},
 ];
 
 @NgModule({

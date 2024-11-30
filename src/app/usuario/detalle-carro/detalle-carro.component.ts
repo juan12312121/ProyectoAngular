@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-
 import { ReviewsComponent } from '../../components/reviews/reviews.component';
 import { AuthService } from '../../core/services/auth.service';
 import { Car, CarrosService } from '../../core/services/carros.service';
@@ -80,91 +80,97 @@ export default class DetalleCarroComponent implements OnInit {
       this.showLoginRequiredMessage(); // Mostrar mensaje si no está logueado
       return;
     }
-  
+
     const missingData: string[] = [];
     
-    // Validate rent type selection
+    // Validar la selección del tipo de renta
     if (!this.selectedRentType) {
       missingData.push('Tipo de renta');
     }
-  
+
     if (missingData.length > 0) {
       this.showError('Faltan datos: ' + missingData.join(', '));
       return;
     }
-  
-    // Validate dates and other fields
+
+    // Validar fechas y otros campos
     if (!this.startDate || !this.endDate) {
       this.showError('Las fechas de inicio y fin son necesarias');
       return;
     }
-  
-    // Prevent renting with past dates
+
+    // Prevenir la renta con fechas pasadas
     const currentDate = new Date();
     const startDateObj = new Date(this.startDate);
     if (startDateObj < currentDate) {
       this.showError('La fecha de inicio no puede ser en el pasado');
       return;
     }
-  
+
     if (this.startDate > this.endDate) {
       this.showError('La fecha de inicio no puede ser posterior a la fecha de fin.');
       return;
     }
-  
-    // Prepare reservation data
+
+    // Preparar los datos de la reserva
     const reservationData = {
-      id_reserva: 0, // Auto-generated in DB
+      id_reserva: 0, // Autogenerado en la base de datos
       id_usuario: this.userId,
-      id_carro: this.car?.id, // Car ID
+      id_carro: this.car?.id, // ID del carro
       fecha_inicio: this.startDate,
       fecha_fin: this.endDate,
       estado_reserva: 'Pendiente',
       monto_reserva: this.totalPrice,
-      tipo_reserva: this.selectedRentType, // Rent type
+      tipo_reserva: this.selectedRentType, // Tipo de renta
     };
-  
-    // Create the reservation via the service
+
+    // Crear la reserva a través del servicio
     this.reservationsService.createReservation(reservationData).subscribe({
       next: (response) => {
         this.showSuccess('Reserva creada con éxito');
       },
-      error: (error) => {
-        this.showError(error.message);
+      error: (error: HttpErrorResponse) => {
+        if (error.message === 'Este carro ya está rentado o tiene una renta activa. No se puede realizar una nueva reserva.') {
+          // Mostrar SweetAlert para este error específico
+          Swal.fire({
+            icon: 'error',
+            title: '¡Error!',
+            text: 'Este carro ya está rentado o tiene una renta activa. No se puede realizar una nueva reserva.',
+          });
+        } else {
+          // Mostrar otros errores
+          this.showError(error.message);
+        }
       },
     });
   }
 
-  
-  showLoginRequiredMessage(): void {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Inicia sesión',
-      text: 'Debes iniciar sesión para realizar una reserva.',
-      confirmButtonText: 'Aceptar',
-    });
-  }
-
-  // Display error messages
+  // Función para mostrar mensaje de error genérico
   showError(message: string): void {
     Swal.fire({
       icon: 'error',
-      title: 'Error',
+      title: '¡Error!',
       text: message,
-      confirmButtonText: 'Aceptar',
     });
   }
 
-  // Display success messages
+  // Función para mostrar mensaje de éxito
   showSuccess(message: string): void {
     Swal.fire({
       icon: 'success',
       title: 'Éxito',
       text: message,
-      confirmButtonText: 'Aceptar',
     });
   }
 
+  // Función para mostrar mensaje cuando el usuario no está autenticado
+  showLoginRequiredMessage(): void {
+    Swal.fire({
+      icon: 'warning',
+      title: '¡Atención!',
+      text: 'Es necesario iniciar sesión para realizar una reserva.',
+    });
+  }
 // Handle date change for start date
 onStartDateChange(): void {
   console.log('Start date changed to:', this.startDate);

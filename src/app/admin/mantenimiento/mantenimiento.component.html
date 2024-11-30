@@ -1,0 +1,47 @@
+<div class="flex flex-col items-start space-y-4">
+    <!-- Fila con el botón de Mantenimiento y el Listbox -->
+    <div class="flex items-center space-x-4 w-full">
+      <!-- Botón de Mantenimiento -->
+      <button (click)="crearMantenimiento()"
+        class="bg-[#d69e2e] text-white px-4 py-2 rounded hover:bg-[#b7791f] transition duration-300 w-auto">
+        Mantenimiento
+      </button>
+  
+      <!-- Listbox para seleccionar el tipo de mantenimiento -->
+      <div class="w-1/2">
+        <select [(ngModel)]="tipoMantenimiento" id="tipo-mantenimiento" name="tipo-mantenimiento"
+          class="border border-gray-300 rounded px-4 py-2 bg-white text-gray-700 focus:ring-2 focus:ring-[#b7791f] focus:outline-none w-full">
+          <option value="" disabled selected>Seleccione un tipo de mantenimiento</option>
+          <option *ngFor="let option of tipoMantenimientoOptions" [value]="option.value">
+            {{ option.value }}
+          </option>
+        </select>
+      </div>
+    </div>
+  
+    <!-- Tabla con botón de Mantenimiento en cada fila -->
+    <div class="overflow-x-auto w-full mt-6">
+      <table class="min-w-full border-collapse">
+        <thead>
+          <tr>
+            <th class="border px-4 py-2 text-left">Marca</th>
+            <th class="border px-4 py-2 text-left">Modelo</th>
+            <th class="border px-4 py-2 text-center">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let carro of carros">
+            <td class="border px-4 py-2">{{ carro.marca }}</td>
+            <td class="border px-4 py-2">{{ carro.modelo }}</td>
+            <td class="border px-4 py-2 text-center">
+              <button (click)="setIdCarro(carro.id)"
+                class="bg-[#d69e2e] text-white px-4 py-2 rounded hover:bg-[#b7791f] transition duration-300">
+                Mantenimiento
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

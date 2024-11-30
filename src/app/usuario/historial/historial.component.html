@@ -3,65 +3,63 @@
 <div class="container mx-auto p-6">
   <h2 class="text-3xl font-semibold text-gray-800 mb-6">Historial de Reservas</h2>
 
-  <!-- Reservas Recientes -->
-  <div *ngIf="recentReservations.length" class="bg-white p-4 rounded-lg shadow-lg mb-6">
-    <h3 class="text-xl font-semibold text-gray-800 mb-4">Reservas Recientes</h3>
+  <!-- Categorización por Estado de Reserva -->
+  <div *ngIf="reservations.length" class="bg-white p-4 rounded-lg shadow-lg mb-6">
+    <h3 class="text-xl font-semibold text-gray-800 mb-4">Reservas</h3>
     <table class="min-w-full table-auto">
       <thead>
         <tr class="bg-gray-100">
-          <th class="px-4 py-2 text-left text-gray-600">Imagen</th>
           <th class="px-4 py-2 text-left text-gray-600">ID Reserva</th>
           <th class="px-4 py-2 text-left text-gray-600">Fecha Inicio</th>
           <th class="px-4 py-2 text-left text-gray-600">Carro</th>
           <th class="px-4 py-2 text-left text-gray-600">Estado</th>
+      
           <th class="px-4 py-2 text-left text-gray-600">Acciones</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let reservation of recentReservations" class="border-t hover:bg-gray-50">
-          <td class="px-4 py-2">
-            <!-- Mostrar imagen del carro o imagen predeterminada en caso de error -->
-            
+        <tr *ngFor="let reservation of reservations" class="border-t hover:bg-gray-50">
+          <td class="px-4 py-2">{{ reservation.id_reserva }}</td>
+          <td class="px-4 py-2">{{ reservation.fecha_inicio | date: "dd/MM/yyyy" }}</td>
+          <td class="px-4 py-2">{{ reservation.marca }} {{ reservation.modelo }}</td>
+          <td class="px-4 py-2" [ngClass]="{
+              'text-yellow-600': reservation.estado_reserva === 'Pendiente',
+              'text-green-600': reservation.estado_reserva === 'Completada',
+              'text-red-600': reservation.estado_reserva === 'Cancelada',
+              'text-blue-600': reservation.estado_reserva === 'Aceptada',
+              'text-orange-600': reservation.estado_reserva === 'Confirmada'
+            }">
+            <i class="fa" 
+              [ngClass]="{
+                'fa-clock': reservation.estado_reserva === 'Pendiente',
+                'fa-check-circle': reservation.estado_reserva === 'Completada',
+                'fa-times-circle': reservation.estado_reserva === 'Cancelada',
+                'fa-thumbs-up': reservation.estado_reserva === 'Aceptada',
+                'fa-check': reservation.estado_reserva === 'Confirmada'
+              }"></i>
+            {{ reservation.estado_reserva }}
           </td>
+  
           
-          <td class="px-4 py-2">{{ reservation.id_reserva }}</td>
-          <td class="px-4 py-2">{{ reservation.fecha_inicio | date: "dd/MM/yyyy" }}</td>
-          <td class="px-4 py-2">{{ reservation.marca }} {{ reservation.modelo }}</td>
-          <td class="px-4 py-2 text-yellow-600">{{ reservation.estado_reserva }}</td>
+  
           <td class="px-4 py-2">
-            <button class="text-white bg-blue-500 px-3 py-1 rounded-lg hover:bg-blue-600 transition duration-300">Ver</button>
-            <button class="text-white bg-red-500 px-3 py-1 rounded-lg hover:bg-red-600 transition duration-300">Cancelar</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Reservas Completadas -->
-  <div *ngIf="completedReservations.length" class="bg-white p-4 rounded-lg shadow-lg">
-    <h3 class="text-xl font-semibold text-gray-800 mb-4">Reservas Completadas</h3>
-    <table class="min-w-full table-auto">
-      <thead>
-        <tr class="bg-gray-100">
-          <th class="px-4 py-2 text-left text-gray-600">Imagen</th>
-          <th class="px-4 py-2 text-left text-gray-600">ID Reserva</th>
-          <th class="px-4 py-2 text-left text-gray-600">Fecha Inicio</th>
-          <th class="px-4 py-2 text-left text-gray-600">Carro</th>
-          <th class="px-4 py-2 text-left text-gray-600">Estado</th>
-          <th class="px-4 py-2 text-left text-gray-600">Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let reservation of completedReservations" class="border-t hover:bg-gray-50">
-          <td class="px-4 py-2">
-            <img [src]="getCarImage(reservation.id_carro)" alt="Imagen del carro" class="w-20 h-15 object-cover rounded-md" />
-          </td>
-          <td class="px-4 py-2">{{ reservation.id_reserva }}</td>
-          <td class="px-4 py-2">{{ reservation.fecha_inicio | date: "dd/MM/yyyy" }}</td>
-          <td class="px-4 py-2">{{ reservation.marca }} {{ reservation.modelo }}</td>
-          <td class="px-4 py-2 text-green-600">{{ reservation.estado_reserva }}</td>
-          <td class="px-4 py-2">
-            <button class="text-white bg-blue-500 px-3 py-1 rounded-lg hover:bg-blue-600 transition duration-300">Ver</button>
+            <div class="flex space-x-2">
+              <button class="text-white bg-blue-500 px-3 py-1 rounded-lg hover:bg-blue-600 transition duration-300" (click)="viewDetails(reservation)">
+                <i class="fa fa-eye"></i> Ver Detalles
+              </button>
+              
+              <button *ngIf="reservation.estado_reserva === 'Pendiente'" 
+                (click)="cancelReservation(reservation.id_reserva)" 
+                class="text-white bg-red-500 px-3 py-1 rounded-lg hover:bg-red-600 transition duration-300">
+                <i class="fa fa-times-circle"></i> Cancelar
+              </button>
+              
+              <button *ngIf="reservation.estado_reserva === 'Confirmada'" 
+                class="text-white bg-green-500 px-3 py-1 rounded-lg hover:bg-green-600 transition duration-300"
+                (click)="goToPayment(reservation.id_reserva)">
+                <i class="fa fa-credit-card"></i> Pagar Renta
+              </button>
+            </div>
           </td>
         </tr>
       </tbody>

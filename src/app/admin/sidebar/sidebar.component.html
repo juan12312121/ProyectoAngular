@@ -1,91 +1,112 @@
-<div class="flex flex-col h-screen bg-gradient-to-b from-[#2f3b55] to-[#4f6a91] text-white w-64 shadow-lg border-r-2 border-[#4f6a91]">
+<div class="flex flex-col h-screen bg-gradient-to-b from-[#2f3b55] to-[#4f6a91] text-white w-64 shadow-lg border-r-2 border-[#4f6a91] overflow-hidden">
   <!-- Logo -->
   <div class="flex items-center justify-center p-5 bg-[#4f6a91] border-b-2 border-[#2f3b55]">
     <img src="img/logo-2.jpg" alt="Logo" class="h-16 w-16 rounded-full animate-pulse" />
-    <span class="ml-3 text-2xl font-semibold text-[#f5f5f5]">RentaDrives</span>
+    <span class="ml-3 text-lg font-thin text-[#f5f5f5]">RentaDrives</span>
   </div>
 
   <!-- User Info -->
   <div class="flex flex-col items-center justify-center p-5 bg-[#2f3b55] border-b-2 border-[#4f6a91]">
-    <p class="text-md font-medium text-center">Hola, {{ nombre_completo }}</p>
-    <p class="text-xs text-center text-[#c1c1c1]">Role: {{ isAdminUser ? 'Admin' : 'User' }}</p>
+    <p class="text-xs font-medium text-center">Bienvenido</p>
   </div>
 
   <!-- Navigation links -->
-  <nav class="flex-1 p-5 overflow-auto">
-    <ul class="space-y-5">
-      <li>
+  <nav class="flex-1 p-5 overflow-y-auto hide-scrollbar">
+    <ul class="space-y-0">
+      <li class="border-b border-[#2f3b55] pb-2">
         <a 
           routerLink="/admin" 
           routerLinkActive="active-link" 
-          class="block text-xl p-3 rounded-md transition-all duration-300 transform hover:scale-105 hover:bg-[#4f6a91] hover:text-[#2f3b55] font-semibold">
-          Dashboard
+          class="flex items-center text-sm p-3 rounded-md transition-all duration-300 transform hover:scale-105 hover:bg-[#4f6a91] hover:text-[#2f3b55] font-medium">
+          <i class="fas fa-tachometer-alt mr-3"></i> Dashboard
         </a>
       </li>
-      <li>
+      <li class="border-b border-[#2f3b55] pb-2">
         <a 
           routerLink="/admin/carros-registrados" 
           routerLinkActive="active-link" 
-          class="block text-xl p-3 rounded-md transition-all duration-300 transform hover:scale-105 hover:bg-[#4f6a91] hover:text-[#2f3b55] font-semibold">
-          Carros Registrados
+          class="flex items-center text-sm p-3 rounded-md transition-all duration-300 transform hover:scale-105 hover:bg-[#4f6a91] hover:text-[#2f3b55] font-medium">
+          <i class="fas fa-car mr-3"></i> Carros Registrados
         </a>
       </li>
-      <li>
+      <li class="border-b border-[#2f3b55] pb-2">
         <a 
           routerLink="/clientes" 
           routerLinkActive="active-link" 
-          class="block text-xl p-3 rounded-md transition-all duration-300 transform hover:scale-105 hover:bg-[#4f6a91] hover:text-[#2f3b55] font-semibold">
-          Clientes
+          class="flex items-center text-sm p-3 rounded-md transition-all duration-300 transform hover:scale-105 hover:bg-[#4f6a91] hover:text-[#2f3b55] font-medium">
+          <i class="fas fa-users mr-3"></i> Clientes
         </a>
       </li>
-      <li>
+      <li class="border-b border-[#2f3b55] pb-2">
         <a 
           routerLink="/empleados" 
           routerLinkActive="active-link" 
-          class="block text-xl p-3 rounded-md transition-all duration-300 transform hover:scale-105 hover:bg-[#4f6a91] hover:text-[#2f3b55] font-semibold">
-          Empleados
+          class="flex items-center text-sm p-3 rounded-md transition-all duration-300 transform hover:scale-105 hover:bg-[#4f6a91] hover:text-[#2f3b55] font-medium">
+          <i class="fas fa-user-tie mr-3"></i> Empleados
         </a>
       </li>
-      <li>
+      <li class="border-b border-[#2f3b55] pb-2">
+        <a 
+          routerLink="/resenas" 
+          routerLinkActive="active-link" 
+          class="flex items-center text-sm p-3 rounded-md transition-all duration-300 transform hover:scale-105 hover:bg-[#4f6a91] hover:text-[#2f3b55] font-medium">
+          <i class="fas fa-star mr-3"></i> Reseñas
+        </a>
+      </li>
+      <li class="border-b border-[#2f3b55] pb-2">
         <a 
           routerLink="/reservas" 
           routerLinkActive="active-link" 
-          class="block text-xl p-3 rounded-md transition-all duration-300 transform hover:scale-105 hover:bg-[#4f6a91] hover:text-[#2f3b55] font-semibold">
-          Reservas
+          class="flex items-center text-sm p-3 rounded-md transition-all duration-300 transform hover:scale-105 hover:bg-[#4f6a91] hover:text-[#2f3b55] font-medium">
+          <i class="fas fa-calendar-check mr-3"></i> Reservas
         </a>
       </li>
-      <li>
+      <li class="border-b border-[#2f3b55] pb-2">
+        <a 
+          routerLink="/pagos-admin"  
+          routerLinkActive="active-link" 
+          class="flex items-center text-sm p-3 rounded-md transition-all duration-300 transform hover:scale-105 hover:bg-[#4f6a91] hover:text-[#2f3b55] font-medium">
+          <i class="fas fa-credit-card mr-3"></i> Pagos
+        </a>
+      </li>
+      <li class="border-b border-[#2f3b55] pb-2">
         <a 
           routerLink="/promociones" 
           routerLinkActive="active-link" 
-          class="block text-xl p-3 rounded-md transition-all duration-300 transform hover:scale-105 hover:bg-[#4f6a91] hover:text-[#2f3b55] font-semibold">
-          Promociones
+          class="flex items-center text-sm p-3 rounded-md transition-all duration-300 transform hover:scale-105 hover:bg-[#4f6a91] hover:text-[#2f3b55] font-medium">
+          <i class="fas fa-tags mr-3"></i> Promociones
         </a>
       </li>
-      <li>
+      <li class="border-b border-[#2f3b55] pb-2">
         <a 
           routerLink="/incidencias" 
           routerLinkActive="active-link" 
-          class="block text-xl p-3 rounded-md transition-all duration-300 transform hover:scale-105 hover:bg-[#4f6a91] hover:text-[#2f3b55] font-semibold">
-          Incidencias
+          class="flex items-center text-sm p-3 rounded-md transition-all duration-300 transform hover:scale-105 hover:bg-[#4f6a91] hover:text-[#2f3b55] font-medium">
+          <i class="fas fa-exclamation-triangle mr-3"></i> Incidencias
         </a>
       </li>
-      <li>
+      <li class="border-b border-[#2f3b55] pb-2">
         <a 
           routerLink="/reportes" 
           routerLinkActive="active-link" 
-          class="block text-xl p-3 rounded-md transition-all duration-300 transform hover:scale-105 hover:bg-[#4f6a91] hover:text-[#2f3b55] font-semibold">
-          Reportes
+          class="flex items-center text-sm p-3 rounded-md transition-all duration-300 transform hover:scale-105 hover:bg-[#4f6a91] hover:text-[#2f3b55] font-medium">
+          <i class="fas fa-file-alt mr-3"></i> Reportes
         </a>
       </li>
     </ul>
   </nav>
 
+  <!-- Line separator -->
+  <div class="relative">
+    <div class="absolute inset-0 border-t border-transparent blur-sm opacity-75"></div>
+    <div class="border-t border-[#2f3b55]"></div>
+  </div>
+
   <!-- Logout button for admin -->
-  <div class="p-5 mt-auto">
+  <div class="p-5">
     <button *ngIf="isAdmin()" (click)="logoutAdmin()" 
-      class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-md transition-all duration-300 transform hover:scale-105 hover:shadow-xl font-semibold">
-      Cerrar sesión
+      class="w-full bg-red-500 hover:bg-red-600 text-white py-2 text-sm rounded-md transition-all duration-300 transform hover:scale-105 hover:shadow-xl font-medium">
+      <i class="fas fa-sign-out-alt mr-2"></i> Cerrar sesión
     </button>
   </div>
 </div>

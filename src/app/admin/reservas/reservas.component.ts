@@ -1,90 +1,202 @@
-import { animate, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
+import Swal from 'sweetalert2';
+import { AuthService } from '../../core/services/auth.service';
 import { ReservationsService } from '../../core/services/reservations.service';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 
 @Component({
   selector: 'app-reservas',
   standalone: true,
-  imports: [SidebarComponent, CommonModule, NgxPaginationModule], // Ensure pagination module is included
+  imports: [SidebarComponent, CommonModule, NgxPaginationModule, FormsModule],
   templateUrl: './reservas.component.html',
   styleUrls: ['./reservas.component.css'],
-  animations: [
-    // Animación general para el contenedor principal
-    trigger('fadeIn', [
-      transition('hidden => visible', [
-        style({ opacity: 0 }),
-        animate('800ms ease-out', style({ opacity: 1 })),
-      ]),
-    ]),
-    // Animación para las tarjetas
-    trigger('cardAnimation', [
-      transition(':enter', [
-        style({ opacity: 0, transform: 'translateX(-20px)' }),
-        animate('500ms ease-out', style({ opacity: 1, transform: 'translateX(0)' })),
-      ]),
-    ]),
-  ],
 })
 export default class ReservasComponent implements OnInit {
-  reservations: any[] = []; // Lista de reservas
-  errorMessage: string = ''; // Mensaje de error
-  isLoading: boolean = false; // Indicador de carga
-  currentPage: number = 1; // Página actual
-  pageSize: number = 8; // Número de reservas por página
-  totalPages: number = 0; // Total de páginas
 
-  constructor(private reservationsService: ReservationsService) {}
+  reservations: any[] = [];
+  recentReservations: any[] = [];
+  completedReservations: any[] = [];
+  cancelledReservations: any[] = [];
+  errorMessage: string = '';
+  isLoading: boolean = false;
+  currentPage: number = 1;
+  pageSize: number = 8;
+  totalPages: number = 0;
+  choferes: any[] = [];
+  choferSeleccionadoId: number = 0; 
+
+  constructor(
+    private http: HttpClient, // Inject HttpClient here
+    private reservationsService: ReservationsService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
-    this.loadReservations(); // Cargar reservas al inicializar el componente
+    this.loadReservations();
+    this.loadChoferes();
   }
 
-  // Método para cargar todas las reservas
   loadReservations(): void {
-    this.isLoading = true; // Mostrar indicador de carga
-    this.reservationsService.getAllReservations().subscribe(
+    this.isLoading = true;
+    this.reservationsService.getAllReservations(this.currentPage, this.pageSize).subscribe(
       (data) => {
-        this.reservations = data; // Guardar las reservas obtenidas
-        this.totalPages = Math.ceil(this.reservations.length / this.pageSize); // Calcular total de páginas
-        console.log('Reservas cargadas:', this.reservations);
-        this.isLoading = false; // Ocultar indicador de carga
+        this.reservations = data;
+        this.filterReservations();
+        this.totalPages = Math.ceil(this.reservations.length / this.pageSize);
+        this.isLoading = false;
       },
       (error) => {
-        this.errorMessage = 'Error al cargar las reservas'; // Mostrar mensaje de error
-        console.error('Error al cargar las reservas:', error);
-        this.isLoading = false; // Ocultar indicador de carga
+        this.errorMessage = 'Error al cargar las reservas';
+        this.isLoading = false;
+      }
+    );
+  }
+  getChoferById(choferId: number): any {
+    return this.choferes.find(chofer => chofer.id === choferId);
+  }
+
+  loadChoferes(): void {
+    this.isLoading = true;
+    this.authService.getAllChoferes().subscribe(
+      (data: any[]) => {
+        this.choferes = data.map((chofer) => ({
+          id: chofer.id,
+          nombre_completo: chofer.nombre_completo
+        }));
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Error al cargar los choferes:', error);
+        this.errorMessage = 'Error al cargar los choferes';
+        this.isLoading = false;
       }
     );
   }
 
-  // Método para cambiar de página
+  onChoferSelected(event: any): void {
+    console.log('Chofer seleccionado:', event.target.value);
+   
+  }
+
+  acceptReservation(reservationId: number): void {
+    this.reservationsService.acceptReservation(reservationId).subscribe({
+      next: () => {
+        Swal.fire({
+          title: '¡Éxito!',
+          text: 'La reserva ha sido aceptada exitosamente.',
+          icon: 'success',
+          confirmButtonText: 'Aceptar',
+          confirmButtonColor: '#3085d6',
+        }).then(() => {
+          this.loadReservations();
+        });
+      },
+      error: (err) => {
+        Swal.fire({
+          title: 'Error',
+          text: 'No se pudo aceptar la reserva. Inténtalo nuevamente.',
+          icon: 'error',
+          confirmButtonText: 'Aceptar',
+          confirmButtonColor: '#d33',
+        });
+      },
+    });
+  }
+
+  filterReservations(): void {
+    this.recentReservations = this.reservations.filter(reservation => reservation.estado_reserva === 'Pendiente');
+    this.completedReservations = this.reservations.filter(reservation => reservation.estado_reserva === 'Completada');
+    this.cancelledReservations = this.reservations.filter(reservation => reservation.estado_reserva === 'Cancelada');
+  }
+
   changePage(page: number): void {
     if (page < 1) page = 1;
     if (page > this.totalPages) page = this.totalPages;
     this.currentPage = page;
-  }
-
-  // Método para refrescar las reservas manualmente
-  refreshReservations(): void {
-    console.log('Refrescando reservas...');
     this.loadReservations();
   }
 
-  acceptReservation(id: number): void {
-    console.log(`Reserva ${id} aceptada`);
-    // Lógica para aceptar la reserva
+  refreshReservations(): void {
+    this.loadReservations();
   }
-  
+
   rejectReservation(id: number): void {
     console.log(`Reserva ${id} rechazada`);
-    // Lógica para rechazar la reserva
   }
-  
+
   viewDetails(id: number): void {
     console.log(`Ver detalles de la reserva ${id}`);
-    // Navegar a la página de detalles o mostrar un modal
   }
+
+  assignDriverToReservation(reservationId: number, choferId: number): void {
+    // Verificar que el chofer esté seleccionado
+    if (!choferId) {
+      Swal.fire({
+        title: 'Error',
+        text: 'Por favor, selecciona un chofer.',
+        icon: 'error',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#d33',
+      });
+      return; // No continuar si no hay chofer seleccionado
+    }
+  
+    // Verificar que el ID de la reserva esté presente
+    if (!reservationId) {
+      Swal.fire({
+        title: 'Error',
+        text: 'El ID de la reserva es inválido.',
+        icon: 'error',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#d33',
+      });
+      return;
+    }
+  
+    this.isLoading = true;
+  
+    // Llamar al servicio para asignar el chofer a la reserva
+    this.reservationsService.assignDriverToReservation(reservationId, choferId).subscribe({
+      next: () => {
+        Swal.fire({
+          title: '¡Éxito!',
+          text: 'Chofer asignado exitosamente a la reserva.',
+          icon: 'success',
+          confirmButtonText: 'Aceptar',
+          confirmButtonColor: '#3085d6',
+        }).then(() => {
+          this.loadReservations(); // Recargar las reservas después de asignar el chofer
+        });
+      },
+      error: (error) => {
+        console.error('Error al asignar chofer:', error);
+        Swal.fire({
+          title: 'Error',
+          text: 'No se pudo asignar el chofer a la reserva. Inténtalo nuevamente.',
+          icon: 'error',
+          confirmButtonText: 'Aceptar',
+          confirmButtonColor: '#d33',
+        });
+        this.isLoading = false;
+      },
+    });
+  }
+  
+  
+  
+  onChoferSeleccionadoChange(event: any): void {
+    this.choferSeleccionadoId = event.target.value ? Number(event.target.value) : 0;
+    const chofer = this.getChoferById(this.choferSeleccionadoId);
+    if (chofer) {
+      console.log('Chofer seleccionado:', chofer.nombre_completo);
+    } else {
+      console.log('No chofer seleccionado');
+    }
+  }
+
+  
 }

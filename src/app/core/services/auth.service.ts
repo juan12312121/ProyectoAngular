@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
@@ -9,7 +10,9 @@ import { catchError, Observable, tap, throwError } from 'rxjs';
 export class AuthService {
   private LOGIN_URL = 'http://localhost:3500/usuario/login'; // URL de la API para login
   private REGISTER_URL = 'http://localhost:3500/usuario/registro'; // URL de la API para registro
-  private USERS_BY_ROLE_URL = 'http://localhost:3500/usuario/usuario/role/';
+  private USERS_BY_ROLE_URL = 'http://localhost:3500/usuario/role/';
+  private BASE_URL = 'http://localhost:3500/usuario/';
+  private BASE_URL2 = 'http://localhost:3500/usuario/choferes'
   private userId: number | null = null;
 
   private tokenKey = 'authToken';
@@ -34,7 +37,51 @@ deleteUser(id: number): Observable<any> {
   );
 }
 
+getUserById(id: number): Observable<any> {
+  const url = `http://localhost:3500/usuario/users/${id}`;
+  const token = localStorage.getItem('authToken');  // Obtener el token de localStorage
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);  // Incluir el token en los encabezados
 
+  return this.httpClient.get<any>(url, { headers }).pipe(
+    tap(response => {
+      console.log('Usuario obtenido:', response);
+    }),
+    catchError(error => {
+      console.error('Error al obtener el usuario:', error);
+      return throwError(() => new Error('No se pudo obtener el usuario.'));
+    })
+  );
+}
+
+
+getAllChoferes(): Observable<any> {
+  // Obtener el token de localStorage
+  const token = localStorage.getItem('authToken');
+  
+  // Verificar si el token existe
+  if (!token) {
+    console.error('No se encontró el token de autenticación');
+    return throwError(() => new Error('No se encontró el token de autenticación'));
+  }
+
+  // Configuración de los headers con el token
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  
+  // Imprimir el token y los headers para depuración
+  console.log('Obteniendo todos los choferes con token:', token);
+  console.log('Headers:', headers);
+
+  // Hacer la solicitud GET con los headers de autenticación
+  return this.httpClient.get<any>(this.BASE_URL2, { headers }).pipe(
+    tap(response => {
+      console.log('Respuesta de los choferes:', response);  // Imprimir respuesta de la API
+    }),
+    catchError(error => {
+      console.error('Error al obtener los choferes:', error);  // Imprimir error si ocurre
+      return throwError(() => new Error('No se pudo obtener la lista de choferes.'));
+    })
+  );
+}
 
 
   // Método para login
@@ -63,26 +110,59 @@ deleteUser(id: number): Observable<any> {
       this.router.navigate(['/admin']);
     } else if (role === 1) { // Rol de usuario
       this.router.navigate(['/usuario']);
+   
     } else {
-      this.router.navigate(['/']); // Redirige a la página de inicio si no tiene rol definido
+      this.router.navigate(['/']); 
     }
   }
 
-  register(nombreCompleto: string, username: string, correo: string, password: string, confirmarContrasena: string, rol: number): Observable<any> {
-    const userRole = this.getUserRole();  // Obtenemos el rol del usuario que está realizando el registro
+  getLoggedDriverId(): number | null {
+    const token = this.getToken();
+    if (token) {
+      try {
+        const decodedToken: any = jwtDecode(token);
+        return decodedToken.id ?? null;  // Retorna el ID si existe, de lo contrario, null
+      } catch (error) {
+        console.error('Error al decodificar el token:', error);
+        return null;
+      }
+    }
+    return null;
+  }
+
   
-    // Verificamos que las contraseñas coincidan
+
+  register(nombreCompleto: string, username: string, correo: string, password: string, confirmarContrasena: string, rol: number): Observable<any> {
+    const userRole = this.getUserRole();  // Obtener el rol del usuario que realiza el registro
+  
+    // Verificar que las contraseñas coincidan
     if (password !== confirmarContrasena) {
       return throwError(() => new Error('Las contraseñas no coinciden'));
     }
   
-    // Lógica para usuarios con rol 10 (administrador)
-    if (userRole === 10) {
-      // Los administradores pueden registrar con cualquier rol
+    // Lógica para usuarios con rol 10 (administrador) y 5 (chofer)
+    if (userRole === 10 || userRole === 5) {
+      // Si el usuario logueado tiene rol 10 (administrador) o rol 5 (chofer), no redirigir al login después del registro
       return this.httpClient.post<any>(this.REGISTER_URL, { nombreCompleto, username, correo, password, rol }).pipe(
         tap(response => {
           console.log('Registro exitoso:', response);
-          this.router.navigate(['/login']); // Redirigir al login después de un registro exitoso
+          // Solo redirigir al login si el rol a registrar no es 10 ni 5
+          if (rol !== 10 && rol !== 5) {
+            this.router.navigate(['/login']);  // Redirigir al login después de un registro exitoso para roles que no sean admin o chofer
+          }
+        }),
+        catchError(error => {
+          console.error('Error en el registro:', error);
+          return throwError(() => new Error('Error en el registro'));
+        })
+      );
+    } else {
+      // Lógica para usuarios sin rol 10 o 5
+      return this.httpClient.post<any>(this.REGISTER_URL, { nombreCompleto, username, correo, password, rol }).pipe(
+        tap(response => {
+          console.log('Registro exitoso:', response);
+          // Redirigir al login después de un registro exitoso para roles que no sean admin o chofer
+          this.router.navigate(['/login']);
         }),
         catchError(error => {
           console.error('Error en el registro:', error);
@@ -90,30 +170,28 @@ deleteUser(id: number): Observable<any> {
         })
       );
     }
-  
-    // Lógica para usuarios con rol 1 (usuarios normales)
-    if (userRole === 1) {
-      // Los usuarios solo pueden registrarse a sí mismos (rol 1)
-      if (rol !== 1) {
-        return throwError(() => new Error('Solo puedes registrarte con tu propio rol.'));
-      }
-  
-      return this.httpClient.post<any>(this.REGISTER_URL, { nombreCompleto, username, correo, password, rol }).pipe(
-        tap(response => {
-          console.log('Registro exitoso:', response);
-          this.router.navigate(['/login']); // Redirigir al login después de un registro exitoso
-        }),
-        catchError(error => {
-          console.error('Error en el registro:', error);
-          return throwError(() => new Error('Error en el registro'));
-        })
-      );
-    }
-  
-    // Si el rol no es 1 ni 10, devolver un error
-    return throwError(() => new Error('Acción no permitida.'));
   }
   
+  getUserProfile(): Observable<any> {
+    const userId = this.getUserId();  // Obtener el ID del usuario desde el token o localStorage
+    const token = this.getToken();
+    
+    if (!userId || !token) {
+      return throwError(() => new Error('No se pudo obtener la información del perfil.'));
+    }
+  
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  
+    // Suponemos que la API tiene un endpoint como '/usuario/{id}' para obtener el perfil del usuario
+    const url = `http://localhost:3500/usuario/users/${userId}`;
+  
+    return this.httpClient.get<any>(url, { headers }).pipe(
+      catchError(error => {
+        console.error('Error al obtener el perfil:', error);
+        return throwError(() => new Error('Error al obtener el perfil.'));
+      })
+    );
+  }
 
 
   getUsersByRole(role: number): Observable<any> {
@@ -140,6 +218,29 @@ deleteUser(id: number): Observable<any> {
     localStorage.setItem(this.userRoleKey, rol.toString());
   }
 
+  updateUserData(id: number, nombreCompleto: string, nombreUsuario: string, correo: string): Observable<any> {
+    const url = `${this.BASE_URL}/users/${id}`;  // Ruta a la API para actualizar los datos del usuario
+    const token = localStorage.getItem('authToken');
+    
+    if (!token) {
+      return throwError(() => new Error('No se ha encontrado el token de autenticación'));
+    }
+  
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  
+    // Enviar solo los datos necesarios (sin incluir el rol ni la dirección)
+    return this.httpClient.put<any>(url, { nombre_completo: nombreCompleto, nombre_usuario: nombreUsuario, correo }, { headers }).pipe(
+      tap(response => {
+        console.log('Datos del usuario actualizados:', response);
+      }),
+      catchError(error => {
+        console.error('Error al actualizar los datos del usuario:', error);
+        return throwError(() => new Error('No se pudo actualizar los datos.'));
+      })
+    );
+  }
+  
+
   public getToken(): string | null {
     try {
       const token = localStorage.getItem(this.tokenKey);
@@ -151,7 +252,9 @@ deleteUser(id: number): Observable<any> {
     }
   }
 
-  private getUserRole(): number | null {
+  
+
+  public getUserRole(): number | null {
     const role = localStorage.getItem(this.userRoleKey);
     return role ? parseInt(role) : null;
   }
@@ -159,13 +262,12 @@ deleteUser(id: number): Observable<any> {
   private decodeToken(token: string): any {
     try {
       const payload = token.split('.')[1];
-      return JSON.parse(atob(payload)); // Decodificar el payload del token
+      return JSON.parse(atob(payload)); // Decodifica el payload del token
     } catch (error) {
-      console.error('Error al decodificar el token:', error); // Manejo de errores
-      return null; // Retornar null en caso de error
+      console.error('Error decoding token:', error);
+      return null;
     }
   }
-
   // Método para obtener el nombre del usuario
   getUserName(): string {
     const token = this.getToken();
@@ -199,6 +301,10 @@ deleteUser(id: number): Observable<any> {
 
   isUser(): boolean {
     return this.getUserRole() === 1; // verificar si es usuario
+  }
+
+  isChofer(): boolean {
+    return this.getUserRole() === 5;
   }
 
   logout(): void {

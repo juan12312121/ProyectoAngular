@@ -1,27 +1,79 @@
-<h2 class="text-2xl font-semibold text-gray-800 mb-4">Valoración y Comentarios</h2>
+<section class="bg-gray-100 p-10 rounded-xl shadow-lg mt-10 max-w-8xl mx-auto relative">
+  <!-- Título principal -->
+  <h2 class="text-4xl font-bold mb-8 text-blue-700 text-center uppercase tracking-wide">
+    <i class="fas fa-star-half-alt"></i> Valoraciones y Comentarios
+  </h2>
 
-<!-- Star Rating Section -->
-<div class="mb-6">
-    <h3 class="text-lg font-semibold text-gray-800 mb-2">Calificación</h3>
-    <div class="flex space-x-1 text-3xl">
-        <button class="hover:text-yellow-500 text-gray-300 transition-all duration-300 transform hover:scale-110">&#9733;</button>
-        <button class="hover:text-yellow-500 text-gray-300 transition-all duration-300 transform hover:scale-110">&#9733;</button>
-        <button class="hover:text-yellow-500 text-gray-300 transition-all duration-300 transform hover:scale-110">&#9733;</button>
-        <button class="hover:text-yellow-500 text-gray-300 transition-all duration-300 transform hover:scale-110">&#9733;</button>
-        <button class="hover:text-yellow-500 text-gray-300 transition-all duration-300 transform hover:scale-110">&#9733;</button>
+  <!-- Formulario para agregar valoraciones -->
+  <div class="mb-12 bg-white p-8 rounded-lg shadow-md">
+    <h3 class="text-2xl font-semibold mb-6 text-blue-600">
+      <i class="fas fa-pencil-alt"></i> Dejar una valoración
+    </h3>
+    <form (ngSubmit)="submitReview()" class="space-y-6">
+      <!-- Selección de estrellas -->
+      <div class="flex items-center space-x-6">
+        <label for="rating" class="text-gray-800 font-semibold text-lg">
+          <i class="fas fa-star"></i> Valoración:
+        </label>
+        <div class="flex space-x-2">
+          <span
+            *ngFor="let star of [1, 2, 3, 4, 5]"
+            class="cursor-pointer"
+            (click)="setRating(star)"
+            [ngClass]="{
+              'text-yellow-400': star <= newReview.rating,
+              'text-gray-300': star > newReview.rating
+            }"
+          >
+            <i
+              class="fas fa-star text-3xl transition-transform transform hover:scale-125"
+            ></i>
+          </span>
+        </div>
+      </div>
+
+      <!-- Campo de texto para comentarios -->
+      <textarea
+        class="w-full p-5 border border-gray-300 rounded-lg shadow-sm text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none overflow-y-auto"
+        [(ngModel)]="newReview.comentario"
+        name="comentario"
+        placeholder="Escribe tu comentario aquí..."
+        required
+        rows="3"
+      ></textarea>
+
+      <!-- Botón de envío -->
+      <button
+        type="submit"
+        class="w-full bg-gradient-to-r from-blue-500 to-blue-700 text-white py-4 rounded-lg text-lg font-bold hover:from-blue-600 hover:to-blue-800 transition-transform transform hover:scale-105"
+      >
+        <i class="fas fa-paper-plane"></i> Enviar Valoración
+      </button>
+    </form>
+  </div>
+
+  <div *ngIf="reviews && reviews.length > 0; else noReviews" class="overflow-x-auto py-4">
+    <div class="flex space-x-4">
+      <div *ngFor="let review of reviews" class="min-w-[300px] md:min-w-[350px] bg-white p-6 rounded-xl shadow-lg flex-shrink-0">
+        <div class="flex items-center space-x-4 mb-4">
+          <div class="flex items-center space-x-2 text-blue-600 font-bold text-lg">
+            <i class="fas fa-user-circle"></i> <!-- User Icon -->
+            <span>{{ review?.nombre_usuario || 'Anónimo' }}</span>
+          </div>
+          <div class="flex text-yellow-400">
+            <span *ngFor="let star of [1, 2, 3, 4, 5]" class="inline-block">
+              <i class="fas fa-star" [class.text-yellow-400]="star <= review?.valoracion" [class.text-gray-300]="star > review?.valoracion"></i>
+            </span>
+          </div>
+        </div>
+        <p class="text-gray-700 text-base h-40 line-clamp-3">
+          <i class="fas fa-comment-alt"></i> {{ review?.comentario }}
+        </p>
+      </div>
     </div>
-    <p class="text-gray-600 text-sm mt-2">Selecciona tu calificación</p>
-</div>
+  </div>
 
-<!-- Comment Box -->
-<div class="mb-6">
-    <h3 class="text-lg font-semibold text-gray-800 mb-2">Deja tu Comentario</h3>
-    <textarea class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200" rows="3" placeholder="Escribe tu comentario aquí..."></textarea>
-</div>
-
-<!-- Submit Button -->
-<div class="flex justify-center">
-    <button class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-500 transition duration-300 transform hover:scale-105">
-        Enviar Comentario
-    </button>
-</div>
+  <ng-template #noReviews>
+    <p><i class="fas fa-exclamation-circle"></i> No hay valoraciones disponibles.</p>
+  </ng-template>
+</section>

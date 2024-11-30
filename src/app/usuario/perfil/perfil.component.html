@@ -1,0 +1,62 @@
+<app-navbar></app-navbar>
+
+<div *ngIf="!loading && !errorMessage" class="container mx-auto p-8">
+  <div class="flex justify-center items-center mb-10">
+    <!-- Foto de perfil con imagen por defecto -->
+    <div class="w-32 h-32 bg-gray-200 rounded-full overflow-hidden">
+      <img 
+        [src]="userProfileImage || 'https://via.placeholder.com/150'" 
+        alt="User Profile" 
+        class="object-cover w-full h-full">
+    </div>
+  </div>
+
+  <!-- Información del Usuario -->
+  <div class="text-center mb-8">
+    <h2 class="text-5xl font-bold text-gray-800 mb-2">{{ userName }}</h2>
+    <p class="text-xl text-gray-600 mb-4">{{ correo }}</p>
+    <p class="text-md text-gray-500">Miembro desde: <span class="font-semibold">{{ userSince }}</span></p>
+  </div>
+
+  <!-- Detalles de la Cuenta -->
+  <div class="bg-white shadow-lg rounded-lg p-8">
+    <h3 class="text-3xl font-semibold text-gray-800 mb-6">Detalles de la Cuenta</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Nombre Completo -->
+      <div class="bg-gray-50 p-6 rounded-lg shadow-md hover:shadow-xl transition duration-300">
+        <label class="text-gray-700 font-semibold text-sm">Nombre Completo</label>
+        <p class="text-lg text-gray-800">{{ userName }}</p>
+      </div>
+
+      <!-- Correo Electrónico -->
+      <div class="bg-gray-50 p-6 rounded-lg shadow-md hover:shadow-xl transition duration-300">
+        <label class="text-gray-700 font-semibold text-sm">Correo Electrónico</label>
+        <p class="text-lg text-gray-800">{{ correo }}</p>
+      </div>
+
+      <!-- Teléfono -->
+      <div *ngIf="userPhone" class="bg-gray-50 p-6 rounded-lg shadow-md hover:shadow-xl transition duration-300">
+        <label class="text-gray-700 font-semibold text-sm">Teléfono</label>
+        <p class="text-lg text-gray-800">{{ userPhone }}</p>
+      </div>
+
+      <!-- Dirección -->
+      <div *ngIf="userAddress" class="bg-gray-50 p-6 rounded-lg shadow-md hover:shadow-xl transition duration-300">
+        <label class="text-gray-700 font-semibold text-sm">Dirección</label>
+        <p class="text-lg text-gray-800">{{ userAddress }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botones para mostrar historial de promociones e incidencias -->
+  <div class="mt-8 text-center space-x-4">
+    <button (click)="verPromociones()" 
+      class="bg-blue-500 text-white px-8 py-4 rounded-lg hover:bg-blue-600 transition duration-300 text-lg font-semibold shadow-md hover:shadow-xl">
+      <i class="fas fa-tags mr-2"></i> Ver Promociones Aplicadas
+    </button>
+    <button (click)="verIncidencias()" 
+      class="bg-yellow-500 text-white px-8 py-4 rounded-lg hover:bg-yellow-600 transition duration-300 text-lg font-semibold shadow-md hover:shadow-xl">
+      <i class="fas fa-exclamation-circle mr-2"></i> Ver Incidencias
+    </button>
+  </div>
+</div>

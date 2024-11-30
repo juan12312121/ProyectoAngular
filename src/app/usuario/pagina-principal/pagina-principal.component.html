@@ -1,67 +1,80 @@
 <div class="min-h-screen flex flex-col">
-    <!-- Navbar -->
-    <app-navbar></app-navbar>
-    
-    <!-- Sección Hero -->
-    <div class="relative bg-gray-900 h-[60vh] overflow-hidden">
-      <div class="absolute inset-0 bg-cover bg-center opacity-60 transition-transform duration-700 ease-in-out animate-hero-slide"
-           style="background-image: url('/img/logo-login.jpg');">
-      </div>
-      <div class="h-full flex items-center justify-center text-white relative z-10">
-        <div class="text-center animate-fade-in">
-          <h1 class="text-6xl font-bold mb-4 text-blue-400">Encuentra tu auto ideal</h1>
-          <p class="text-xl mb-8 text-gray-300">Renta autos confiables y accesibles en cualquier lugar del mundo.</p>
-          <a href="/carros" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-110">
-            Comenzar
-          </a>
-        </div>
+  <!-- Navbar -->
+  <app-navbar></app-navbar>
+  
+  <!-- Sección Hero -->
+  <div class="relative bg-gray-900 h-[60vh] overflow-hidden">
+    <div class="absolute inset-0 bg-cover bg-center opacity-60 transition-transform duration-700 ease-in-out animate-hero-slide"
+         style="background-image: url('/img/logo-login.jpg');">
+    </div>
+    <div class="h-full flex items-center justify-center text-white relative z-10">
+      <div class="text-center animate-fade-in">
+        <h1 class="text-6xl font-bold mb-4 text-blue-400">Encuentra tu auto ideal</h1>
+        <p class="text-xl mb-8 text-gray-300">Renta autos confiables y accesibles en cualquier lugar del mundo.</p>
+        <a href="/carros" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-110">
+          <i class="fas fa-car-side mr-2"></i>Comenzar
+        </a>
       </div>
     </div>
-  
-    <!-- Sección de Autos Destacados -->
-    <div class="py-16 bg-gradient-to-r from-gray-100 to-gray-200">
-      <div class="container mx-auto">
-        <h2 class="text-5xl font-bold text-center mb-12 text-gray-800">Autos Destacados</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12">
-          <!-- Tarjeta de Auto -->
-          <div class="bg-white shadow-lg rounded-lg overflow-hidden transform hover:scale-105 transition duration-500 ease-in-out">
-            <img src="img/fordmustang.jpg" alt="Ford Mustang" class="w-full h-60 object-cover">
-            <div class="p-6">
-              <h3 class="text-2xl font-bold text-gray-900">Ford Mustang</h3>
-              <p class="text-gray-600 mt-2">Desde $90/día</p>
-              <button class="mt-6 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-full transition transform hover:scale-110 relative group">
-                <i class="fas fa-info-circle"></i>
-                Ver detalles
-                <span class="tooltip-text absolute bg-gray-800 text-white text-xs rounded-md p-1 -top-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  Más información
-                </span>
-              </button>
-            </div>
-          </div>
-          <!-- Repetir Tarjeta de Auto según sea necesario -->
-          <div class="bg-white shadow-lg rounded-lg overflow-hidden transform hover:scale-105 transition duration-500 ease-in-out">
-            <img src="img/toyota.jpg" alt="Toyota Corolla" class="w-full h-60 object-cover">
-            <div class="p-6">
-              <h3 class="text-2xl font-bold text-gray-900">Toyota Corolla</h3>
-              <p class="text-gray-600 mt-2">Desde $70/día</p>
-              <button class="mt-6 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-full transition transform hover:scale-110 relative group">
-                <i class="fas fa-info-circle"></i>
-                Ver detalles
-                <span class="tooltip-text absolute bg-gray-800 text-white text-xs rounded-md p-1 -top-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  Más información
-                </span>
-              </button>
-            </div>
-          </div>
-  
-          <!-- Agregar más tarjetas según sea necesario -->
-        </div>
-      </div>
-    </div>
-  
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white text-center py-4 mt-auto">
-      <p>&copy; 2024 Rent-A-Car. Todos los derechos reservados.</p>
-    </footer>
   </div>
-  
+
+  <!-- Sección de Introducción -->
+  <div class="py-16 bg-gradient-to-r from-gray-100 to-gray-200">
+    <div class="container mx-auto text-center">
+      <h2 class="text-4xl font-bold text-gray-800 mb-8">Bienvenido a Rent-A-Car</h2>
+      <p class="text-xl text-gray-700 mb-8">En Rent-A-Car, nos enorgullece ofrecer vehículos de alta calidad para que puedas viajar con comodidad y seguridad. Ya sea que necesites un coche para unas vacaciones, un evento especial o simplemente para moverte por la ciudad, tenemos la opción perfecta para ti.</p>
+      <p class="text-lg text-gray-600 mb-4">¿Por qué elegirnos?</p>
+      <ul class="list-disc list-inside text-gray-600 text-lg">
+        <li><i class="fas fa-car"></i> Vehículos nuevos y bien mantenidos</li>
+        <li><i class="fas fa-dollar-sign"></i> Precios competitivos y accesibles</li>
+        <li><i class="fas fa-headset"></i> Servicio al cliente excepcional</li>
+        <li><i class="fas fa-map-marker-alt"></i> Disponibilidad en múltiples ubicaciones globales</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Sección de Beneficios -->
+  <div class="py-16 bg-white">
+    <div class="container mx-auto text-center">
+      <h2 class="text-4xl font-bold text-gray-800 mb-8">Beneficios de alquilar con nosotros</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+        <div class="bg-gray-100 p-6 rounded-lg shadow-lg">
+          <h3 class="text-2xl font-bold text-gray-800 mb-4"><i class="fas fa-pen-fancy"></i> Flexibilidad</h3>
+          <p class="text-gray-600">Alquila el auto que necesitas por el tiempo que necesites, sin complicaciones.</p>
+        </div>
+        <div class="bg-gray-100 p-6 rounded-lg shadow-lg">
+          <h3 class="text-2xl font-bold text-gray-800 mb-4"><i class="fas fa-shield-alt"></i> Seguridad</h3>
+          <p class="text-gray-600">Todos nuestros vehículos están equipados con sistemas de seguridad avanzados para garantizar tu tranquilidad.</p>
+        </div>
+        <div class="bg-gray-100 p-6 rounded-lg shadow-lg">
+          <h3 class="text-2xl font-bold text-gray-800 mb-4"><i class="fas fa-cogs"></i> Variedad de vehículos</h3>
+          <p class="text-gray-600">Desde autos compactos hasta SUV y vehículos de lujo, tenemos una amplia gama para adaptarnos a tus necesidades.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sección de Testimonios -->
+  <div class="py-16 bg-gradient-to-r from-gray-100 to-gray-200">
+    <div class="container mx-auto text-center">
+      <h2 class="text-4xl font-bold text-gray-800 mb-8">Lo que nuestros clientes dicen</h2>
+      <div class="flex justify-center space-x-8">
+        <div class="w-1/3 p-6 bg-white shadow-lg rounded-lg">
+          <p class="text-lg text-gray-700 mb-4">"El servicio fue excepcional, el proceso de alquiler fue rápido y sencillo, ¡definitivamente volveré!"</p>
+          <p class="font-bold text-gray-800">Carlos G.</p>
+          <p class="text-gray-600">Cliente satisfecho</p>
+        </div>
+        <div class="w-1/3 p-6 bg-white shadow-lg rounded-lg">
+          <p class="text-lg text-gray-700 mb-4">"Recomiendo Rent-A-Car a todos mis amigos y familiares. ¡Los autos están en excelente estado!"</p>
+          <p class="font-bold text-gray-800">Ana M.</p>
+          <p class="text-gray-600">Cliente feliz</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white text-center py-4 mt-auto">
+    <p>&copy; 2024 Rent-A-Car. Todos los derechos reservados.</p>
+  </footer>
+</div>

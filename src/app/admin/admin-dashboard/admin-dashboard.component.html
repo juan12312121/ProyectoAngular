@@ -1,109 +1,89 @@
-<div class="flex">
-    <!-- Sidebar -->
-    <app-sidebar></app-sidebar>
-  
-    <!-- Main Content -->
-    <main class="flex-1 p-6 relative">
-      <h1 class="text-2xl font-bold text-gray-900 mb-6">Panel Administrativo de Renta de Autos</h1>
-  
-     
-      <app-admin-notificaciones></app-admin-notificaciones>
-  
-      <!-- Metrics Section -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        <!-- Autos Disponibles -->
-        <div class="flex items-center bg-blue-100 p-4 rounded-lg shadow">
-          <div class="bg-blue-500 p-4 rounded-full text-white">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-8 h-8"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              fill="none"
-            >
-              <path d="M5 13l4 4L19 7" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
-            </svg>
-          </div>
-          <div class="ml-4">
-            <h2 class="text-lg font-semibold text-gray-900">Autos Disponibles</h2>
-            <p class="text-2xl font-bold text-gray-900">150</p>
-          </div>
+<div class="flex bg-[#F0F4FF] min-h-screen">
+  <!-- Sidebar -->
+  <app-sidebar></app-sidebar>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-6 relative">
+    <h1 class="text-2xl font-bold text-gray-900 mb-6">Bienvenido al Panel Administrativo</h1>
+
+    <!-- Notificaciones -->
+    <app-admin-notificaciones></app-admin-notificaciones>
+
+    <!-- Información General -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      <!-- Gestionar Autos -->
+      <div class="flex items-center bg-blue-100 p-4 rounded-lg shadow">
+        <div class="bg-blue-500 p-4 rounded-full text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" stroke="currentColor" fill="none">
+            <path d="M5 13l4 4L19 7" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
+          </svg>
         </div>
-  
-        <!-- Clientes Activos -->
-        <div class="flex items-center bg-green-100 p-4 rounded-lg shadow">
-          <div class="bg-green-500 p-4 rounded-full text-white">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-8 h-8"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              fill="none"
-            >
-              <path d="M12 8v8m0 0l4-4m-4 4l-4-4" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
-            </svg>
-          </div>
-          <div class="ml-4">
-            <h2 class="text-lg font-semibold text-gray-900">Clientes Activos</h2>
-            <p class="text-2xl font-bold text-gray-900">80</p>
-          </div>
-        </div>
-  
-        <!-- Carros Rentados -->
-        <div class="flex items-center bg-yellow-100 p-4 rounded-lg shadow">
-          <div class="bg-yellow-500 p-4 rounded-full text-white">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-8 h-8"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              fill="none"
-            >
-              <path
-                d="M15 18h6M3 18h6m-3-6h12M6 12H3m0-6h6m-3 6h12"
-                stroke-width="2"
-                stroke-linejoin="round"
-                stroke-linecap="round"
-              ></path>
-            </svg>
-          </div>
-          <div class="ml-4">
-            <h2 class="text-lg font-semibold text-gray-900">Carros Rentados</h2>
-            <p class="text-2xl font-bold text-gray-900">25</p>
-          </div>
+        <div class="ml-4">
+          <h2 class="text-lg font-semibold text-gray-900">Gestión de Autos</h2>
+          <p class="text-lg text-gray-700">Total de autos disponibles para renta: <span class="font-bold text-gray-900">150</span></p>
+          <p class="text-sm text-gray-600">Gestiona la flota de vehículos, desde la adición de nuevos hasta la modificación de datos existentes.</p>
         </div>
       </div>
-  
-      <!-- Data Table -->
+
+      <!-- Gestionar Clientes -->
+      <div class="flex items-center bg-green-100 p-4 rounded-lg shadow">
+        <div class="bg-green-500 p-4 rounded-full text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" stroke="currentColor" fill="none">
+            <path d="M12 8v8m0 0l4-4m-4 4l-4-4" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
+          </svg>
+        </div>
+        <div class="ml-4">
+          <h2 class="text-lg font-semibold text-gray-900">Gestión de Clientes</h2>
+          <p class="text-lg text-gray-700">Clientes activos registrados: <span class="font-bold text-gray-900">80</span></p>
+          <p class="text-sm text-gray-600">Administra la información de los clientes, desde su registro hasta el seguimiento de sus solicitudes de renta.</p>
+        </div>
+      </div>
+
+      <!-- Solicitudes de Renta -->
+      <div class="flex items-center bg-yellow-100 p-4 rounded-lg shadow">
+        <div class="bg-yellow-500 p-4 rounded-full text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" stroke="currentColor" fill="none">
+            <path d="M15 18h6M3 18h6m-3-6h12M6 12H3m0-6h6m-3 6h12" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
+          </svg>
+        </div>
+        <div class="ml-4">
+          <h2 class="text-lg font-semibold text-gray-900">Solicitudes de Renta</h2>
+          <p class="text-lg text-gray-700">Solicitudes actuales de renta: <span class="font-bold text-gray-900">25</span></p>
+          <p class="text-sm text-gray-600">Visualiza y gestiona todas las solicitudes de renta de los clientes, aprobando o rechazando según corresponda.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección de Gestión de Vehículos y Usuarios -->
+    <div class="bg-white p-6 rounded-lg shadow mb-8">
+      <h2 class="text-xl font-semibold text-gray-900 mb-4">Gestión de Vehículos y Usuarios</h2>
+      <p class="text-lg text-gray-700 mb-4">
+        Esta sección te permitirá gestionar todos los vehículos disponibles, así como las solicitudes de renta. Además, podrás administrar los perfiles de los usuarios activos.
+      </p>
+      <p class="text-sm text-gray-600">
+        Desde aquí, puedes agregar, editar o eliminar vehículos, gestionar los clientes que los solicitan y administrar la información de los usuarios en el sistema.
+      </p>
+    </div>
+
+    <!-- Acciones Rápidas -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <div class="bg-white p-6 rounded-lg shadow">
-        <h2 class="text-xl font-semibold text-gray-900 mb-4">Solicitudes de Renta Recientes</h2>
-        <table class="w-full table-auto">
-          <thead>
-            <tr>
-              <th class="px-4 py-2 bg-gray-100">Imagen</th>
-              <th class="px-4 py-2 bg-gray-100">Cliente</th>
-              <th class="px-4 py-2 bg-gray-100">Vehículo</th>
-              <th class="px-4 py-2 bg-gray-100">Estado</th>
-              <th class="px-4 py-2 bg-gray-100">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="px-4 py-2">
-                <img class="w-12 h-12 object-cover rounded" alt="Car" src="assets/car1.jpg" />
-              </td>
-              <td class="px-4 py-2">Juan Pérez</td>
-              <td class="px-4 py-2">Toyota Corolla</td>
-              <td class="px-4 py-2">En Proceso</td>
-              <td class="px-4 py-2 flex gap-2">
-                <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Aceptar</button>
-                <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Rechazar</button>
-              </td>
-            </tr>
-            <!-- Más filas de datos -->
-          </tbody>
-        </table>
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">Añadir Vehículo</h3>
+        <p class="text-gray-700 mb-4">Agrega nuevos vehículos a la flota de autos disponibles para renta y modifica los detalles de los ya existentes.</p>
+        <div class="text-sm text-gray-600">Asegúrate de tener todos los datos completos, como marca, modelo y características del vehículo.</div>
       </div>
-    </main>
-  </div>
-  
+
+      <div class="bg-white p-6 rounded-lg shadow">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">Agregar Cliente</h3>
+        <p class="text-gray-700 mb-4">Añade un nuevo cliente al sistema para gestionar sus solicitudes de renta y mantener un registro actualizado.</p>
+        <div class="text-sm text-gray-600">Es importante mantener los datos de contacto al día para facilitar la comunicación con los clientes.</div>
+      </div>
+
+      <div class="bg-white p-6 rounded-lg shadow">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">Ver Solicitudes</h3>
+        <p class="text-gray-700 mb-4">Consulta y gestiona las solicitudes de renta de los clientes, asegurándote de que todo esté en orden.</p>
+        <div class="text-sm text-gray-600">Verifica los detalles de cada solicitud, como fechas de renta y condiciones, para garantizar una experiencia fluida para los clientes.</div>
+      </div>
+    </div>
+  </main>
+</div>

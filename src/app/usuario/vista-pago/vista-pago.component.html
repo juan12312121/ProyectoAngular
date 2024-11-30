@@ -1,0 +1,112 @@
+<app-navbar></app-navbar> <!-- Componente Navbar -->
+
+<div class="container mx-auto px-4 mt-10 max-w-4xl">
+  <!-- Cargando Detalles -->
+  <div *ngIf="isLoading" class="flex justify-center items-center">
+    <div class="text-lg font-semibold text-gray-600">Cargando detalles de la reserva...</div>
+  </div>
+
+  <!-- Mensaje de error -->
+  <div *ngIf="errorMessage" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 rounded-md shadow-md">
+    <p>{{ errorMessage }}</p>
+  </div>
+
+  <!-- Detalles de la Reserva -->
+  <div *ngIf="reservaDetails" class="bg-white p-8 rounded-lg shadow-lg border border-gray-300">
+    <!-- Título de la Factura -->
+    <div class="mb-8 text-center">
+      <h3 class="text-4xl font-bold text-gray-800 mb-2">Detalle de Reserva</h3>
+      <p class="text-gray-600">Número de Reserva: <strong>{{ reservaDetails.id_reserva }}</strong></p>
+    </div>
+
+    <!-- Información de la Reserva -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
+      <!-- Información del Usuario -->
+      <div class="p-6 border border-gray-300 rounded-lg">
+        <h4 class="text-xl font-semibold text-gray-800 mb-4">Información del Usuario</h4>
+        <p class="text-gray-600"><strong>Usuario:</strong> {{ reservaDetails.usuario }}</p>
+      </div>
+
+      <!-- Información de la Reserva -->
+      <div class="p-6 border border-gray-300 rounded-lg">
+        <h4 class="text-xl font-semibold text-gray-800 mb-4">Detalles de la Reserva</h4>
+        <p class="text-gray-600"><strong>Monto de la Reserva:</strong> {{ reservaDetails.monto_reserva | currency }}</p>
+        <p class="text-gray-600"><strong>Fecha de Inicio:</strong> {{ reservaDetails.fecha_inicio | date }}</p>
+        <p class="text-gray-600"><strong>Fecha de Fin:</strong> {{ reservaDetails.fecha_fin | date }}</p>
+        <p class="text-gray-600"><strong>Tipo de Reserva:</strong> {{ reservaDetails.tipo_reserva }}</p>
+      </div>
+    </div>
+
+    <!-- Información del Carro -->
+    <div class="mt-8 mb-6 p-6 border border-gray-300 rounded-lg">
+      <h4 class="text-xl font-semibold text-gray-800 mb-4">Detalles del Carro</h4>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div>
+          <p class="text-gray-600"><strong>Marca:</strong> {{ reservaDetails.marca }}</p>
+          <p class="text-gray-600"><strong>Modelo:</strong> {{ reservaDetails.modelo }}</p>
+          <p class="text-gray-600"><strong>Color:</strong> {{ reservaDetails.color }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Selección del Método de Pago -->
+    <div class="mb-6 p-6 border border-gray-300 rounded-lg">
+      <h4 class="text-xl font-semibold text-gray-800 mb-4">Método de Pago</h4>
+      <div>
+        <label for="metodoPago" class="block text-gray-600 mb-2">Selecciona el método de pago:</label>
+        <select id="metodoPago" [(ngModel)]="metodoPago" class="block w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500">
+          <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
+          <option value="Efectivo">Efectivo</option>
+          <option value="PayPal">PayPal</option>
+        </select>
+      </div>
+
+      <!-- Mostrar opciones de tarjeta de crédito si se selecciona -->
+      <div *ngIf="metodoPago === 'Tarjeta de Crédito'" class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+        <p class="text-gray-600 mb-2">Ingresa los detalles de tu tarjeta de crédito:</p>
+
+        <div class="mb-4">
+          <label for="numeroTarjeta" class="block text-gray-600">Número de Tarjeta</label>
+          <input type="text" id="numeroTarjeta" [(ngModel)]="numeroTarjeta" class="block w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500" placeholder="Ingrese el número de tarjeta">
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mb-4">
+          <div>
+            <label for="vencimiento" class="block text-gray-600">Fecha de Vencimiento</label>
+            <input type="month" id="vencimiento" [(ngModel)]="vencimiento" class="block w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500">
+          </div>
+
+          <div>
+            <label for="cvv" class="block text-gray-600">CVV</label>
+            <input type="text" id="cvv" [(ngModel)]="cvv" class="block w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500" placeholder="CVV">
+          </div>
+        </div>
+      </div>
+
+      <!-- Mostrar opciones de PayPal si se selecciona -->
+      <div *ngIf="metodoPago === 'PayPal'" class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+        <p class="text-gray-600 mb-2">Para completar el pago con PayPal, haz clic en el siguiente botón:</p>
+        <button (click)="pagarConPayPal()" class="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 transition duration-300 ease-in-out">
+          Pagar con PayPal
+        </button>
+      </div>
+    </div>
+
+    <!-- Botones de Acción -->
+    <div class="mt-10 flex justify-between items-center">
+      <!-- Botón de Regresar -->
+      <button 
+        (click)="regresar()"
+        class="bg-gray-500 text-white py-2 px-6 rounded-lg hover:bg-gray-600 transition duration-300 ease-in-out">
+        <i class="fas fa-arrow-left mr-2"></i> Regresar
+      </button>
+
+      <!-- Botón de Pagar Reserva -->
+      <button 
+        (click)="pagarReserva()" 
+        class="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 transition duration-300 ease-in-out">
+        <i class="fas fa-credit-card mr-2"></i> Pagar Reserva
+      </button>
+    </div>
+  </div>
+</div>

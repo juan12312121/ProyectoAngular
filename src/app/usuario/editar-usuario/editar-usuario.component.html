@@ -1,0 +1,60 @@
+<app-navbar></app-navbar>
+
+<form (ngSubmit)="onSubmit()" [formGroup]="editUserForm" class="bg-white p-8 rounded-lg shadow-lg">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  
+      <!-- Nombre Completo -->
+      <div class="bg-gray-50 p-6 rounded-lg shadow-md hover:shadow-xl transition duration-300">
+        <label for="nombre_completo" class="text-gray-700 font-semibold text-sm">Nombre Completo</label>
+        <input
+          id="nombre_completo"
+          formControlName="nombre_completo"
+          type="text"
+          class="w-full px-4 py-2 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-blue-500"
+          [ngClass]="{'border-red-500': editUserForm.get('nombre_completo')?.invalid && editUserForm.get('nombre_completo')?.touched}"
+        />
+        <div *ngIf="editUserForm.get('nombre_completo')?.invalid && editUserForm.get('nombre_completo')?.touched" class="text-red-500 text-sm mt-2">
+          El nombre es requerido.
+        </div>
+      </div>
+  
+      <!-- Nombre de Usuario -->
+      <div class="bg-gray-50 p-6 rounded-lg shadow-md hover:shadow-xl transition duration-300">
+        <label for="nombre_usuario" class="text-gray-700 font-semibold text-sm">Nombre de Usuario</label>
+        <input
+          id="nombre_usuario"
+          formControlName="nombre_usuario"
+          type="text"
+          class="w-full px-4 py-2 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-blue-500"
+        />
+      </div>
+  
+      <!-- Correo Electrónico -->
+      <div class="bg-gray-50 p-6 rounded-lg shadow-md hover:shadow-xl transition duration-300">
+        <label for="correo" class="text-gray-700 font-semibold text-sm">Correo Electrónico</label>
+        <input
+          id="correo"
+          formControlName="correo"
+          type="email"
+          class="w-full px-4 py-2 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-blue-500"
+          [ngClass]="{'border-red-500': editUserForm.get('correo')?.invalid && editUserForm.get('correo')?.touched}"
+        />
+        <div *ngIf="editUserForm.get('correo')?.invalid && editUserForm.get('correo')?.touched" class="text-red-500 text-sm mt-2">
+          El correo es requerido y debe ser válido.
+        </div>
+      </div>
+  
+    </div>
+  
+    <!-- Botón de Enviar -->
+    <div class="mt-8 text-center">
+      <button
+        type="submit"
+        [disabled]="editUserForm.invalid"
+        class="bg-blue-500 text-white px-8 py-4 rounded-lg hover:bg-blue-600 transition duration-300 text-lg font-semibold shadow-md hover:shadow-xl"
+      >
+        Guardar Cambios
+      </button>
+    </div>
+  </form>
+  

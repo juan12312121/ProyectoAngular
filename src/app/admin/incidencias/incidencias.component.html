@@ -1,0 +1,100 @@
+<div class="flex min-h-screen bg-[#F0F4FF]">
+    <!-- Sidebar -->
+    <app-sidebar></app-sidebar>
+  
+    <!-- Contenido principal -->
+    <div class="flex-1 p-6">
+      <h2 class="text-3xl font-semibold text-gray-800 mb-6">Gestión de Incidencias</h2>
+  
+      <!-- Tabla de Incidencias -->
+      <div class="bg-white p-6 rounded-lg shadow-lg">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">Lista de Incidencias</h3>
+  
+        <!-- Condicional: Si hay incidencias -->
+        <div class="overflow-x-auto">
+          <table class="min-w-full border-collapse border border-gray-200">
+            <thead>
+              <tr class="bg-gray-100">
+                <th class="border border-gray-200 px-4 py-2 text-left text-sm font-medium text-gray-600">
+                  ID
+                </th>
+                <th class="border border-gray-200 px-4 py-2 text-left text-sm font-medium text-gray-600">
+                  Descripción
+                </th>
+                <th class="border border-gray-200 px-4 py-2 text-left text-sm font-medium text-gray-600">
+                  Estado
+                </th>
+                <th class="border border-gray-200 px-4 py-2 text-left text-sm font-medium text-gray-600">
+                  Fecha
+                </th>
+                <th class="border border-gray-200 px-4 py-2 text-left text-sm font-medium text-gray-600">
+                  Acciones
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Filas de la tabla -->
+              <tr class="border-t hover:bg-gray-50 transition">
+                <td class="border border-gray-200 px-4 py-2 text-sm text-gray-700">
+                  1
+                </td>
+                <td class="border border-gray-200 px-4 py-2 text-sm text-gray-700">
+                  Ejemplo de incidencia
+                </td>
+                <td class="border border-gray-200 px-4 py-2 text-sm font-semibold text-yellow-600">
+                  Pendiente
+                </td>
+                <td class="border border-gray-200 px-4 py-2 text-sm text-gray-700">
+                  27/11/2024
+                </td>
+                <td class="border border-gray-200 px-4 py-2 text-sm">
+                  <button
+                    class="text-white bg-blue-500 px-3 py-1 rounded-lg hover:bg-blue-600 transition duration-300 mr-2"
+                  >
+                    Arreglada
+                  </button>
+                  <button
+                    class="text-white bg-red-500 px-3 py-1 rounded-lg hover:bg-red-600 transition duration-300"
+                  >
+                    Borrar
+                  </button>
+                </td>
+              </tr>
+              <tr class="border-t hover:bg-gray-50 transition">
+                <td class="border border-gray-200 px-4 py-2 text-sm text-gray-700">
+                  2
+                </td>
+                <td class="border border-gray-200 px-4 py-2 text-sm text-gray-700">
+                  Otra incidencia
+                </td>
+                <td class="border border-gray-200 px-4 py-2 text-sm font-semibold text-green-600">
+                  Arreglada
+                </td>
+                <td class="border border-gray-200 px-4 py-2 text-sm text-gray-700">
+                  26/11/2024
+                </td>
+                <td class="border border-gray-200 px-4 py-2 text-sm">
+                  <button
+                    class="text-white bg-blue-500 px-3 py-1 rounded-lg hover:bg-blue-600 transition duration-300 mr-2"
+                  >
+                    Arreglada
+                  </button>
+                  <button
+                    class="text-white bg-red-500 px-3 py-1 rounded-lg hover:bg-red-600 transition duration-300"
+                  >
+                    Borrar
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  
+        <!-- Mensaje: No hay incidencias -->
+        <div class="text-center mt-6">
+          <p class="text-gray-600 text-lg">No hay incidencias registradas.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  

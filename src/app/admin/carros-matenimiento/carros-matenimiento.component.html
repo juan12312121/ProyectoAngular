@@ -1,0 +1,40 @@
+<div class="flex h-screen bg-[#F0F4FF]">
+    <app-sidebar></app-sidebar>
+  
+    <div class="flex-1 p-6 overflow-x-auto">
+      <h2 class="text-2xl font-semibold text-[#161a2d] mb-4">Carros en Mantenimiento</h2>
+  
+      <!-- Tabla de carros en mantenimiento -->
+      <table class="min-w-full bg-white border border-gray-300 shadow-lg rounded-lg" id="mantenimiento-table">
+        <thead class="bg-[#4f52ba] text-white">
+          <tr>
+            <th class="px-6 py-3 text-left">Tipo de Mantenimiento</th>
+            <th class="px-6 py-3 text-left">Costo</th>
+            <th class="px-6 py-3 text-left">Fecha de Mantenimiento</th>
+            <th class="px-6 py-3 text-left">Fecha de Creación</th>
+            <th class="px-6 py-3 text-left">Marca</th>
+            <th class="px-6 py-3 text-left">Modelo</th>
+            <th class="px-6 py-3 text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let mantenimiento of mantenimientos; let i = index">
+            <td class="px-6 py-3 border-b">{{ mantenimiento.tipo_mantenimiento }}</td>
+            <td class="px-6 py-3 border-b">{{ mantenimiento.costo | currency }}</td>
+            <td class="px-6 py-3 border-b">{{ mantenimiento.fecha_mantenimiento | date: 'short' }}</td>
+            <td class="px-6 py-3 border-b">{{ mantenimiento.fecha_creacion | date: 'short' }}</td>
+            <td class="px-6 py-3 border-b">{{ mantenimiento.marca }}</td>
+            <td class="px-6 py-3 border-b">{{ mantenimiento.modelo }}</td>
+            <td class="px-6 py-3 border-b text-center">
+              <button
+                (click)="terminarMantenimiento(i)"
+                class="bg-[#38a169] text-white px-4 py-2 rounded-lg shadow-md hover:bg-[#48bb78] transition duration-300">
+                Terminar Mantenimiento
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

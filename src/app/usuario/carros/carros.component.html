@@ -11,7 +11,9 @@
             <ul class="space-y-2">
                 <li class="flex items-center space-x-2" *ngFor="let marca of ['Ford', 'Toyota', 'Chevrolet', 'Honda', 'Nissan', 'Volkswagen', 'Mazda']">
                     <input type="checkbox" id="{{ marca.toLowerCase() }}" class="checkbox" (change)="toggleMarca(marca)">
-                    <label for="{{ marca.toLowerCase() }}" class="text-gray-600">{{ marca }}</label>
+                    <label for="{{ marca.toLowerCase() }}" class="text-gray-600">
+                        <i class="fas fa-car"></i> {{ marca }}
+                    </label>
                 </li>
             </ul>
         </div>
@@ -22,7 +24,9 @@
             <ul class="space-y-2">
                 <li class="flex items-center space-x-2" *ngFor="let modelo of ['Modelo 1', 'Modelo 2', 'Modelo 3', 'Modelo 4', 'Modelo 5']">
                     <input type="checkbox" id="{{ modelo.toLowerCase().replace(' ', '-') }}" class="checkbox" (change)="toggleModelo(modelo)">
-                    <label for="{{ modelo.toLowerCase().replace(' ', '-') }}" class="text-gray-600">{{ modelo }}</label>
+                    <label for="{{ modelo.toLowerCase().replace(' ', '-') }}" class="text-gray-600">
+                        <i class="fas fa-cogs"></i> {{ modelo }}
+                    </label>
                 </li>
             </ul>
         </div>
@@ -33,7 +37,9 @@
             <ul class="space-y-2">
                 <li class="flex items-center space-x-2" *ngFor="let categoria of ['SUV', 'Sedán']">
                     <input type="checkbox" id="{{ categoria.toLowerCase() }}" class="checkbox" (change)="toggleCategoria(categoria)">
-                    <label for="{{ categoria.toLowerCase() }}" class="text-gray-600">{{ categoria }}</label>
+                    <label for="{{ categoria.toLowerCase() }}" class="text-gray-600">
+                        <i class="fas fa-sitemap"></i> {{ categoria }}
+                    </label>
                 </li>
             </ul>
         </div>
@@ -44,7 +50,9 @@
             <ul class="space-y-2">
                 <li class="flex items-center space-x-2" *ngFor="let year of [2020, 2021, 2022, 2023, 2024]">
                     <input type="checkbox" id="year-{{ year }}" class="checkbox" (change)="toggleYear(year)">
-                    <label for="year-{{ year }}" class="text-gray-600">{{ year }}</label>
+                    <label for="year-{{ year }}" class="text-gray-600">
+                        <i class="fas fa-calendar-alt"></i> {{ year }}
+                    </label>
                 </li>
             </ul>
         </div>
@@ -82,6 +90,7 @@
                         >
                             {{ isDescriptionExpanded[carro.id] ? ' Mostrar menos' : '...' }}
                             
+
                             <!-- Tooltip container -->
                             <span class="absolute left-1/2 transform -translate-x-1/2 -top-8 w-max px-2 py-1 rounded-md bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                                 {{ isDescriptionExpanded[carro.id] ? 'Mostrar menos' : 'Mostrar más' }}
@@ -93,7 +102,7 @@
                 </div>
                 <div class="p-4 border-t border-gray-200">
                     <button (click)="verDetalles(carro)" class="bg-blue-600 text-white py-2 w-full rounded-lg hover:bg-blue-500 transition duration-300">
-                        Ver Detalles
+                        <i class="fas fa-info-circle"></i> Ver Detalles
                     </button>
                 </div>
             </div>

@@ -1,0 +1,71 @@
+<div class="flex h-screen bg-[#F0F4FF]">
+    <app-sidebar></app-sidebar>
+  
+    <main class="flex-1 p-6 overflow-y-auto">
+      <div class="mb-8 flex justify-between items-center">
+        <h1 class="text-3xl font-extrabold text-[#161a2d] mb-6">Valoraciones de Usuarios</h1>
+  
+        <!-- Search Bar -->
+       
+      </div>
+  
+      <!-- Loading and Error Message -->
+      <div *ngIf="loading" class="text-center">
+        <p>Loading...</p>
+      </div>
+  
+      <div *ngIf="errorMessage" class="text-red-500 text-center mb-4">
+        <p>{{ errorMessage }}</p>
+      </div>
+  
+      <!-- Reviews Table -->
+      <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
+        <table class="w-full border-collapse mb-6 text-left">
+          <thead>
+            <tr class="bg-gradient-to-r from-[#4f52ba] to-[#4299e1] text-white">
+              <th class="border p-4 text-center font-medium text-lg">#</th>
+              <th class="border p-4 text-center font-medium text-lg">Nombre de Usuario</th>
+              <th class="border p-4 text-center font-medium text-lg">Valoración</th>
+              <th class="border p-4 text-center font-medium text-lg">Comentario</th>
+              <th class="border p-4 text-center font-medium text-lg">Fecha</th>
+              <th class="border p-4 text-center font-medium text-lg">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let review of paginatedReviews" class="hover:bg-[#f1f5f9]">
+              <td class="border p-4 text-center text-[#4a5568]">{{ review.id_valoracion}}</td>
+              <td class="border p-4 text-[#4a5568]">{{ review.nombre_usuario }}</td>
+              <td class="border p-4 text-center text-[#4a5568]">{{ review.valoracion }}</td>
+              <td class="border p-4 text-[#4a5568]">{{ review.comentario }}</td>
+              <td class="border p-4 text-[#4a5568]">{{ review.fecha_valoracion | date: 'dd/MM/yyyy' }}</td>
+              <td class="border p-4 text-center flex justify-center space-x-4">
+                <button 
+                  (click)="deleteReview(review.id_valoracion)" 
+                  class="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-red-500">
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+  
+        <!-- Pagination -->
+        <div class="flex justify-center mb-6">
+          <button 
+            (click)="previousPage()" 
+            [disabled]="currentPage === 1" 
+            class="bg-[#3182ce] text-white px-6 py-3 rounded-lg hover:bg-[#2b6cb0] transition duration-300 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-[#3182ce]">
+            Anterior
+          </button>
+          <span class="mx-4 text-lg text-[#4a5568]">Página {{ currentPage }} de {{ totalPages }}</span>
+          <button 
+            (click)="nextPage()" 
+            [disabled]="currentPage === totalPages" 
+            class="bg-[#3182ce] text-white px-6 py-3 rounded-lg hover:bg-[#2b6cb0] transition duration-300 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-[#3182ce]">
+            Siguiente
+          </button>
+        </div>
+      </div>
+    </main>
+  </div>
+  

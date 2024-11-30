@@ -1,99 +1,102 @@
 <div class="flex min-h-screen bg-[#F0F4FF]">
-    <!-- Sidebar -->
-    <app-sidebar></app-sidebar>
-  
-    <!-- Contenedor principal para el formulario -->
-    <div class="flex-1 p-8">
-      <div class="max-w-xl mx-auto bg-white p-8 rounded-xl shadow-lg transform transition-all hover:scale-105 duration-300">
-        <h2 class="text-3xl font-semibold text-[#161a2d] text-center mb-6 animate__animated animate__fadeIn">
-          Registrar Empleado
-        </h2>
-  
-        <form (ngSubmit)="onRegister()" class="space-y-6">
-          <div class="form-group">
-            <label for="nombreCompleto" class="block text-sm font-medium text-[#161a2d]">Nombre Completo</label>
-            <input
-              type="text"
-              id="nombreCompleto"
-              [(ngModel)]="nombreCompleto"
-              name="nombreCompleto"
-              class="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 transition-all"
-              placeholder="Ingrese el nombre completo"
-              required
-            />
-          </div>
-  
-          <div class="form-group">
-            <label for="username" class="block text-sm font-medium text-[#161a2d]">Nombre de Usuario</label>
-            <input
-              type="text"
-              id="username"
-              [(ngModel)]="username"
-              name="username"
-              class="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 transition-all"
-              placeholder="Ingrese el nombre de usuario"
-              required
-            />
-          </div>
-  
-          <div class="form-group">
-            <label for="correo" class="block text-sm font-medium text-[#161a2d]">Correo Electrónico</label>
-            <input
-              type="email"
-              id="correo"
-              [(ngModel)]="correo"
-              name="correo"
-              class="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 transition-all"
-              placeholder="Ingrese el correo electrónico"
-              required
-            />
-          </div>
-  
-          <div class="form-group">
-            <label for="password" class="block text-sm font-medium text-[#161a2d]">Contraseña</label>
-            <input
-              type="password"
-              id="password"
-              [(ngModel)]="password"
-              name="password"
-              class="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 transition-all"
-              placeholder="Ingrese la contraseña"
-              required
-            />
-          </div>
-  
-          <div class="form-group">
-            <label for="confirmarContrasena" class="block text-sm font-medium text-[#161a2d]">Confirmar Contraseña</label>
-            <input
-              type="password"
-              id="confirmarContrasena"
-              [(ngModel)]="confirmarContrasena"
-              name="confirmarContrasena"
-              class="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 transition-all"
-              placeholder="Confirmar contraseña"
-              required
-            />
-          </div>
-  
-          <div class="form-group">
-            <label for="rol" class="block text-sm font-medium text-[#161a2d]">Rol</label>
-            <select
-              id="rol"
-              [(ngModel)]="rol"
-              name="rol"
-              class="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 transition-all"
-              required
-            >
-              <option value="1">Empleado</option>
-              <option value="10">Administrador</option>
-            </select>
-          </div>
-  
-          <button type="submit" class="w-full bg-[#4f52ba] text-white py-3 rounded-md mt-6 hover:bg-[#3e45a4] transition-all transform hover:scale-105">
-            Registrar
-          </button>
-        </form>
-      </div>
+  <!-- Sidebar -->
+  <app-sidebar></app-sidebar>
+
+  <!-- Contenedor principal para el formulario -->
+  <div class="flex-1 p-8">
+    <div class="max-w-xl mx-auto bg-white p-8 rounded-xl shadow-lg">
+      <h2 class="text-3xl font-semibold text-[#161a2d] text-center mb-6">
+        Registrar Empleado
+      </h2>
+
+      <form (ngSubmit)="onRegister()" class="space-y-6">
+        <div class="form-group">
+          <label for="nombreCompleto" class="block text-sm font-medium text-[#161a2d]">Nombre Completo</label>
+          <input
+            type="text"
+            id="nombreCompleto"
+            [(ngModel)]="nombreCompleto"
+            name="nombreCompleto"
+            class="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 transition-all"
+            placeholder="Ingrese el nombre completo"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="username" class="block text-sm font-medium text-[#161a2d]">Nombre de Usuario</label>
+          <input
+            type="text"
+            id="username"
+            [(ngModel)]="username"
+            name="username"
+            class="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 transition-all"
+            placeholder="Ingrese el nombre de usuario"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="correo" class="block text-sm font-medium text-[#161a2d]">Correo Electrónico</label>
+          <input
+            type="email"
+            id="correo"
+            [(ngModel)]="correo"
+            name="correo"
+            class="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 transition-all"
+            placeholder="Ingrese el correo electrónico"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="password" class="block text-sm font-medium text-[#161a2d]">Contraseña</label>
+          <input
+            type="password"
+            id="password"
+            [(ngModel)]="password"
+            name="password"
+            class="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 transition-all"
+            placeholder="Ingrese la contraseña"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="confirmarContrasena" class="block text-sm font-medium text-[#161a2d]">Confirmar Contraseña</label>
+          <input
+            type="password"
+            id="confirmarContrasena"
+            [(ngModel)]="confirmarContrasena"
+            name="confirmarContrasena"
+            class="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 transition-all"
+            placeholder="Confirmar contraseña"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="rol" class="block text-sm font-medium text-[#161a2d]">Rol</label>
+          <select
+            id="rol"
+            [(ngModel)]="rol"
+            name="rol"
+            class="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 transition-all"
+            required
+          >
+          
+            <option value="5">Chofer</option>
+            <option value="10">Administrador</option>
+          </select>
+        </div>
+
+        <button
+          type="submit"
+          class="w-full bg-[#4f52ba] text-white py-3 rounded-md mt-6 hover:bg-[#3e45a4] transition-all"
+        >
+          Registrar
+        </button>
+      </form>
     </div>
   </div>
-  
+</div>

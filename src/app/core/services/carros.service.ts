@@ -3,7 +3,6 @@ import { Injectable, signal } from '@angular/core';
 import { Observable, catchError, tap, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
 
-
 export interface Car {
   id: number;
   marca: string;
@@ -27,11 +26,8 @@ export interface Car {
   providedIn: 'root',
 })
 export class CarrosService {
-  getAllRentalTypes() {
-    throw new Error('Method not implemented.');
-  }
   private apiUrl = 'http://localhost:3500/carros';
-  public carAddedSignal = signal<boolean>(false); 
+  public carAddedSignal = signal<boolean>(false);
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
@@ -75,19 +71,18 @@ export class CarrosService {
   saveCarIdToLocalStorage(id: number): void {
     localStorage.setItem('selectedCarId', id.toString());
   }
-  
 
-getCarIdFromLocalStorage(): number | null {
-  const carId = localStorage.getItem('selectedCarId');
-  return carId && !isNaN(parseInt(carId, 10)) ? parseInt(carId, 10) : null;
-}
+  getCarIdFromLocalStorage(): number | null {
+    const carId = localStorage.getItem('selectedCarId');
+    return carId && !isNaN(parseInt(carId, 10)) ? parseInt(carId, 10) : null;
+  }
 
   getCarro(id: number): Observable<Car> {
     if (isNaN(id) || id <= 0) {
       console.error('ID de carro inválido:', id);
       return throwError(() => new Error('ID de carro no válido'));
     }
-  
+
     const headers = this.getAuthHeaders();  // Si se necesita cabecera de autenticación
     return this.http.get<Car>(`${this.apiUrl}/${id}`, { headers: headers || undefined })
       .pipe(
@@ -97,7 +92,6 @@ getCarIdFromLocalStorage(): number | null {
         catchError(this.handleError) // Manejo de errores
       );
   }
-  
 
   // Actualizar un carro por ID
   updateCar(id: number, carData: FormData): Observable<Car> {
@@ -111,7 +105,13 @@ getCarIdFromLocalStorage(): number | null {
       .pipe(catchError(this.handleError));
   }
 
+  // Obtener autos relacionados según la marca
+  getRelatedCars(brand: string): Observable<Car[]> {
+    return this.http
+      .get<Car[]>(`${this.apiUrl}/relacionados?marca=${brand}`, {headers: this.getAuthHeaders()})
 
+      .pipe(catchError(this.handleError));
+  }
 
   // Manejo de errores
   private handleError(error: any): Observable<never> {

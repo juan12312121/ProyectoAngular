@@ -2,25 +2,40 @@
     <div class="container mx-auto flex justify-between items-center">
         <div class="text-2xl font-bold">RentaDrive</div>
         <ul class="flex space-x-4">
-            <li><a class="hover:text-blue-400 transition duration-300 ease-in-out" href="/usuario">Principal</a></li>
-            <li><a class="hover:text-blue-400 transition duration-300 ease-in-out" href="/carros">Carros</a></li>
-            <li><a class="hover:text-blue-400 transition duration-300 ease-in-out" href="/historial-reservas">Historial</a></li>
+            <li><a class="hover:text-blue-400 transition duration-300 ease-in-out flex items-center" href="/usuario">
+                <i class="fas fa-home mr-2"></i> Principal
+            </a></li>
+            <li><a class="hover:text-blue-400 transition duration-300 ease-in-out flex items-center" href="/carros">
+                <i class="fas fa-car mr-2"></i> Carros
+            </a></li>
+            <!-- Condicional para mostrar "Historial" solo si está logueado -->
+            <li *ngIf="isLoggedIn"><a class="hover:text-blue-400 transition duration-300 ease-in-out flex items-center" href="/historial-reservas">
+                <i class="fas fa-history mr-2"></i> Historial
+            </a></li>
             <li class="relative group">
-                <a (click)="toggleProfileDropdown()" class="hover:text-blue-400 transition duration-300 ease-in-out cursor-pointer">Perfil</a>
+                <a (click)="toggleProfileDropdown()" class="hover:text-blue-400 transition duration-300 ease-in-out cursor-pointer flex items-center">
+                    <i class="fas fa-user mr-2"></i> Perfil
+                </a>
                 <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg transition-opacity duration-300 z-50"
                     [ngClass]="{'opacity-0 pointer-events-none': !isProfileDropdownOpen, 'opacity-100': isProfileDropdownOpen}">
                     <!-- Opciones de perfil según si está logueado o no -->
-                    <a *ngIf="!isLoggedIn" href="/login" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Iniciar Sesión</a>
-                    <a *ngIf="!isLoggedIn" href="/registro" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Registrarse</a>
-                    <a *ngIf="isLoggedIn" href="/perfil" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Mi Perfil</a>
-                    <a *ngIf="isLoggedIn" (click)="logout()" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Cerrar Sesión</a>
+                    <a *ngIf="!isLoggedIn" href="/login" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">
+                        <i class="fas fa-sign-in-alt mr-2"></i> Iniciar Sesión
+                    </a>
+                    <a *ngIf="!isLoggedIn" href="/registro" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">
+                        <i class="fas fa-user-plus mr-2"></i> Registrarse
+                    </a>
+                    <a *ngIf="isLoggedIn" href="/perfil" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">
+                        <i class="fas fa-cogs mr-2"></i> Mi Perfil
+                    </a>
+                    <a *ngIf="isLoggedIn" (click)="logout()" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">
+                        <i class="fas fa-sign-out-alt mr-2"></i> Cerrar Sesión
+                    </a>
                 </div>
             </li>
             <li class="relative group">
-                <a (click)="toggleNotificationDropdown()" class="hover:text-blue-400 transition duration-300 ease-in-out cursor-pointer" aria-label="Notificaciones">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405 1.405A2 2 0 0117 22H7a2 2 0 01-1.595-3.595L5 17h5m0-10a3 3 0 00-3-3 3 3 0 00-3 3c0 1.659 1.343 3 3 3h6a3 3 0 00-3-3z"></path>
-                    </svg>
+                <a (click)="toggleNotificationDropdown()" class="hover:text-blue-400 transition duration-300 ease-in-out cursor-pointer flex items-center" aria-label="Notificaciones">
+                    <i class="fas fa-bell mr-2"></i> Notificaciones
                     <span class="absolute top-0 right-0 block w-3 h-3 bg-red-500 rounded-full"></span>
                 </a>
                 <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg transition-opacity duration-300 z-50"
