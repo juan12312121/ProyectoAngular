@@ -1,13 +1,16 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ReservationsService {
+  getPaymentStatus(reservationId: number) {
+    throw new Error('Method not implemented.');
+  }
   assignDriver(reservationId: number, choferSeleccionadoId: number) {
     throw new Error('Method not implemented.');
   }
@@ -16,6 +19,7 @@ export class ReservationsService {
   private apipago = 'http://localhost:3500/pago';
   private apiPaypal = 'http://localhost:3500/execute';
   private verpagos = 'http://localhost:3500/pago/ver-pagos';
+  private reportes = 'http://localhost:3500/reportes'
 
  
   private reservationUpdatedSubject = new Subject<void>();
@@ -35,11 +39,81 @@ export class ReservationsService {
   }
 
   verPagos(): Observable<any> {
-    const headers = this.getAuthHeaders();  // Método para obtener los headers con el token
-    
-    // Realizamos la solicitud GET con los headers y especificamos que la respuesta es JSON
+    const headers = this.getAuthHeaders();
     return this.http.get<any>(`${this.verpagos}/`, { headers });
   }
+
+  createReport(reportData: { id_reserva: number, tipo_reporte: string, descripcion: string }): Observable<any> {
+    // Check that the required fields are present
+    if (!reportData.id_reserva || !reportData.tipo_reporte || !reportData.descripcion) {
+      console.error('Todos los campos son necesarios.');
+      return throwError(() => new Error('Faltan campos necesarios.'));
+    }
+
+    // Make the POST request to the report API endpoint
+    return this.http
+      .post<any>(this.reportes, reportData, {
+        headers: this.getAuthHeaders(),  // Add authorization header
+      })
+      .pipe(
+        tap((response) => {
+          console.log('Reporte creado con éxito:', response);
+        }),
+        catchError((error) => {
+          console.error('Error al crear el reporte:', error);
+          return throwError(() => new Error(error.message || 'Error al crear el reporte.'));
+        })
+      );
+  }
+  getReporteDetails(id: number, token: string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);  // Agregamos el token al encabezado de la solicitud
+  
+    return this.http.get(`${this.reportes}/${id}`, { headers })
+      .pipe(
+        tap((data: any) => {
+          console.log('Datos recibidos de la API para el reporte con ID ' + id, data);
+        }),
+        catchError(this.handleError) // Si hay un error, se maneja aquí
+      );
+  }
+
+  getReports(): Observable<any[]> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<any>(`${this.reportes}/`, { headers }).pipe(
+      map((response: any) => {
+        // Asegúrate de que la respuesta contenga un arreglo
+        return Array.isArray(response.reportes) ? response.reportes : [];  // Si la respuesta es un objeto, ajusta la propiedad
+      }),
+      tap((reportes) => {
+        console.log('Reportes obtenidos con éxito:', reportes);
+      }),
+      catchError((error) => {
+        console.error('Error al obtener los reportes:', error);
+        return throwError(() => new Error('Error al obtener los reportes.'));
+      })
+    );
+  }
+
+
+ // Método para arreglar un reporte
+ arreglarReporte(reporteId: number): Observable<any> {
+  const url = `${this.reportes}/arreglar/${reporteId}`;
+  const headers = this.getAuthHeaders();
+  return this.http.put<any>(url, {}, { headers }).pipe(
+    map((response: any) => response),
+    tap((response) => {
+      console.log('Reporte arreglado con éxito:', response);
+    }),
+    catchError((error) => {
+      console.error('Error al arreglar el reporte:', error);
+      return throwError(() => new Error('Error al arreglar el reporte.'));
+    })
+  );
+}
+
+
+
+
 
     createPaymentpaypal(paymentData: { monto: any, metodo_pago: string, fecha_pago: string, reserva_id: number }): Observable<any> {
       // Aquí no necesitas redefinir paymentData, solo asigna los valores necesarios.
@@ -156,7 +230,36 @@ export class ReservationsService {
       );
   }
   
-
+  cambiarEstadoPago(idReserva: number): Observable<any> {
+    const url = `${this.apiUrl}/cambiar-estado-pago`;  // URL completa del endpoint
+    const headers = this.getAuthHeaders();  // Obtener los encabezados de autenticación
+  
+    // Realizar la petición PUT para cambiar el estado de pago
+    return this.http.put<any>(url, 
+      { id_reserva: idReserva },  // Enviar datos en formato JSON
+      { headers }
+    ).pipe(
+      tap((response) => {
+        // Loguear la respuesta si es exitosa
+        console.log('Estado de pago actualizado:', response);
+      }),
+      catchError((error) => {
+        // Manejar los errores en formato JSON
+        console.error('Error al cambiar el estado de pago:', error);
+  
+        // Si el error tiene un cuerpo con un mensaje JSON, lo mostramos
+        if (error.error) {
+          console.error('Error detallado:', error.error); // Muestra el error detallado
+          return throwError(() => new Error(error.error.message || 'Error desconocido.'));
+        } else {
+          // Si el error no tiene un cuerpo con JSON, mostramos un mensaje genérico
+          return throwError(() => new Error('Ocurrió un error al cambiar el estado de pago.'));
+        }
+      })
+    );
+  }
+  
+  
 
 
 
@@ -223,6 +326,60 @@ export class ReservationsService {
         catchError((error) => {
           console.error(`Error al aceptar la reserva ${reservationId}:`, error);
           return throwError(() => new Error('Error al aceptar la reserva.'));
+        })
+      );
+  }
+
+  returnReservation(reservationId: number): Observable<any> {
+    if (!reservationId) {
+      return throwError(() => new Error('El ID de la reserva es necesario.'));
+    }
+  
+    console.log(`Devolviendo reserva con ID: ${reservationId}`); // Log para depuración
+  
+    return this.http
+      .put<any>(
+        `${this.apiUrl}/return/${reservationId}`, // Endpoint para marcar como devolución
+        null, // No se requiere un cuerpo adicional en la solicitud
+        { headers: this.getAuthHeaders() } // Encabezados de autenticación
+      )
+      .pipe(
+        tap((response) => {
+          console.log(`Reserva ${reservationId} devuelta con éxito:`, response);
+          // Emitir el cambio para notificar a los suscriptores
+          this.reservationUpdatedSubject.next();
+        }),
+        catchError((error) => {
+          console.error(`Error al devolver la reserva ${reservationId}:`, error);
+          return throwError(() => new Error('Error al devolver la reserva.'));
+        })
+      );
+  }
+  
+  
+
+  rejectedReservation(reservationId: number): Observable<any> {
+    if (!reservationId) {
+      return throwError(() => new Error('El ID de la reserva es necesario.'));
+    }
+  
+    console.log(`Rechzanado reserva con ID: ${reservationId}`); // Log para depuración
+  
+    return this.http
+      .put<any>(
+        `${this.apiUrl}/${reservationId}/Rechazar`, // Endpoint para aceptar la reserva
+        null, // Cuerpo de la solicitud, puede ser null si no se requiere información adicional
+        { headers: this.getAuthHeaders() } // Encabezados de autenticación
+      )
+      .pipe(
+        tap((response) => {
+          console.log(`Reserva ${reservationId} aceptada con éxito:`, response);
+          // Emitir el cambio para notificar a los suscriptores
+          this.reservationUpdatedSubject.next();
+        }),
+        catchError((error) => {
+          console.error(`Error al Rechazar la reserva ${reservationId}:`, error);
+          return throwError(() => new Error('Error al Rechazar la reserva.'));
         })
       );
   }
@@ -369,6 +526,34 @@ export class ReservationsService {
         })
       );
   }
+
+  completarReserva(reservationId: number): Observable<any> {
+    if (!reservationId) {
+      return throwError(() => new Error('El ID de la reserva es necesario.'));
+    }
+
+    console.log(`Completando reserva con ID: ${reservationId}`); // Log para depuración
+
+    return this.http
+      .put<any>(
+        `${this.apiUrl}/${reservationId}/completar`, // Endpoint actualizado para completar la reserva
+        null, // Puedes enviar un cuerpo si tu API lo requiere
+        { headers: this.getAuthHeaders() }
+      )
+      .pipe(
+        tap((response) => {
+          console.log(`Reserva ${reservationId} completada con éxito:`, response);
+          // Emitir el cambio para notificar a los suscriptores
+          this.reservationUpdatedSubject.next();
+        }),
+        catchError((error) => {
+          console.error(`Error al completar la reserva ${reservationId}:`, error);
+          return throwError(() => new Error('Error al completar la reserva.'));
+        })
+      );
+  }
+
+
 
 
   getReservationUpdatedSubject() {

@@ -62,7 +62,7 @@ export const routes: Routes = [
             canActivate: [AuthGuard] 
           },
 
-          {path: 'incidencias', loadComponent: () => import('./admin/incidencias/incidencias.component')},
+          
 
           
           {path: 'pagos-admin', loadComponent: () => import('./admin/pagos/pagos.component'),
@@ -73,6 +73,24 @@ export const routes: Routes = [
     // Ruta para la sección de usuarios
 
     {path: 'pago/:id_reserva', loadComponent: () => import('./usuario/vista-pago/vista-pago.component')},
+
+    {path: 'reportes/:id_reserva', loadComponent: () => import('./usuario/crear-reporte/crear-reporte.component')},
+
+    {path: 'reportes-admin', loadComponent: () => import('./admin/reportes/reportes.component'),
+      canActivate: [AuthGuard]
+    },
+
+    {path: 'detalle-reporte-admin/:id', loadComponent: () => import('./admin/detalle-reportes/detalle-reportes.component'),
+      canActivate: [AuthGuard]
+    },
+
+    {path: 'reporte-chofer/:id_reserva', loadComponent: () => import('./choferes/reporte-chofer/reporte-chofer.component'), canActivate: [AuthGuard]},
+
+    {path: 'detalle-renta/:id_reserva', loadComponent: () => import('./admin/detalle-reserva/detalle-reserva.component'), canActivate: [AuthGuard]},
+
+    {path: 'detalle-renta-usuario/:id_reserva', loadComponent: () => import('./usuario/detalle-renta/detalle-renta.component')},
+
+    {path: 'historial-usuarios-admin/:id', loadComponent: () => import('./admin/historial-usuarios/historial-usuarios.component'), canActivate: [AuthGuard]},
 
     {
         path: 'usuario',
@@ -96,10 +114,10 @@ export const routes: Routes = [
         loadComponent: () => import('./usuario/detalle-carro/detalle-carro.component')
       },
     {
-        path: 'historial-reservas', loadComponent: () => import('./usuario/historial/historial.component')
+        path: 'reservas-usuario', loadComponent: () => import('./usuario/historial/historial.component')
     },
     {path: 'perfil', loadComponent: () => import('./usuario/perfil/perfil.component')},
-    {path: 'editar-usario', loadComponent: () => import('./usuario/editar-usuario/editar-usuario.component')},
+
     // Redirección a la página principal
    {
         path: '',

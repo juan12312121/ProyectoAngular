@@ -1,0 +1,96 @@
+<app-navbar></app-navbar>
+
+<div *ngIf="!isLoading && reservationDetails" class="max-w-7xl mx-auto px-6 py-12">
+  <h1 class="text-4xl font-semibold text-[#161a2d] mb-12 text-center">Detalle de la Reserva</h1>
+
+  <div class="bg-white p-8 rounded-lg shadow-xl">
+
+    <!-- Reserva Information Header -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
+
+      <!-- ID de Reserva -->
+      <div class="bg-[#F9F9F9] p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow">
+        <div class="flex items-center space-x-3">
+          <i class="fas fa-hashtag text-[#4f52ba] text-2xl"></i>
+          <strong class="font-medium text-lg text-[#161a2d]">ID de Reserva</strong>
+        </div>
+        <p class="text-gray-700 text-lg">{{ reservationDetails.id_reserva }}</p>
+      </div>
+
+      <!-- Tipo de Reserva -->
+      <div class="bg-[#F9F9F9] p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow">
+        <div class="flex items-center space-x-3">
+          <i class="fas fa-calendar-alt text-[#4f52ba] text-2xl"></i>
+          <strong class="font-medium text-lg text-[#161a2d]">Tipo de Reserva</strong>
+        </div>
+        <p class="text-gray-700 text-lg">{{ reservationDetails.tipo_reserva }}</p>
+      </div>
+
+      <!-- Marca -->
+      <div class="bg-[#F9F9F9] p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow">
+        <div class="flex items-center space-x-3">
+          <i class="fas fa-car text-[#4f52ba] text-2xl"></i>
+          <strong class="font-medium text-lg text-[#161a2d]">Marca</strong>
+        </div>
+        <p class="text-gray-700 text-lg">{{ reservationDetails.marca }}</p>
+      </div>
+
+    </div>
+
+    <!-- User and Model Information Section -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+      
+      <!-- Modelo -->
+      <div class="bg-[#F9F9F9] p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow">
+        <div class="flex items-center space-x-3">
+          <i class="fas fa-cogs text-[#4f52ba] text-2xl"></i>
+          <strong class="font-medium text-lg text-[#161a2d]">Modelo</strong>
+        </div>
+        <p class="text-gray-700 text-lg">{{ reservationDetails.modelo }}</p>
+      </div>
+
+      <!-- Usuario -->
+      <div class="bg-[#F9F9F9] p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow">
+        <div class="flex items-center space-x-3">
+          <i class="fas fa-user text-[#4f52ba] text-2xl"></i>
+          <strong class="font-medium text-lg text-[#161a2d]">Usuario</strong>
+        </div>
+        <p class="text-gray-700 text-lg">{{ reservationDetails.usuario }}</p>
+      </div>
+
+    </div>
+
+    <!-- Date and Price Section -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+      
+      <!-- Fecha de Inicio -->
+      <div class="bg-[#F9F9F9] p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow">
+        <div class="flex items-center space-x-3">
+          <i class="fas fa-calendar-check text-[#4f52ba] text-2xl"></i>
+          <strong class="font-medium text-lg text-[#161a2d]">Fecha de Inicio</strong>
+        </div>
+        <p class="text-gray-700 text-lg">{{ reservationDetails.fecha_inicio | date:'dd/MM/yyyy' }}</p>
+      </div>
+
+      <!-- Fecha de Fin -->
+      <div class="bg-[#F9F9F9] p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow">
+        <div class="flex items-center space-x-3">
+          <i class="fas fa-calendar-times text-[#4f52ba] text-2xl"></i>
+          <strong class="font-medium text-lg text-[#161a2d]">Fecha de Fin</strong>
+        </div>
+        <p class="text-gray-700 text-lg">{{ reservationDetails.fecha_fin | date:'dd/MM/yyyy' }}</p>
+      </div>
+
+    </div>
+
+    <!-- Monto de la Reserva -->
+    <div class="bg-[#F9F9F9] p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow mt-8">
+      <div class="flex items-center space-x-3">
+        <i class="fas fa-dollar-sign text-[#4f52ba] text-2xl"></i>
+        <strong class="font-medium text-lg text-[#161a2d]">Monto de la Reserva</strong>
+      </div>
+      <p class="text-gray-700 text-lg">${{ reservationDetails.monto_reserva | number }}</p>
+    </div>
+
+  </div>
+</div>

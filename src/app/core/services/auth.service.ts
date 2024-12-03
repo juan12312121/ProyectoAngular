@@ -13,6 +13,8 @@ export class AuthService {
   private USERS_BY_ROLE_URL = 'http://localhost:3500/usuario/role/';
   private BASE_URL = 'http://localhost:3500/usuario/';
   private BASE_URL2 = 'http://localhost:3500/usuario/choferes'
+
+
   private userId: number | null = null;
 
   private tokenKey = 'authToken';
@@ -33,6 +35,27 @@ deleteUser(id: number): Observable<any> {
     catchError(error => {
       console.error('Error al eliminar el usuario:', error);
       return throwError(() => new Error('No se pudo eliminar el usuario.'));
+    })
+  );
+}
+
+verHistorial(usuarioId: number): Observable<any> {
+  if (!this.isTokenValid()) {
+    return throwError(() => new Error('Token no válido o expirado.'));
+  }
+
+  const token = this.getToken();
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+  // Realiza la solicitud GET para obtener el historial
+  const url = `http://localhost:3500/usuario/historial/${usuarioId}`;
+  return this.httpClient.get<any>(url, { headers }).pipe(
+    tap(response => {
+      console.log('Historial del usuario:', response);
+    }),
+    catchError(error => {
+      console.error('Error al obtener historial:', error);
+      return throwError(() => new Error('No se pudo obtener el historial.'));
     })
   );
 }
@@ -172,6 +195,11 @@ getAllChoferes(): Observable<any> {
     }
   }
   
+  isSessionActive(): boolean {
+    const token = this.getToken();  // Obtener el token desde localStorage
+    return token ? this.isAuthenticated() : false;  // Verificar si el token es válido
+  }
+
   getUserProfile(): Observable<any> {
     const userId = this.getUserId();  // Obtener el ID del usuario desde el token o localStorage
     const token = this.getToken();
@@ -284,13 +312,13 @@ getAllChoferes(): Observable<any> {
     if (!token) {
       return false;
     }
-
+  
     try {
       const payload = this.decodeToken(token);
-      const exp = payload?.exp * 1000; // Convertir segundos a milisegundos
-      return Date.now() < exp;
+      const exp = payload?.exp * 1000;  // Convertir segundos a milisegundos
+      return Date.now() < exp;  // Verificar si el token no ha expirado
     } catch (e) {
-      console.error('Error al verificar autenticación:', e); // Manejo de errores
+      console.error('Error al verificar autenticación:', e);
       return false;
     }
   }

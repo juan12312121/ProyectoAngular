@@ -5,17 +5,20 @@ import { AuthService } from './auth.service';
 
 // Interfaz para estructurar los datos de mantenimiento
 export interface Maintenance {
-  id_carro: number;
-
   id_mantenimiento: number;
-  tipo_mantenimiento: string;
+  tipo_mantenimiento: 'Preventivo' | 'De emergencia' | 'Revisión general' | 'Cambio de aceite' | 'Reemplazo de frenos' | 'Alineación y balanceo';
   costo: number;
+  estado_pago: 'Pagada' | 'Pendiente';  // Aquí defines el estado de pago
   fecha_mantenimiento: string;
-  fecha_creacion: string;
-  // Asegúrate de agregar estas propiedades que vienen del JOIN en tu SQL
-  marca: string;  // Nueva propiedad
-  modelo: string;  // Nueva propiedad
+  fecha_creacion: string;  // O usa 'timestamp' si lo prefieres
+  marca: string;
+  estado_mantenimiento: string; // O usa 'timestamp' si
+  gastos: number;
+  modelo: string;
+  id_carro: number;
 }
+
+
 // Enum de tipos de mantenimiento fuera del servicio
 export enum TipoMantenimiento {
   Preventivo = 'Preventivo',

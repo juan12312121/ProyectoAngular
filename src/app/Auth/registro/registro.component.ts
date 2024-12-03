@@ -38,7 +38,7 @@ export default class RegistroComponent {
     this.authService.register(this.nombre, this.usuario, this.email, this.contrasena, this.confirmarContrasena, this.rol).subscribe({
       next: () => {
         console.log('Registro exitoso');
-        this.router.navigate(['/usuario']);
+        this.router.navigate(['/login']);
       },
       error: (err) => console.error('Error al registrarse:', err),
     });

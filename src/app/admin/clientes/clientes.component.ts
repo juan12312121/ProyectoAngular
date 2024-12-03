@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router'; // Importar Router
 import Swal from 'sweetalert2'; // Importar SweetAlert2
 import { AuthService } from '../../core/services/auth.service';
 import { SidebarComponent } from '../sidebar/sidebar.component';
@@ -20,9 +21,7 @@ interface Cliente {
   styleUrls: ['./clientes.component.css'],
 })
 export default class ClientesComponent implements OnInit {
-verHistorial(arg0: number) {
-throw new Error('Method not implemented.');
-}
+
   clientes: Cliente[] = []; // Full list of clients
   currentPage: number = 1; // Current page for pagination
   itemsPerPage: number = 7; // Number of clients per page
@@ -30,7 +29,10 @@ throw new Error('Method not implemented.');
   totalPages: number = 0; // Total number of pages for pagination
   paginatedClientes: Cliente[] = []; // Clients for the current page
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router  // Inyectar Router
+  ) {}
 
   ngOnInit(): void {
     // Fetching users with role 1 (Admin, for example)
@@ -89,5 +91,10 @@ throw new Error('Method not implemented.');
         );
       }
     });
+  }
+
+  // Método para redirigir al historial de usuarios con el ID
+  verHistorial(id: number) {
+    this.router.navigate([`/historial-usuarios-admin/${id}`]);
   }
 }

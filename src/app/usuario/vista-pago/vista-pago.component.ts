@@ -4,13 +4,16 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2'; // Importar SweetAlert2
+import { ChatbotComponent } from '../../components/chat-bot/chat-bot.component';
 import { ReservationsService } from '../../core/services/reservations.service';
 import { NavbarComponent } from '../navbar/navbar.component';
+
+
 
 @Component({
   selector: 'app-vista-pago',
   standalone: true,
-  imports: [NavbarComponent, CommonModule, FormsModule],
+  imports: [NavbarComponent, CommonModule, FormsModule,ChatbotComponent],
   templateUrl: './vista-pago.component.html',
   styleUrls: ['./vista-pago.component.css']
 })

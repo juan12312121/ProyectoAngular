@@ -70,8 +70,8 @@ export class MantenimientoComponent {
       tipo_mantenimiento: this.tipoMantenimiento,
       costo: mantenimiento.costo,
       fecha_mantenimiento: new Date().toISOString(),
-      descripcion: '',  // Aquí puedes agregar la descripción si lo necesitas
-      mecanico: ''  // Aquí puedes agregar el mecánico si lo necesitas
+      descripcion: '',  
+      mecanico: ''  
     };
 
     this.maintenanceService.createMaintenance(mantenimientoData).subscribe(

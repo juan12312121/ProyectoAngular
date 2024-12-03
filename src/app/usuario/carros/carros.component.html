@@ -9,7 +9,7 @@
         <div class="mb-6">
             <h3 class="text-lg font-semibold mb-3 text-gray-700">Marca</h3>
             <ul class="space-y-2">
-                <li class="flex items-center space-x-2" *ngFor="let marca of ['Ford', 'Toyota', 'Chevrolet', 'Honda', 'Nissan', 'Volkswagen', 'Mazda']">
+                <li class="flex items-center space-x-2" *ngFor="let marca of ['Toyota', 'Honda', 'Chevrolet', 'Kia', 'Nissan', 'Subaru', 'Mazda']">
                     <input type="checkbox" id="{{ marca.toLowerCase() }}" class="checkbox" (change)="toggleMarca(marca)">
                     <label for="{{ marca.toLowerCase() }}" class="text-gray-600">
                         <i class="fas fa-car"></i> {{ marca }}
@@ -17,25 +17,27 @@
                 </li>
             </ul>
         </div>
+        
 
         <!-- Filtro por Modelo -->
-        <div class="mb-6">
-            <h3 class="text-lg font-semibold mb-3 text-gray-700">Modelo</h3>
-            <ul class="space-y-2">
-                <li class="flex items-center space-x-2" *ngFor="let modelo of ['Modelo 1', 'Modelo 2', 'Modelo 3', 'Modelo 4', 'Modelo 5']">
-                    <input type="checkbox" id="{{ modelo.toLowerCase().replace(' ', '-') }}" class="checkbox" (change)="toggleModelo(modelo)">
-                    <label for="{{ modelo.toLowerCase().replace(' ', '-') }}" class="text-gray-600">
-                        <i class="fas fa-cogs"></i> {{ modelo }}
-                    </label>
-                </li>
-            </ul>
-        </div>
+<div class="mb-6">
+    <h3 class="text-lg font-semibold mb-3 text-gray-700">Modelo</h3>
+    <ul class="space-y-2">
+        <li class="flex items-center space-x-2" *ngFor="let modelo of ['Carolla', 'Civic', 'Silverado', 'Soul', 'Altima', 'Outback', 'Corolla', 'CX-3']">
+            <input type="checkbox" id="{{ modelo.toLowerCase().replace(' ', '-') }}" class="checkbox" (change)="toggleModelo(modelo)">
+            <label for="{{ modelo.toLowerCase().replace(' ', '-') }}" class="text-gray-600">
+                <i class="fas fa-cogs"></i> {{ modelo }}
+            </label>
+        </li>
+    </ul>
+</div>
+
 
         <!-- Filtro por Categoria -->
         <div class="mb-6">
             <h3 class="text-lg font-semibold mb-3 text-gray-700">Categoría</h3>
             <ul class="space-y-2">
-                <li class="flex items-center space-x-2" *ngFor="let categoria of ['SUV', 'Sedán']">
+                <li class="flex items-center space-x-2" *ngFor="let categoria of ['SUV', 'Sedán','Camioneta']">
                     <input type="checkbox" id="{{ categoria.toLowerCase() }}" class="checkbox" (change)="toggleCategoria(categoria)">
                     <label for="{{ categoria.toLowerCase() }}" class="text-gray-600">
                         <i class="fas fa-sitemap"></i> {{ categoria }}
@@ -48,7 +50,7 @@
         <div class="mb-6">
             <h3 class="text-lg font-semibold mb-3 text-gray-700">Año</h3>
             <ul class="space-y-2">
-                <li class="flex items-center space-x-2" *ngFor="let year of [2020, 2021, 2022, 2023, 2024]">
+                <li class="flex items-center space-x-2" *ngFor="let year of [2017,2018,2019,2020, 2021, 2022, 2023, 2024]">
                     <input type="checkbox" id="year-{{ year }}" class="checkbox" (change)="toggleYear(year)">
                     <label for="year-{{ year }}" class="text-gray-600">
                         <i class="fas fa-calendar-alt"></i> {{ year }}
@@ -107,6 +109,8 @@
                 </div>
             </div>
         </div>
+
+        <app-chatbot></app-chatbot>
 
         <div class="mt-6 flex justify-center">
             <pagination-controls 

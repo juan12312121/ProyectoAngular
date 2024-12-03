@@ -10,21 +10,20 @@
       <button
         (click)="agregarCarro()"
         class="bg-[#48bb78] text-white px-5 py-3 rounded-lg shadow-md hover:bg-[#38a169] hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+        title="Agregar Carro"
       >
-        Agregar Carro
+        <i class="fas fa-plus mr-2"></i>
       </button>
-    
+
       <!-- Botón para carros en mantenimiento -->
       <button
-      (click)="CarrosMantenimiento()"
+        (click)="CarrosMantenimiento()"
         class="bg-[#3182ce] text-white px-5 py-3 rounded-lg shadow-md hover:bg-[#2b6cb0] hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+        title="Carros en Mantenimiento"
       >
-        Carros en Mantenimiento
+        <i class="fas fa-tools mr-2"></i>
       </button>
     </div>
-    
-
-    
 
     <div class="bg-white p-5 rounded shadow-md mb-4">
       <h2 class="text-xl font-semibold text-[#4a5568] mb-4">
@@ -33,7 +32,6 @@
       <table class="w-full border-collapse mb-4 text-left">
         <thead>
           <tr>
-          
             <th class="border p-2 bg-[#edf2f7] text-[#4a5568]">Marca</th>
             <th class="border p-2 bg-[#edf2f7] text-[#4a5568]">Modelo</th>
             <th class="border p-2 bg-[#edf2f7] text-[#4a5568]">Año</th>
@@ -49,7 +47,6 @@
         </thead>
         <tbody>
           <tr *ngFor="let carro of paginatedCarros" class="hover:bg-[#f7fafc]">
-          
             <td class="border p-2 truncate">{{ carro.marca }}</td>
             <td class="border p-2 truncate">{{ carro.modelo }}</td>
             <td class="border p-2">{{ carro.anio }}</td>
@@ -72,14 +69,16 @@
               <button
                 (click)="editarCarro(carro.id)"
                 class="bg-[#3182ce] text-white px-2 py-1 rounded hover:bg-[#2b6cb0] transition duration-300"
+                title="Editar Carro"
               >
-                Editar
+                <i class="fas fa-edit mr-1"></i>
               </button>
               <button
                 (click)="eliminarCarro(carro.id)"
                 class="bg-[#e53e3e] text-white px-2 py-1 rounded hover:bg-[#c53030] transition duration-300"
+                title="Eliminar Carro"
               >
-                Eliminar
+                <i class="fas fa-trash-alt mr-1"></i>
               </button>
             </td>
             <td class="border p-2 space-x-1 text-center">
@@ -88,8 +87,9 @@
                   (click)="crearMantenimiento(carro.id)"
                   [disabled]="!mantenimientoData[carro.id]"
                   class="bg-[#d69e2e] text-white px-4 py-2 rounded hover:bg-[#b7791f] transition duration-300 w-auto"
+                  title="Iniciar Mantenimiento"
                 >
-                  Mantenimiento
+                  <i class="fas fa-wrench"></i>
                 </button>
 
                 <!-- Listbox para seleccionar el tipo de mantenimiento -->
@@ -99,7 +99,9 @@
                     (ngModelChange)="setTipoMantenimiento(carro.id, $event)"
                     class="border border-gray-300 rounded px-4 py-2 bg-white text-gray-700 focus:ring-2 focus:ring-[#b7791f] focus:outline-none w-full"
                   >
-                    <option value="" disabled selected>Seleccione un tipo de mantenimiento</option>
+                    <option value="" disabled selected>
+                      Seleccione un tipo de mantenimiento
+                    </option>
                     <option
                       *ngFor="let option of tipoMantenimientoOptions"
                       [value]="option"
@@ -119,16 +121,18 @@
           (click)="changePage(currentPage - 1)"
           [disabled]="currentPage === 1"
           class="bg-[#4299e1] text-white px-4 py-2 rounded hover:bg-[#3182ce] transition duration-300"
+          title="Página Anterior"
         >
-          Anterior
+          <i class="fas fa-arrow-left"></i>
         </button>
         <span class="mx-2">Página {{ currentPage }} de {{ totalPages }}</span>
         <button
           (click)="changePage(currentPage + 1)"
           [disabled]="currentPage === totalPages"
           class="bg-[#4299e1] text-white px-4 py-2 rounded hover:bg-[#3182ce] transition duration-300"
+          title="Página Siguiente"
         >
-          Siguiente
+          <i class="fas fa-arrow-right"></i>
         </button>
       </div>
     </div>

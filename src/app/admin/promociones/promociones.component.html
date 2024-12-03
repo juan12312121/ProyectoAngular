@@ -3,56 +3,61 @@
   <app-sidebar></app-sidebar>
 
   <!-- Main content -->
-  <main class="flex-1 p-5 overflow-y-auto">
+  <main class="flex-1 p-6 overflow-y-auto">
     <!-- Page Title and Add Promotion Button -->
     <div class="mb-6 flex justify-between items-center">
-      <h1 class="text-2xl font-bold text-[#161a2d] mb-6">Promociones</h1>
+      <h1 class="text-3xl font-semibold text-[#161a2d]">Promociones</h1>
       <div class="flex justify-start">
         <button 
           (click)="addPromotion()" 
-          class="bg-[#48bb78] text-white px-4 py-2 rounded hover:bg-[#38a169] transition duration-300">
-          Agregar promoción
+          class="bg-[#48bb78] text-white px-5 py-3 rounded-md hover:bg-[#38a169] transition duration-300" 
+          title="Agregar nueva promoción">
+          <i class="fas fa-plus mr-2"></i> Agregar Promoción
         </button>
       </div>
     </div>
 
     <!-- Promotions Table -->
-    <div class="bg-white p-5 rounded-lg shadow-md mb-6">
-      <h2 class="text-xl font-semibold text-[#4a5568] mb-4">Listado de Promociones</h2>
-      <table class="w-full border-collapse mb-4 text-left">
+    <div class="bg-white p-6 rounded-lg shadow-xl mb-6">
+      <h2 class="text-2xl font-semibold text-[#4a5568] mb-5">Listado de Promociones</h2>
+      <table class="w-full table-auto border-collapse mb-5">
         <thead>
-          <tr>
-            <th class="border p-3 bg-[#edf2f7] text-[#4a5568]">Código</th>
-            <th class="border p-3 bg-[#edf2f7] text-[#4a5568]">Descripción</th>
-            <th class="border p-3 bg-[#edf2f7] text-[#4a5568]">Fechas</th>
-            <th class="border p-3 bg-[#edf2f7] text-[#4a5568]">Descuento (%)</th>
-            <th class="border p-3 bg-[#edf2f7] text-[#4a5568]">Estado</th>
-            <th class="border p-3 bg-[#edf2f7] text-[#4a5568]">Acciones</th>
+          <tr class="bg-[#edf2f7] text-[#4a5568]">
+            <th class="border p-4 text-sm font-medium text-left">Código</th>
+            <th class="border p-4 text-sm font-medium text-left">Descripción</th>
+            <th class="border p-4 text-sm font-medium text-left">Fechas</th>
+            <th class="border p-4 text-sm font-medium text-left">Descuento (%)</th>
+            <th class="border p-4 text-sm font-medium text-left">Estado</th>
+            <th class="border p-4 text-sm font-medium text-left">Acciones</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let promotion of promotions" class="hover:bg-[#f7fafc] transition duration-300">
-            <td class="border p-3">{{ promotion.codigo_promocion }}</td>
-            <td class="border p-3">{{ promotion.descripcion }}</td>
-            <td class="border p-3">{{ promotion.fecha_inicio | date }} - {{ promotion.fecha_fin | date }}</td>
-            <td class="border p-3">{{ promotion.descuento }}%</td>
-            <td class="border p-3 text-center">
+            <td class="border p-4 text-sm">{{ promotion.codigo_promocion }}</td>
+            <td class="border p-4 text-sm">{{ promotion.descripcion }}</td>
+            <td class="border p-4 text-sm">{{ promotion.fecha_inicio | date }} - {{ promotion.fecha_fin | date }}</td>
+            <td class="border p-4 text-sm">{{ promotion.descuento }}%</td>
+            <td class="border p-4 text-sm text-center">
               <button 
                 (click)="togglePromotionStatus(promotion)" 
-                class="bg-[#4f52ba] text-white py-1 px-4 rounded-lg transition duration-300 hover:bg-[#3e46a0]">
+                class="bg-[#4f52ba] text-white py-1 px-4 rounded-md transition duration-300 hover:bg-[#3e46a0]" 
+                title="{{ promotion.estado === 'activo' ? 'Desactivar promoción' : 'Activar promoción' }}">
+                <i class="fas" [ngClass]="promotion.estado === 'activo' ? 'fa-pause' : 'fa-play'"></i> 
                 {{ promotion.estado === 'activo' ? 'Desactivar' : 'Activar' }}
               </button>
             </td>
-            <td class="border p-3 text-center flex justify-center space-x-3">
+            <td class="border p-4 text-sm text-center flex justify-center space-x-4">
               <button 
                 (click)="deletePromotion(promotion.id_promocion)" 
-                class="bg-red-600 text-white px-4 py-2 rounded-lg transition duration-300 hover:bg-red-500">
-                Eliminar
+                class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-500 transition duration-300"
+                title="Eliminar promoción">
+                <i class="fas fa-trash-alt mr-2"></i> Eliminar
               </button>
               <button 
                 (click)="updatePromotion(promotion)" 
-                class="bg-blue-600 text-white px-4 py-2 rounded-lg transition duration-300 hover:bg-blue-500">
-                Actualizar
+                class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-500 transition duration-300"
+                title="Actualizar promoción">
+                <i class="fas fa-edit mr-2"></i> Editar
               </button>
             </td>
           </tr>
@@ -60,19 +65,21 @@
       </table>
 
       <!-- Pagination -->
-      <div class="flex justify-center mb-4">
+      <div class="flex justify-center items-center space-x-3">
         <button 
           (click)="previousPage()" 
           [disabled]="currentPage === 1" 
-          class="bg-[#4299e1] text-white px-4 py-2 rounded hover:bg-[#3182ce] transition duration-300">
-          Anterior
+          class="bg-[#4299e1] text-white px-4 py-2 rounded-md hover:bg-[#3182ce] transition duration-300" 
+          title="Página anterior">
+          <i class="fas fa-arrow-left mr-2"></i> 
         </button>
-        <span class="mx-2">Página {{ currentPage }} de {{ totalPages }}</span>
+        <span class="text-lg">Página {{ currentPage }} de {{ totalPages }}</span>
         <button 
           (click)="nextPage()" 
           [disabled]="currentPage === totalPages" 
-          class="bg-[#4299e1] text-white px-4 py-2 rounded hover:bg-[#3182ce] transition duration-300">
-          Siguiente
+          class="bg-[#4299e1] text-white px-4 py-2 rounded-md hover:bg-[#3182ce] transition duration-300" 
+          title="Siguiente página">
+          <i class="fas fa-arrow-right mr-2"></i> 
         </button>
       </div>
     </div>

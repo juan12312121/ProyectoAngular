@@ -1,0 +1,95 @@
+<div class="flex bg-[#F0F4FF] min-h-screen">
+  <!-- Sidebar -->
+  <app-sidebar></app-sidebar>
+
+  <!-- Main Content -->
+  <div class="flex-grow p-6">
+    <h1 class="text-2xl font-bold text-[#161A2D] mb-4">
+      Historial de Reservas
+    </h1>
+
+    <!-- Message if no history -->
+    <div *ngIf="mensaje" class="bg-red-100 text-red-600 p-4 rounded mb-4">
+      {{ mensaje }}
+    </div>
+
+    <!-- Table to display reservation history -->
+    <div
+      *ngIf="historial && historial.length > 0"
+      class="overflow-x-auto bg-white rounded-lg shadow-lg"
+    >
+      <table class="min-w-full table-auto">
+        <thead class="bg-[#4F52BA] text-white">
+          <tr>
+            <th class="px-4 py-2 text-left border">Usuario</th>
+
+            <th class="px-4 py-2 text-left border">Carro</th>
+            <th class="px-4 py-2 text-left border">Tipo Reserva</th>
+
+            <th class="px-4 py-2 text-left border">Monto</th>
+
+            <!-- Report Fields -->
+            <th class="px-4 py-2 text-left border">Descripción Reporte</th>
+            <th class="px-4 py-2 text-left border">Tipo Reporte</th>
+
+            <th class="px-4 py-2 text-left border">Fecha Reporte</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="
+              let reserva of historial
+                | paginate
+                  : { itemsPerPage: pageSize, currentPage: currentPage };
+              let i = index
+            "
+          >
+            <td class="px-4 py-2 border">
+              {{ reserva.nombre_completo || "No especificado" }}
+            </td>
+
+            <td class="px-4 py-2 border">
+              {{ reserva.marca || "Desconocida" }} {{ reserva.modelo || "" }}
+            </td>
+            <td class="px-4 py-2 border">
+              {{ reserva.tipo_reserva || "No especificado" }}
+            </td>
+
+            <td class="px-4 py-2 border">
+              $ {{ reserva.monto_reserva || "0.00" }}
+            </td>
+
+            <!-- Report Data -->
+            <td class="px-4 py-2 border">
+              {{ reserva.descripcion || "No Tiene" }}
+            </td>
+            <td class="px-4 py-2 border">
+              {{ reserva.tipo_reporte || "No Tiene" }}
+            </td>
+
+            <td class="px-4 py-2 border">
+              {{
+                formatearFecha(reserva.fecha_reporte || null) || "No Tiene"
+              }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Pagination -->
+      <div class="flex justify-center mt-4">
+        <pagination-controls
+          (pageChange)="currentPage = $event"
+        ></pagination-controls>
+      </div>
+    </div>
+
+    <!-- No history message -->
+    <div
+      *ngIf="!historial || historial.length === 0"
+      class="bg-yellow-100 text-yellow-600 p-4 rounded mt-4"
+    >
+      No hay historial de reservas disponibles.
+    </div>
+  </div>
+</div>

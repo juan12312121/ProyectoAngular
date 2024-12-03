@@ -11,7 +11,7 @@ export class AuthGuard implements CanActivate {
   canActivate(): boolean {
     // Verificar si el usuario está autenticado y si es admin o chofer
     if (this.authService.isAuthenticated()) {
-      const role = this.authService.getUserRole();  // Supone que hay un método para obtener el rol del usuario
+      const role = this.authService.getUserRole(); 
       if (role === 10 || role === 5) {
         return true; // Permite el acceso si es admin o chofer
       }

@@ -4,14 +4,16 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
 import Swal from 'sweetalert2';
+import { ChatbotComponent } from '../../components/chat-bot/chat-bot.component';
 import { AuthService } from '../../core/services/auth.service';
 import { Car, CarrosService } from '../../core/services/carros.service';
 import { NavbarComponent } from '../navbar/navbar.component';
 
+
 @Component({
   selector: 'app-carros',
   standalone: true,
-  imports: [CommonModule, NavbarComponent, FormsModule, NgxPaginationModule],
+  imports: [CommonModule, NavbarComponent, FormsModule, NgxPaginationModule,ChatbotComponent],
   providers: [CurrencyPipe],
   templateUrl: './carros.component.html',
 })

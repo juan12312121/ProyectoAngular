@@ -8,210 +8,210 @@
             </h3>
 
             <form [formGroup]="carForm" (ngSubmit)="editarCarro($event)">
+                <!-- Start of Grid Layout -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Campo Marca -->
+                    <div class="mb-5">
+                        <div class="flex items-center">
+                            <i class="fas fa-car text-[#4f52ba] mr-3"></i>
+                            <input
+                                type="text"
+                                placeholder="Marca"
+                                formControlName="marca"
+                                required
+                                aria-label="Marca del carro"
+                                class="w-full p-3 border border-gray-300 rounded-md focus:border-[#4f52ba] focus:outline-none transition duration-300"
+                            />
+                        </div>
+                        <div *ngIf="carForm.get('marca')?.invalid && (carForm.get('marca')?.dirty || carForm.get('marca')?.touched)" class="text-red-500">
+                            Marca Requerida
+                        </div>
+                    </div>
 
-                <!-- Campo Marca -->
-                <div class="mb-5">
-                    <input
-                        type="text"
-                        placeholder="Marca"
-                        formControlName="marca"
-                        required
-                        aria-label="Marca del carro"
-                        class="w-full p-3 border border-gray-300 rounded-md focus:border-[#4f52ba] focus:outline-none transition duration-300"
-                    />
-                    <div *ngIf="carForm.get('marca')?.invalid && (carForm.get('marca')?.dirty || carForm.get('marca')?.touched)" class="text-red-500">
-                        Marca Requerida
+                    <!-- Campo Modelo -->
+                    <div class="mb-5">
+                        <div class="flex items-center">
+                            <i class="fas fa-cogs text-[#4f52ba] mr-3"></i>
+                            <input
+                                type="text"
+                                placeholder="Modelo"
+                                formControlName="modelo"
+                                required
+                                aria-label="Modelo del carro"
+                                class="w-full p-3 border border-gray-300 rounded-md focus:border-[#4f52ba] focus:outline-none transition duration-300"
+                            />
+                        </div>
+                        <div *ngIf="carForm.get('modelo')?.invalid && (carForm.get('modelo')?.dirty || carForm.get('modelo')?.touched)" class="text-red-500">
+                            Modelo Requerido
+                        </div>
+                    </div>
+
+                    <!-- Campo Año -->
+                    <div class="mb-5">
+                        <div class="flex items-center">
+                            <i class="fas fa-calendar-alt text-[#4f52ba] mr-3"></i>
+                            <input
+                                type="number"
+                                placeholder="Año"
+                                formControlName="anio"
+                                required
+                                aria-label="Año del carro"
+                                class="w-full p-3 border border-gray-300 rounded-md focus:border-[#4f52ba] focus:outline-none transition duration-300"
+                                min="1886"
+                            />
+                        </div>
+                        <div *ngIf="carForm.get('anio')?.invalid && (carForm.get('anio')?.dirty || carForm.get('anio')?.touched)" class="text-red-500">
+                            Año requerido
+                        </div>
+                    </div>
+
+                    <!-- Campo Color -->
+                    <div class="mb-5">
+                        <div class="flex items-center">
+                            <i class="fas fa-paint-brush text-[#4f52ba] mr-3"></i>
+                            <input
+                                type="text"
+                                placeholder="Color"
+                                formControlName="color"
+                                required
+                                aria-label="Color del carro"
+                                class="w-full p-3 border border-gray-300 rounded-md focus:border-[#4f52ba] focus:outline-none transition duration-300"
+                            />
+                        </div>
+                        <div *ngIf="carForm.get('color')?.invalid && (carForm.get('color')?.dirty || carForm.get('color')?.touched)" class="text-red-500">
+                            Color Requerido
+                        </div>
+                    </div>
+
+                    <!-- Campo Tipo de Combustible -->
+                    <div class="mb-4">
+                        <div class="flex items-center">
+                            <i class="fas fa-gas-pump text-[#4f52ba] mr-2"></i>
+                            <select
+                                formControlName="tipo_combustible"
+                                required
+                                aria-label="Tipo de combustible"
+                                class="w-full p-2 border border-gray-300 rounded-md focus:border-[#4f52ba] focus:outline-none transition duration-300"
+                            >
+                                <option value="" disabled selected>Tipo de Combustible</option>
+                                <option value="Gasolina">Gasolina</option>
+                                <option value="Diesel">Diesel</option>
+                                <option value="Híbrido">Híbrido</option>
+                            </select>
+                        </div>
+                        <div *ngIf="carForm.get('tipo_combustible')?.invalid && (carForm.get('tipo_combustible')?.dirty || carForm.get('tipo_combustible')?.touched)" class="text-red-500">
+                            Tipo de combustible es requerido.
+                        </div>
+                    </div>
+
+                    <!-- Campo Precio Diario -->
+                    <div class="mb-5">
+                        <div class="flex items-center">
+                            <i class="fas fa-dollar-sign text-[#4f52ba] mr-3"></i>
+                            <input
+                                type="number"
+                                placeholder="Precio Diario"
+                                formControlName="precio_diaro"
+                                required
+                                aria-label="Precio diario"
+                                class="w-full p-3 border border-gray-300 rounded-md focus:border-[#4f52ba] focus:outline-none transition duration-300"
+                                min="0"
+                            />
+                        </div>
+                        <div *ngIf="carForm.get('precio_diaro')?.invalid && (carForm.get('precio_diaro')?.dirty || carForm.get('precio_diaro')?.touched)" class="text-red-500">
+                            Precio Diario Requerido
+                        </div>
+                    </div>
+
+                    <!-- Campo Disponibilidad -->
+                    <div class="mb-5">
+                        <div class="flex items-center">
+                            <i class="fas fa-calendar-check text-[#4f52ba] mr-3"></i>
+                            <select
+                                formControlName="disponibilidad"
+                                required
+                                aria-label="Disponibilidad del carro"
+                                class="w-full p-3 border border-gray-300 rounded-md focus:border-[#4f52ba] focus:outline-none transition duration-300"
+                            >
+                                <option value="" disabled selected>Disponibilidad</option>
+                                <option value="Disponible">Disponible</option>
+                                <option value="No Disponible">No Disponible</option>
+                            </select>
+                        </div>
+                        <div *ngIf="carForm.get('disponibilidad')?.invalid && (carForm.get('disponibilidad')?.dirty || carForm.get('disponibilidad')?.touched)" class="text-red-500">
+                            Disponibilidad Requerida
+                        </div>
+                    </div>
+
+                    <!-- Campo Categoría -->
+                    <div class="mb-5">
+                        <div class="flex items-center">
+                            <i class="fas fa-tags text-[#4f52ba] mr-3"></i>
+                            <select
+                                formControlName="categoria"
+                                required
+                                aria-label="Categoría del carro"
+                                class="w-full p-3 border border-gray-300 rounded-md focus:border-[#4f52ba] focus:outline-none transition duration-300"
+                            >
+                                <option value="" disabled selected>Categoría</option>
+                                <option value="SUV">SUV</option>
+                                <option value="Sedán">Sedán</option>
+                                <option value="Camioneta">Camioneta</option>
+                            </select>
+                        </div>
+                        <div *ngIf="carForm.get('categoria')?.invalid && (carForm.get('categoria')?.dirty || carForm.get('categoria')?.touched)" class="text-red-500">
+                            Categoría Requerida
+                        </div>
+                    </div>
+
+                    <!-- Campo Pasajeros -->
+                    <div class="mb-5">
+                        <div class="flex items-center">
+                            <i class="fas fa-users text-[#4f52ba] mr-3"></i>
+                            <input
+                                type="number"
+                                placeholder="Pasajeros"
+                                formControlName="pasajeros"
+                                required
+                                aria-label="Número de pasajeros"
+                                class="w-full p-3 border border-gray-300 rounded-md focus:border-[#4f52ba] focus:outline-none transition duration-300"
+                                min="1"
+                            />
+                        </div>
+                        <div *ngIf="carForm.get('pasajeros')?.invalid && (carForm.get('pasajeros')?.dirty || carForm.get('pasajeros')?.touched)" class="text-red-500">
+                            Pasajeros Requeridos
+                        </div>
+                    </div>
+
+                    <!-- Campo Puertas -->
+                    <div class="mb-5">
+                        <div class="flex items-center">
+                            <i class="fas fa-door-open text-[#4f52ba] mr-3"></i>
+                            <input
+                                type="number"
+                                placeholder="Puertas"
+                                formControlName="puertas"
+                                required
+                                aria-label="Número de puertas"
+                                class="w-full p-3 border border-gray-300 rounded-md focus:border-[#4f52ba] focus:outline-none transition duration-300"
+                                min="1"
+                            />
+                        </div>
+                        <div *ngIf="carForm.get('puertas')?.invalid && (carForm.get('puertas')?.dirty || carForm.get('puertas')?.touched)" class="text-red-500">
+                            Puertas Requeridas
+                        </div>
                     </div>
                 </div>
+                <!-- End of Grid Layout -->
 
-                <!-- Campo Modelo -->
-                <div class="mb-5">
-                    <input
-                        type="text"
-                        placeholder="Modelo"
-                        formControlName="modelo"
-                        required
-                        aria-label="Modelo del carro"
-                        class="w-full p-3 border border-gray-300 rounded-md focus:border-[#4f52ba] focus:outline-none transition duration-300"
-                    />
-                    <div *ngIf="carForm.get('modelo')?.invalid && (carForm.get('modelo')?.dirty || carForm.get('modelo')?.touched)" class="text-red-500">
-                        Modelo Requerido
-                    </div>
-                </div>
-
-                <!-- Campo Año -->
-                <div class="mb-5">
-                    <input
-                        type="number"
-                        placeholder="Año"
-                        formControlName="anio"
-                        required
-                        aria-label="Año del carro"
-                        class="w-full p-3 border border-gray-300 rounded-md focus:border-[#4f52ba] focus:outline-none transition duration-300"
-                        min="1886"
-                    />
-                    <div *ngIf="carForm.get('anio')?.invalid && (carForm.get('anio')?.dirty || carForm.get('anio')?.touched)" class="text-red-500">
-                        anio requerido
-                    </div>
-                </div>
-
-                <!-- Campo Color -->
-                <div class="mb-5">
-                    <input
-                        type="text"
-                        placeholder="Color"
-                        formControlName="color"
-                        required
-                        aria-label="Color del carro"
-                        class="w-full p-3 border border-gray-300 rounded-md focus:border-[#4f52ba] focus:outline-none transition duration-300"
-                    />
-                    <div *ngIf="carForm.get('color')?.invalid && (carForm.get('color')?.dirty || carForm.get('color')?.touched)" class="text-red-500">
-                       Color Requerido
-                    </div>
-                </div>
-
-                <!-- Campo Tipo de Combustible -->
-                <div class="mb-5">
-                    <select
-                        formControlName="tipo_combustible"
-                        required
-                        aria-label="Tipo de combustible"
-                        class="w-full p-3 border border-gray-300 rounded-md focus:border-[#4f52ba] focus:outline-none transition duration-300"
-                    >
-                        <option value="" disabled selected>Tipo de Combustible</option>
-                        <option value="Gasolina">Gasolina</option>
-                        <option value="Diesel">Diesel</option>
-                        <option value="Híbrido">Híbrido</option>
-                    </select>
-                    <div *ngIf="carForm.get('tipo_combustible')?.invalid && (carForm.get('tipo_combustible')?.dirty || carForm.get('tipo_combustible')?.touched)" class="text-red-500">
-                        Tipo de combustible Requerido
-                    </div>
-                </div>
-
-                <!-- Campo Precio Diario -->
-                <div class="mb-5">
-                    <input
-                        type="number"
-                        placeholder="Precio Diario"
-                        formControlName="precio_diaro"
-                        required
-                        aria-label="Precio diario"
-                        class="w-full p-3 border border-gray-300 rounded-md focus:border-[#4f52ba] focus:outline-none transition duration-300"
-                        min="0"
-                    />
-                    <div *ngIf="carForm.get('precio_diaro')?.invalid && (carForm.get('precio_diaro')?.dirty || carForm.get('precio_diaro')?.touched)" class="text-red-500">
-                        precio diario Requerido
-                    </div>
-                </div>
-
-                <!-- Campo Disponibilidad -->
-                <div class="mb-5">
-                    <select
-                        formControlName="disponibilidad"
-                        required
-                        aria-label="Disponibilidad del carro"
-                        class="w-full p-3 border border-gray-300 rounded-md focus:border-[#4f52ba] focus:outline-none transition duration-300"
-                    >
-                        <option value="" disabled selected>Disponibilidad</option>
-                        <option value="Disponible">Disponible</option>
-                        <option value="No Disponible">No Disponible</option>
-                    </select>
-                    <div *ngIf="carForm.get('disponibilidad')?.invalid && (carForm.get('disponibilidad')?.dirty || carForm.get('disponibilidad')?.touched)" class="text-red-500">
-                        Disponibilidad Requerida
-                    </div>
-                </div>
-
-                <!-- Campo Categoría -->
-                <div class="mb-5">
-                    <select
-                        formControlName="categoria"
-                        required
-                        aria-label="Categoría del carro"
-                        class="w-full p-3 border border-gray-300 rounded-md focus:border-[#4f52ba] focus:outline-none transition duration-300"
-                    >
-                        <option value="" disabled selected>Categoría</option>
-                        <option value="SUV">SUV</option>
-                        <option value="Sedán">Sedán</option>
-                        <option value="Camioneta">Camioneta</option>
-                    </select>
-                    <div *ngIf="carForm.get('categoria')?.invalid && (carForm.get('categoria')?.dirty || carForm.get('categoria')?.touched)" class="text-red-500">
-                       Categoria Requerida
-                    </div>
-                </div>
-
-                <!-- Campo Pasajeros -->
-                <div class="mb-5">
-                    <input
-                        type="number"
-                        placeholder="Pasajeros"
-                        formControlName="pasajeros"
-                        required
-                        aria-label="Número de pasajeros"
-                        class="w-full p-3 border border-gray-300 rounded-md focus:border-[#4f52ba] focus:outline-none transition duration-300"
-                        min="1"
-                    />
-                    <div *ngIf="carForm.get('pasajeros')?.invalid && (carForm.get('pasajeros')?.dirty || carForm.get('pasajeros')?.touched)" class="text-red-500">
-                        Pasajeros Requeridos
-                    </div>
-                </div>
-
-                <!-- Campo Puertas -->
-                <div class="mb-5">
-                    <input
-                        type="number"
-                        placeholder="Puertas"
-                        formControlName="puertas"
-                        required
-                        aria-label="Número de puertas"
-                        class="w-full p-3 border border-gray-300 rounded-md focus:border-[#4f52ba] focus:outline-none transition duration-300"
-                        min="1"
-                    />
-                    <div *ngIf="carForm.get('puertas')?.invalid && (carForm.get('puertas')?.dirty || carForm.get('puertas')?.touched)" class="text-red-500">
-                        Puertas Requerida
-                    </div>
-                </div>
-
-                <!-- Campo Imagen -->
-                <div class="mb-5">
-                    <label for="newImage" class="block mb-1">Cambiar Imagen:</label>
-                    <input type="file" (change)="onFileSelected($event)" class="w-full p-3 border border-gray-300 rounded-md focus:border-[#4f52ba] focus:outline-none transition duration-300" />
-                    <p *ngIf="selectedFileName" class="mt-1 text-gray-600">Archivo seleccionado: {{ selectedFileName }}</p>
-                </div>
-
-                <!-- Campo Descripción -->
-                <div class="mb-5">
-                    <textarea
-                        placeholder="Descripción"
-                        formControlName="descripcion"
-                        required
-                        aria-label="Descripción del carro"
-                        class="w-full p-3 border border-gray-300 rounded-md focus:border-[#4f52ba] focus:outline-none transition duration-300"
-                    ></textarea>
-                    <div *ngIf="carForm.get('descripcion')?.invalid && (carForm.get('descripcion')?.dirty || carForm.get('descripcion')?.touched)" class="text-red-500">
-                      Descripcion Requerida
-                    </div>
-                </div>
-
-                <!-- Campo Kilometraje -->
-                <div class="mb-5">
-                    <input
-                        type="number"
-                        placeholder="Kilometraje"
-                        formControlName="kilometraje"
-                        required
-                        aria-label="Kilometraje del carro"
-                        class="w-full p-3 border border-gray-300 rounded-md focus:border-[#4f52ba] focus:outline-none transition duration-300"
-                        min="0"
-                    />
-                    <div *ngIf="carForm.get('kilometraje')?.invalid && (carForm.get('kilometraje')?.dirty || carForm.get('kilometraje')?.touched)" class="text-red-500">
-                        Kilometraje Requerido
-                    </div>
-                </div>
-
-                <button type="submit" class="w-full bg-[#4f52ba] text-white py-3 rounded-md hover:bg-[#3c4599] transition duration-300" [disabled]="carForm.invalid">
-                    Actualizar
+                <!-- Submit Button -->
+                <button
+                    type="submit"
+                    [disabled]="carForm.invalid"
+                    class="w-full p-3 bg-[#4f52ba] text-white rounded-md hover:bg-[#3e449f] focus:outline-none transition duration-300 mt-6"
+                >
+                    Guardar Cambios
                 </button>
-
             </form>
         </div>
     </div>

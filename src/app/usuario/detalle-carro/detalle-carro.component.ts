@@ -8,8 +8,10 @@ import { AuthService } from '../../core/services/auth.service';
 import { Car, CarrosService } from '../../core/services/carros.service';
 import { ReservationsService } from '../../core/services/reservations.service';
 
+
 import Swal from 'sweetalert2';
 
+import { ChatbotComponent } from '../../components/chat-bot/chat-bot.component';
 import { NavbarComponent } from '../navbar/navbar.component';
 
 @Component({
@@ -20,6 +22,7 @@ import { NavbarComponent } from '../navbar/navbar.component';
     NavbarComponent,
     FormsModule,
     ReviewsComponent,
+    ChatbotComponent,
   ],
   templateUrl: './detalle-carro.component.html',
   styleUrls: ['./detalle-carro.component.css'],

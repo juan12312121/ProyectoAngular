@@ -14,6 +14,7 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
 export default class CarrosEnMantenimientoComponent implements OnInit {
   mantenimientos: Maintenance[] = [];
   mantenimientosTerminados: Maintenance[] = []; // Nueva lista para los mantenimientos terminados
+  totalGastos: number = 0;
 
   constructor(private maintenanceService: MaintenanceService) {}
 

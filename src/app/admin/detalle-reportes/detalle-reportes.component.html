@@ -1,0 +1,71 @@
+<div class="flex bg-[#F0F4FF] min-h-screen">
+  <app-sidebar></app-sidebar>
+
+  <!-- Contenedor principal -->
+  <div class="flex-1 p-8">
+    <!-- Indicador de carga -->
+    <div *ngIf="loading" class="text-center text-xl text-gray-500">
+      Cargando...
+    </div>
+
+    <!-- Mensaje de error -->
+    <div *ngIf="error" class="text-center text-red-500 text-xl mt-4">
+      {{ error }}
+    </div>
+
+    <!-- Lista de reportes -->
+    <div *ngIf="!loading && reportes.length > 0" class="space-y-6">
+      <h1 class="text-3xl font-bold text-[#161a2d] mb-6">Lista de Reportes</h1>
+
+      <!-- Iterar sobre cada reporte -->
+      <div *ngFor="let reporte of reportes" class="bg-white p-6 rounded-lg shadow-lg">
+        <!-- Título del reporte -->
+        <h2 class="text-2xl font-semibold text-[#4f52ba] mb-4 flex items-center">
+          <i class="fas fa-file-alt text-[#4f52ba] mr-2"></i> Reporte ID: {{ reporte.idreporte }}
+        </h2>
+
+        <!-- Información del reporte -->
+        <div class="grid grid-cols-2 gap-4 mb-6">
+          <div>
+            <p class="text-lg"><strong>Tipo de Reporte:</strong> {{ reporte.tipo_reporte || 'N/A' }}</p>
+            <p class="text-lg"><strong>Descripción:</strong> {{ reporte.descripcion || 'N/A' }}</p>
+            <p class="text-lg"><strong>Estado del Reporte:</strong> {{ reporte.estado_reporte || 'N/A' }}</p>
+            <p class="text-lg"><strong>Estado de Pago:</strong> {{ reporte.estado_pago || 'N/A' }}</p>
+          </div>
+          <div>
+            <p class="text-lg"><strong>Fecha del Reporte:</strong> {{ reporte.fecha_reporte | date:'dd/MM/yyyy' }}</p>
+            <p class="text-lg"><strong>Detalles de la Reserva:</strong> {{ reporte.detalles_reserva || 'N/A' }}</p>
+            <p class="text-lg"><strong>Monto de la Reserva:</strong> ${{ reporte.monto_reserva || 'N/A' }}</p>
+            <p class="text-lg"><strong>Tipo de Reserva:</strong> {{ reporte.tipo_reserva || 'N/A' }}</p>
+            <p class="text-lg"><strong>Fecha de Reserva:</strong> {{ reporte.fecha_reserva | date:'dd/MM/yyyy' }}</p>
+            <p class="text-lg"><strong>Fecha de Finalización:</strong> {{ reporte.fecha_fin | date:'dd/MM/yyyy' }}</p>
+          </div>
+        </div>
+
+        <!-- Separador -->
+        <hr class="my-4">
+
+        <!-- Información del vehículo -->
+        <h3 class="text-xl font-semibold text-[#4f52ba] mb-2">Información del Vehículo</h3>
+        <div class="grid grid-cols-2 gap-4">
+          <p class="text-lg"><strong>Marca:</strong> {{ reporte.marca || 'N/A' }}</p>
+          <p class="text-lg"><strong>Color:</strong> {{ reporte.color || 'N/A' }}</p>
+          <p class="text-lg"><strong>ID del Vehículo:</strong> {{ reporte.id_carro || 'N/A' }}</p>
+        </div>
+
+        <!-- Información del usuario -->
+        <h3 class="text-xl font-semibold text-[#4f52ba] mb-2 mt-4">Información del Usuario</h3>
+        <div class="grid grid-cols-2 gap-4">
+          <p class="text-lg"><strong>Nombre Completo:</strong> {{ reporte.nombre_completo || 'N/A' }}</p>
+          <p class="text-lg"><strong>Correo:</strong> {{ reporte.correo || 'N/A' }}</p>
+          <p class="text-lg"><strong>ID de Usuario:</strong> {{ reporte.id_usuario || 'N/A' }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mensaje cuando no hay datos -->
+    <div *ngIf="!loading && reportes.length === 0" class="text-center text-gray-500 text-xl">
+      No hay reportes disponibles.
+    </div>
+  </div>
+</div>

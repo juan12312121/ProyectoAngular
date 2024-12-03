@@ -2,11 +2,13 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../core/services/auth.service';
 import { ReservationsService } from '../../core/services/reservations.service';
 import { SidebarComponent } from '../sidebar/sidebar.component';
+
 
 @Component({
   selector: 'app-reservas',
@@ -28,11 +30,13 @@ export default class ReservasComponent implements OnInit {
   totalPages: number = 0;
   choferes: any[] = [];
   choferSeleccionadoId: number = 0; 
+reservation: any;
 
   constructor(
     private http: HttpClient, // Inject HttpClient here
     private reservationsService: ReservationsService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -124,12 +128,10 @@ export default class ReservasComponent implements OnInit {
     this.loadReservations();
   }
 
-  rejectReservation(id: number): void {
-    console.log(`Reserva ${id} rechazada`);
-  }
+
 
   viewDetails(id: number): void {
-    console.log(`Ver detalles de la reserva ${id}`);
+    this.router.navigate([`/detalle-renta/${id}`]);
   }
 
   assignDriverToReservation(reservationId: number, choferId: number): void {
@@ -182,6 +184,33 @@ export default class ReservasComponent implements OnInit {
           confirmButtonColor: '#d33',
         });
         this.isLoading = false;
+      },
+    });
+  }
+
+  rejectReservation(reservationId: number): void {
+    // Llamar al servicio para rechazar la reserva
+    this.reservationsService.rejectedReservation(reservationId).subscribe({
+      next: () => {
+        Swal.fire({
+          title: '¡Éxito!',
+          text: 'La reserva ha sido rechazada exitosamente.',
+          icon: 'success',
+          confirmButtonText: 'Aceptar',
+          confirmButtonColor: '#3085d6',
+        }).then(() => {
+          // Recargar las reservas después de rechazarla
+          this.loadReservations();
+        });
+      },
+      error: (err) => {
+        Swal.fire({
+          title: 'Error',
+          text: 'No se pudo rechazar la reserva. Inténtalo nuevamente.',
+          icon: 'error',
+          confirmButtonText: 'Aceptar',
+          confirmButtonColor: '#d33',
+        });
       },
     });
   }

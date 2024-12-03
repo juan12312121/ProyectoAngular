@@ -1,0 +1,76 @@
+<div class="flex bg-[#F0F4FF] min-h-screen">
+    <app-sidebar></app-sidebar>
+  
+    <div class="flex-1 p-8">
+      <!-- Cargando -->
+      <div *ngIf="isLoading" class="text-center text-lg text-gray-600">
+        Cargando detalles de la reserva...
+      </div>
+  
+      <!-- Detalles de la reserva -->
+      <div *ngIf="!isLoading && reservationDetails" class="max-w-5xl mx-auto">
+        <h1 class="text-4xl font-semibold text-[#161a2d] mb-10">Detalles de la Reserva</h1>
+  
+        <div class="bg-white p-8 rounded-lg shadow-xl space-y-8">
+          <!-- Reserva Information Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <!-- ID de Reserva -->
+            <div class="space-y-2">
+              <strong class="font-medium text-lg text-[#161a2d]">ID de Reserva</strong>
+              <p class="text-gray-700">{{ reservationDetails.id_reserva }}</p>
+            </div>
+  
+            <!-- Tipo de Reserva -->
+            <div class="space-y-2">
+              <strong class="font-medium text-lg text-[#161a2d]">Tipo de Reserva</strong>
+              <p class="text-gray-700">{{ reservationDetails.tipo_reserva }}</p>
+            </div>
+  
+            <!-- Marca -->
+            <div class="space-y-2">
+              <strong class="font-medium text-lg text-[#161a2d]">Marca</strong>
+              <p class="text-gray-700">{{ reservationDetails.marca }}</p>
+            </div>
+  
+            <!-- Modelo -->
+            <div class="space-y-2">
+              <strong class="font-medium text-lg text-[#161a2d]">Modelo</strong>
+              <p class="text-gray-700">{{ reservationDetails.modelo }}</p>
+            </div>
+  
+            <!-- Usuario -->
+            <div class="space-y-2">
+              <strong class="font-medium text-lg text-[#161a2d]">Usuario</strong>
+              <p class="text-gray-700">{{ reservationDetails.usuario }}</p>
+            </div>
+  
+            <!-- Correo del Usuario -->
+            <div class="space-y-2">
+              <strong class="font-medium text-lg text-[#161a2d]">Correo del Usuario</strong>
+              <p class="text-gray-700">{{ reservationDetails.usuario_correo }}</p>
+            </div>
+  
+            <!-- Fecha de Inicio -->
+            <div class="space-y-2">
+              <strong class="font-medium text-lg text-[#161a2d]">Fecha de Inicio</strong>
+              <p class="text-gray-700">{{ reservationDetails.fecha_inicio | date:'dd/MM/yyyy' }}</p>
+            </div>
+  
+            <!-- Fecha de Fin -->
+            <div class="space-y-2">
+              <strong class="font-medium text-lg text-[#161a2d]">Fecha de Fin</strong>
+              <p class="text-gray-700">{{ reservationDetails.fecha_fin | date:'dd/MM/yyyy' }}</p>
+            </div>
+  
+            <!-- Monto de la Reserva -->
+            <div class="space-y-2">
+              <strong class="font-medium text-lg text-[#161a2d]">Monto de la Reserva</strong>
+              <p class="text-gray-700">${{ reservationDetails.monto_reserva | number }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

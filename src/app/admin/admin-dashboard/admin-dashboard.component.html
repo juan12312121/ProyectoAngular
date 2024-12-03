@@ -7,7 +7,31 @@
     <h1 class="text-2xl font-bold text-gray-900 mb-6">Bienvenido al Panel Administrativo</h1>
 
     <!-- Notificaciones -->
-    <app-admin-notificaciones></app-admin-notificaciones>
+   <!-- Notification Button -->
+<div class="absolute top-6 right-6">
+  <button 
+    id="notificationButton" 
+    class="relative p-3 bg-blue-600 text-white rounded-full hover:bg-blue-500 focus:outline-none transition-colors"
+    >
+    <!-- Notification Bell Icon -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" stroke="currentColor" fill="none">
+      <path 
+        d="M12 22c1.104 0 2-.896 2-2H10c0 1.104.896 2 2 2zm6-6V9c0-3.313-2.687-6-6-6S6 5.687 6 9v7H4v2h16v-2h-2z" 
+        stroke-width="2" 
+        stroke-linejoin="round" 
+        stroke-linecap="round">
+      </path>
+    </svg>
+    <!-- Unread Notifications Counter -->
+    <span class="absolute top-0 right-0 bg-red-600 text-white text-xs font-bold rounded-full px-2 py-1">
+   
+    </span>
+  </button>
+</div>
+
+<!-- Notifications Window -->
+
+
 
     <!-- Información General -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">

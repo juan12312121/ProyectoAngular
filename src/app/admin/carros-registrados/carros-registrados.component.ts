@@ -44,7 +44,9 @@ export default class CarrosRegistradosComponent implements OnInit {
   totalPages: number = 0;
   paginatedCarros: Car[] = [];
   isLoading: boolean = false; // Flag for loading state
-  mantenimientoData: { [key: number]: TipoMantenimiento } = {}; 
+  mantenimientoData: { [key: number]: Maintenance } = {}; 
+
+
   tipoMantenimiento: TipoMantenimiento | null = null;
   idCarro: number | null = null;
   tipoMantenimientoOptions = Object.values(TipoMantenimiento); // Get all enum values
@@ -133,19 +135,26 @@ export default class CarrosRegistradosComponent implements OnInit {
 
   // Function to create maintenance
   crearMantenimiento(carroId: number): void {
-    const tipoMantenimiento = this.mantenimientoData[carroId];  
-    if (!tipoMantenimiento) {
+    // Asegúrate de que tipo_mantenimiento esté definido en this.mantenimientoData
+    const mantenimiento = this.mantenimientoData[carroId];
+  
+    // Si no se ha seleccionado un tipo de mantenimiento, muestra una advertencia
+    if (!mantenimiento) {
       Swal.fire({
         icon: 'warning',
         title: '¡Advertencia!',
-        text: 'Por favor, seleccione un tipo de mantenimiento',
+        text: 'No se ha seleccionado un tipo de mantenimiento',
         confirmButtonText: 'Aceptar'
       });
       return;
     }
   
     this.isLoading = true; // Inicia el loading
-    const costo = MantenimientoCosts[tipoMantenimiento];
+  
+    // Aquí ya puedes acceder al costo y tipo de mantenimiento directamente
+    const { tipo_mantenimiento, costo, estado_pago, estado_mantenimiento, marca, modelo, gastos, id_carro, fecha_mantenimiento, fecha_creacion } = mantenimiento;
+  
+    // Si el costo no está definido, muestra una advertencia
     if (!costo) {
       Swal.fire({
         icon: 'warning',
@@ -157,21 +166,20 @@ export default class CarrosRegistradosComponent implements OnInit {
       return;
     }
   
-    // Formatear la fecha correctamente para MySQL (YYYY-MM-DD HH:MM:SS)
-    const fechaMantenimiento = new Date().toISOString().slice(0, 19).replace('T', ' ');
-  
-    const mantenimientoData: Maintenance = {
-      id_carro: carroId,
-      tipo_mantenimiento: tipoMantenimiento,
-      costo: costo,
-      fecha_mantenimiento: fechaMantenimiento,
-      id_mantenimiento: 0,
-      fecha_creacion: '',
-      marca: '',
-      modelo: ''
-    };
-  
-    this.maintenanceService.createMaintenance(mantenimientoData).subscribe(
+    // Llamada al servicio para crear el mantenimiento
+    this.maintenanceService.createMaintenance({
+      id_carro,
+      tipo_mantenimiento,
+      costo,
+      estado_pago,
+      estado_mantenimiento,
+      marca,
+      modelo,
+      gastos,
+      fecha_mantenimiento,
+      fecha_creacion,
+      id_mantenimiento: 0 // El ID se maneja automáticamente en la base de datos
+    }).subscribe(
       () => {
         Swal.fire({
           icon: 'success',
@@ -193,10 +201,30 @@ export default class CarrosRegistradosComponent implements OnInit {
       }
     );
   }
+  
+  
+  
 
   setTipoMantenimiento(carroId: number, tipo: TipoMantenimiento): void {
-    this.mantenimientoData[carroId] = tipo; // Almacena el tipo de mantenimiento seleccionado para cada carro
+    const costo = MantenimientoCosts[tipo]; // Suponiendo que MantenimientoCosts es un objeto que contiene los costos para cada tipo de mantenimiento.
+    
+    // Aquí estamos dejando que la base de datos maneje id_mantenimiento y fecha_creacion
+    this.mantenimientoData[carroId] = {
+      id_carro: carroId,                     // ID del carro
+      tipo_mantenimiento: tipo,               // Tipo de mantenimiento (enum)
+      costo: costo,                           // Costo calculado
+      fecha_mantenimiento: new Date().toISOString().split('T')[0], // Fecha de mantenimiento (en formato YYYY-MM-DD)
+      estado_pago: 'Pendiente',               // Estado de pago (agregado)
+      marca: 'Toyota',                        // Marca del carro
+      modelo: 'Corolla',                      // Modelo del carro
+      gastos: 0.00,                           // Gastos adicionales (agregado)
+      id_mantenimiento: 0,                    // El ID se maneja automáticamente en la base de datos
+      fecha_creacion: new Date().toISOString(),  // Fecha de creación (agregada)
+      estado_mantenimiento: 'Pendiente'      // Estado de mantenimiento (agregado)
+    };
   }
+  
+  
   
 
   setIdCarro(carroId: number) {

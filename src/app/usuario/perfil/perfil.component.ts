@@ -1,12 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ChatbotComponent } from '../../components/chat-bot/chat-bot.component';
 import { AuthService } from '../../core/services/auth.service'; // Importar AuthService
 import { NavbarComponent } from '../navbar/navbar.component';
 
+
 @Component({
   standalone: true,  // Componente independiente
-  imports: [NavbarComponent, CommonModule],  // Importar CommonModule para usar ngIf y otros directivas
+  imports: [NavbarComponent, CommonModule,ChatbotComponent],  // Importar CommonModule para usar ngIf y otros directivas
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
   styleUrls: ['./perfil.component.css']

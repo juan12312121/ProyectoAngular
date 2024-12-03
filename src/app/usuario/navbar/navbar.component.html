@@ -8,9 +8,9 @@
             <li><a class="hover:text-blue-400 transition duration-300 ease-in-out flex items-center" href="/carros">
                 <i class="fas fa-car mr-2"></i> Carros
             </a></li>
-            <!-- Condicional para mostrar "Historial" solo si está logueado -->
-            <li *ngIf="isLoggedIn"><a class="hover:text-blue-400 transition duration-300 ease-in-out flex items-center" href="/historial-reservas">
-                <i class="fas fa-history mr-2"></i> Historial
+            <!-- Condicional para mostrar "Reservas" solo si está logueado -->
+            <li *ngIf="isLoggedIn"><a class="hover:text-blue-400 transition duration-300 ease-in-out flex items-center" href="/reservas-usuario">
+                <i class="fas fa-calendar-check mr-2"></i> Reservas
             </a></li>
             <li class="relative group">
                 <a (click)="toggleProfileDropdown()" class="hover:text-blue-400 transition duration-300 ease-in-out cursor-pointer flex items-center">
