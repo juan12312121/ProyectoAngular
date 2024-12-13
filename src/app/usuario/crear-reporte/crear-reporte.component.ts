@@ -2,97 +2,150 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import Swal from 'sweetalert2'; // Importa SweetAlert2
+import Swal from 'sweetalert2';
 import { ChatbotComponent } from '../../components/chat-bot/chat-bot.component';
-import { ReservationsService } from '../../core/services/reservations.service'; // Import ReservationsService
+import { ReservationsService } from '../../core/services/reservations.service';
 import { NavbarComponent } from '../navbar/navbar.component';
-
 
 @Component({
   standalone: true,
-  imports: [NavbarComponent, CommonModule, FormsModule,ChatbotComponent],
+  imports: [NavbarComponent, CommonModule, FormsModule, ChatbotComponent],
   selector: 'app-crear-reporte',
   templateUrl: './crear-reporte.component.html',
-  styleUrls: ['./crear-reporte.component.css']
+  styleUrls: ['./crear-reporte.component.css'],
 })
 export default class CrearReporteComponent implements OnInit {
-  // Definir el tipo de id_reserva como number o null
-  reportData: {
-    id_reserva: number | null; // Cambiar para que acepte null o number
-    tipo_reporte: string;
-    descripcion: string;
-  } = {
-    id_reserva: null,
+  // Datos del reporte
+  reportData = {
+    id_reserva: null as number | null,
     tipo_reporte: '',
-    descripcion: ''
+    descripcion: '',
   };
 
+  // Mensaje de advertencia para palabras ofensivas
+  offensiveMessage = '';
+
+  // Lista de palabras ofensivas
+  private palabrasSoeces: string[] = [
+    'idiota',
+    'estúpido',
+    'imbécil',
+    'tonto',
+    'maldito',
+    'grosero',
+    'pendejo',
+    'cabron',
+    'chingada',
+    'chingado',
+    'puto',
+    'puta',
+    'pito',
+    'madre',
+    'hijo de puta',
+    'culero',
+    'mierda',
+    'baboso',
+    'tarado',
+    'estupidez',
+    'pinche',
+    'cabrón',
+    'verga',
+    'mamada',
+    'chingón',
+    'culera',
+    'jodido',
+    'perra',
+    'zorra',
+    'estúpida',
+    'marica',
+    'menso',
+    'mamón',
+    'coño',
+    'imbécil',
+    'naco',
+  ];
+
   constructor(
-    private reservationsService: ReservationsService, // Inject the ReservationsService
+    private reservationsService: ReservationsService,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    // Obtener el ID de la reserva desde la URL
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe((params) => {
       const idReservaParam = params.get('id_reserva');
       if (idReservaParam) {
-        this.reportData.id_reserva = +idReservaParam; // Convertir a number
-        console.log('ID de reserva obtenido de la URL:', this.reportData.id_reserva); // Log del ID de la reserva
+        this.reportData.id_reserva = +idReservaParam;
       }
     });
   }
 
-  onSubmit(): void {
-    const { id_reserva, tipo_reporte, descripcion } = this.reportData;
+  // Método para validar palabras ofensivas dinámicamente
+  validateOffensiveWords(): void {
+    const descripcionLower = this.reportData.descripcion.toLowerCase();
+    const contienePalabrasSoeces = this.palabrasSoeces.some((palabra) =>
+      descripcionLower.includes(palabra)
+    );
 
-    // Validar si el id_reserva es válido antes de enviar
+    if (contienePalabrasSoeces) {
+      this.offensiveMessage =
+        'No permitimos palabras ofensivas en la descripción.';
+    } else {
+      this.offensiveMessage = '';
+    }
+  }
+  onSubmit(): void {
+    console.log("Tipo de reporte seleccionado:", this.reportData.tipo_reporte);
+    
+    const { id_reserva, tipo_reporte, descripcion } = this.reportData;
+  
     if (id_reserva === null || id_reserva === undefined) {
-      console.error('El ID de la reserva es obligatorio'); // Log de error si el id_reserva no es válido
       Swal.fire({
         icon: 'error',
         title: 'Error',
         text: 'El ID de la reserva es obligatorio.',
-        confirmButtonText: 'Aceptar'
+        confirmButtonText: 'Aceptar',
       });
-      return; // Detener el envío si no hay id_reserva
+      return;
     }
-
-    console.log('Datos del reporte a enviar:', this.reportData); // Log de los datos del reporte antes de enviar
-
-    // Aquí aseguramos que el id_reserva es un número antes de llamar al servicio
+  
+    if (this.offensiveMessage) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Texto no permitido',
+        text: 'La descripción contiene palabras ofensivas. Por favor, corrige el texto.',
+        confirmButtonText: 'Aceptar',
+      });
+      return;
+    }
+  
+    
     const validReportData = {
-      id_reserva: id_reserva,  // Este es un número, no null
-      tipo_reporte: tipo_reporte,
-      descripcion: descripcion
+      id_reserva,
+      tipo_reporte,
+      descripcion,
     };
-
-    // Llamar al método createReport desde ReservationsService
+  
     this.reservationsService.createReport(validReportData).subscribe(
-      (response: any) => {
-        console.log('Reporte creado exitosamente:', response); // Log de éxito con la respuesta del backend
-        // Mostrar alerta de éxito si se crea el reporte correctamente
+      () => {
         Swal.fire({
           icon: 'success',
           title: '¡Reporte Creado!',
           text: 'El reporte se ha creado exitosamente.',
-          confirmButtonText: 'Aceptar'
+          confirmButtonText: 'Aceptar',
         }).then(() => {
-          // Limpiar los campos del formulario si es necesario
           this.reportData = { id_reserva: null, tipo_reporte: '', descripcion: '' };
-          console.log('Campos del formulario limpiados'); // Log de limpieza de formulario
         });
       },
       (error) => {
-        console.error('Error al crear el reporte:', error); // Log de error con la respuesta del backend
-        // Mostrar alerta de error si hay un problema creando el reporte
         Swal.fire({
           icon: 'error',
           title: 'Error',
           text: 'Hubo un problema al crear el reporte: ' + (error.error?.message || 'Intenta nuevamente más tarde'),
-          confirmButtonText: 'Aceptar'
+          confirmButtonText: 'Aceptar',
         });
       }
     );
   }
+  
+  
 }

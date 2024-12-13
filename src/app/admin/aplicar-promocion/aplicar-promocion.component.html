@@ -1,0 +1,127 @@
+<div class="flex h-screen bg-[#F0F4FF]">
+  <app-sidebar></app-sidebar>
+
+  <main class="flex-1 p-5 overflow-y-auto">
+    <h1 class="text-2xl font-bold text-[#161a2d] mb-6">
+      Aplicar Promoción a Vehículos
+    </h1>
+
+    <!-- Mostrar mensaje de carga -->
+    <div *ngIf="isLoading" class="text-center">
+      <span class="text-lg text-[#4a5568]">Cargando datos de vehículos...</span>
+    </div>
+
+    <!-- Mostrar mensaje de advertencia si la promoción está desactivada -->
+    <div *ngIf="isPromotionInactive" class="text-center mb-4">
+      <span class="text-red-600 text-lg font-semibold">¡Activa la promoción primero antes de aplicarla!</span>
+    </div>
+
+    <!-- Mostrar la tabla con los datos -->
+    <div *ngIf="!isLoading">
+      <div class="bg-white p-5 rounded shadow-md mb-4">
+        <h2 class="text-xl font-semibold text-[#4a5568] mb-4">Listado de Vehículos</h2>
+
+        <!-- Botones de acción -->
+        <div class="flex justify-start gap-4 mb-4">
+          <button
+            (click)="activarPromocion()"
+            class="bg-[#3182ce] text-white p-3 rounded hover:bg-[#2b6cb0] transition-all duration-300"
+            title="Aplicar Promoción a Seleccionados"
+          >
+            <i class="fa fa-tags"></i>
+          </button>
+        </div>
+
+        <table class="w-full border-collapse mb-4 text-left">
+          <thead>
+            <tr>
+              <th class="border p-2 bg-[#edf2f7] text-[#4a5568]">
+                <input
+                  type="checkbox"
+                  (change)="toggleSelectAll($event)"
+                  [checked]="isAllSelected()"
+                  class="form-checkbox text-blue-500"
+                />
+              </th>
+              <th class="border p-2 bg-[#edf2f7] text-[#4a5568]">Marca</th>
+              <th class="border p-2 bg-[#edf2f7] text-[#4a5568]">Modelo</th>
+              <th class="border p-2 bg-[#edf2f7] text-[#4a5568]">Año</th>
+              <th class="border p-2 bg-[#edf2f7] text-[#4a5568]">Color</th>
+              <th class="border p-2 bg-[#edf2f7] text-[#4a5568]">Precio Diario</th>
+              <th class="border p-2 bg-[#edf2f7] text-[#4a5568]">Categoría</th>
+              <th class="border p-2 bg-[#edf2f7] text-[#4a5568]">Estado Promoción</th>
+              <th class="border p-2 bg-[#edf2f7] text-[#4a5568]">Imagen</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let car of paginatedCarros" class="hover:bg-[#f7fafc]">
+              <td class="border p-2 text-center">
+                <input
+                  type="checkbox"
+                  [(ngModel)]="car.selected"
+                  (change)="onCarSelectionChange()"
+                  class="form-checkbox text-blue-500"
+                />
+              </td>
+              <td class="border p-2">{{ car.marca }}</td>
+              <td class="border p-2">{{ car.modelo }}</td>
+              <td class="border p-2">{{ car.anio }}</td>
+              <td class="border p-2">{{ car.color }}</td>
+              <td class="border p-2">{{ car.precio_diaro | currency }}</td>
+              <td class="border p-2">{{ car.categoria }}</td>
+              <td class="border p-2">
+                <!-- Mostrar estado de promoción del vehículo con color -->
+                <span
+                  [ngClass]="{
+                    'bg-green-200 text-green-800': car.promocion === 'En promoción',
+                    'bg-red-200 text-red-800': car.promocion !== 'En promoción'
+                  }"
+                  class="px-3 py-1 rounded-full text-sm font-semibold"
+                >
+                  {{ car.promocion === 'En promoción' ? 'En Promoción' : 'Sin Promoción' }}
+                </span>
+              </td>
+              <td class="border p-2 text-center">
+                <img
+                  *ngIf="car.imagen"
+                  [src]="'http://localhost:3500/' + car.imagen"
+                  alt="{{ car.modelo }}"
+                  class="w-16 h-15 mx-auto rounded"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Paginación -->
+        <div class="flex justify-center mb-4">
+          <!-- Botón Página Anterior con ícono -->
+          <button
+            (click)="changePage(currentPage - 1)"
+            [disabled]="currentPage === 1"
+            class="px-3 py-2 bg-gray-300 rounded text-sm font-semibold hover:bg-gray-400 transition-all duration-300"
+            data-tippy-content="Página anterior"
+          >
+            <i class="fas fa-chevron-left"></i> <!-- Icono de flecha hacia la izquierda -->
+          </button>
+          
+          <!-- Texto "Página X de Y" -->
+          <span class="px-4 py-2 text-sm font-semibold">
+            {{ currentPage }} de {{ totalPages }}
+          </span>
+        
+          <!-- Botón Página Siguiente con ícono -->
+          <button
+            (click)="changePage(currentPage + 1)"
+            [disabled]="currentPage === totalPages"
+            class="px-3 py-2 bg-gray-300 rounded text-sm font-semibold hover:bg-gray-400 transition-all duration-300"
+            data-tippy-content="Siguiente página"
+          >
+            <i class="fas fa-chevron-right"></i> <!-- Icono de flecha hacia la derecha -->
+          </button>
+        </div>
+        
+      </div>
+    </div>
+  </main>
+</div>

@@ -11,7 +11,11 @@
 
       <form (ngSubmit)="onRegister()" class="space-y-6">
         <div class="form-group">
-          <label for="nombreCompleto" class="block text-sm font-medium text-[#161a2d]">Nombre Completo</label>
+          <label
+            for="nombreCompleto"
+            class="block text-sm font-medium text-[#161a2d]"
+            >Nombre Completo</label
+          >
           <input
             type="text"
             id="nombreCompleto"
@@ -24,7 +28,9 @@
         </div>
 
         <div class="form-group">
-          <label for="username" class="block text-sm font-medium text-[#161a2d]">Nombre de Usuario</label>
+          <label for="username" class="block text-sm font-medium text-[#161a2d]"
+            >Nombre de Usuario</label
+          >
           <input
             type="text"
             id="username"
@@ -37,7 +43,9 @@
         </div>
 
         <div class="form-group">
-          <label for="correo" class="block text-sm font-medium text-[#161a2d]">Correo Electrónico</label>
+          <label for="correo" class="block text-sm font-medium text-[#161a2d]"
+            >Correo Electrónico</label
+          >
           <input
             type="email"
             id="correo"
@@ -50,7 +58,9 @@
         </div>
 
         <div class="form-group">
-          <label for="password" class="block text-sm font-medium text-[#161a2d]">Contraseña</label>
+          <label for="password" class="block text-sm font-medium text-[#161a2d]"
+            >Contraseña</label
+          >
           <input
             type="password"
             id="password"
@@ -63,7 +73,11 @@
         </div>
 
         <div class="form-group">
-          <label for="confirmarContrasena" class="block text-sm font-medium text-[#161a2d]">Confirmar Contraseña</label>
+          <label
+            for="confirmarContrasena"
+            class="block text-sm font-medium text-[#161a2d]"
+            >Confirmar Contraseña</label
+          >
           <input
             type="password"
             id="confirmarContrasena"
@@ -76,7 +90,9 @@
         </div>
 
         <div class="form-group">
-          <label for="rol" class="block text-sm font-medium text-[#161a2d]">Rol</label>
+          <label for="rol" class="block text-sm font-medium text-[#161a2d]"
+            >Rol</label
+          >
           <select
             id="rol"
             [(ngModel)]="rol"
@@ -84,11 +100,24 @@
             class="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 transition-all"
             required
           >
-          
             <option value="5">Chofer</option>
             <option value="10">Administrador</option>
           </select>
         </div>
+
+        <!-- Campo adicional para Chofer -->
+        <div class="form-group mb-4">
+          <label for="numeroLicencia" class="block text-sm font-semibold text-gray-700">Número de Licencia:</label>
+          <input
+            type="text"
+            id="numeroLicencia"
+            [(ngModel)]="numeroLicencia" 
+            class="mt-1 p-3 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            placeholder="Ingrese el número de licencia (Solo Chofer)"
+            required
+          />
+        </div>
+        
 
         <button
           type="submit"

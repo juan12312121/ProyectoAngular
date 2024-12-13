@@ -63,7 +63,9 @@ export const routes: Routes = [
           },
 
           
-
+          { path: 'aplicar/:id_promocion', loadComponent: () => import('./admin/aplicar-promocion/aplicar-promocion.component'),
+            canActivate: [AuthGuard]
+           },
           
           {path: 'pagos-admin', loadComponent: () => import('./admin/pagos/pagos.component'),
             canActivate: [AuthGuard]
@@ -130,12 +132,8 @@ export const routes: Routes = [
       // redirectTo: 'usuario', // Redirige a la ruta de usuario para cualquier ruta no encontrada
     //},
 
-    {path: 'chofer',
-        loadComponent: () => import('./choferes/principal/principal.component'),
-        canActivate: [AuthGuard]
-    },
-
-    {path: 'reservas-asignadas', loadComponent: () => import('./choferes/reservas-asignadas/reservas-asignadas.component')},
+  {path: 'chofer', loadComponent: () => import('./choferes/principal/principal.component')},
+  {path: 'asignaciones', loadComponent: () => import('./choferes/reservas-asignadas/reservas-asignadas.component')},
 ];
 
 @NgModule({

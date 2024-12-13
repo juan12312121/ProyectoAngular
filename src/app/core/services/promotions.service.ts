@@ -3,6 +3,17 @@ import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
 
+
+export interface Promotion {
+  id_promocion: number; // El id de la promoción (o id_promocion si es el nombre adecuado)
+  codigo_promocion: string;
+  descripcion: string;
+  descuento: number;
+  fecha_inicio: string;
+  fecha_fin: string;
+}
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -25,6 +36,8 @@ export class PromotionsService {
       Authorization: `Bearer ${token}`,
     });
   }
+
+  
 
   // Crear una nueva promoción
   createPromotion(
@@ -69,9 +82,12 @@ export class PromotionsService {
 
   // Aplicar una promoción a un carro
   applyPromotionToCar(idCarro: number, idPromocion: number): Observable<any> {
-    const url = `http://localhost:3000/api/promotions/apply/${idCarro}/${idPromocion}`; // Ruta del backend para aplicar promoción
-    return this.http.put<any>(url, {}, { headers: this.getAuthHeaders() });
+    const url = `http://localhost:3500/promociones/apply-promotion`; // Ruta sin los parámetros
+    return this.http.post<any>(url, { idCarro, idPromocion }, { headers: this.getAuthHeaders() });
   }
+  
+
+  
   updatePromotionStatus(id: number, status: string): Observable<any> {
     const body = { estado: status }; // Estado recibido en el cuerpo de la solicitud
     console.log('Actualizando promoción con ID:', id); // Verificación del ID
@@ -93,5 +109,30 @@ private handleError(error: any): Observable<never> {
   console.error('Error en la actualización de estado:', error);
   return throwError(() => new Error(error.message || 'Error inesperado'));
 }
+ // Activar una promoción
+
+ deactivatePromotion(idPromocion: number): Observable<any> {
+  const url = `${this.apiUrl}/desactivar`;
+  const headers = this.getAuthHeaders(); // Obtiene los encabezados con el token
+
+  // Cuerpo de la solicitud solo incluye idPromocion
+  const data = { idPromocion };
+
+  return this.http.post(url, data, { headers }); // Incluye los encabezados en la solicitud
+}
+
+// En promotions.service.ts
+
+activatePromotion(id: number): Observable<any> {
+  const url = `${this.apiUrl}/activar/${id}`; // URL del backend para activar la promoción
+  return this.http.put<any>(url, {}, { headers: this.getAuthHeaders() }).pipe(
+    catchError((error) => {
+      console.error('Error al activar la promoción:', error);
+      return throwError(() => new Error(error.message || 'Error inesperado'));
+    })
+  );
+}
+
+
 
 }

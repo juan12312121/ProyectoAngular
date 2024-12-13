@@ -18,7 +18,7 @@ export default class ResenasHechasComponent implements OnInit {
 
   reviews: Review[] = [];
   currentPage: number = 1;
-  itemsPerPage: number = 5;
+  itemsPerPage: number = 10;
   totalPages: number = 1;
   loading: boolean = true;
   errorMessage: string = '';

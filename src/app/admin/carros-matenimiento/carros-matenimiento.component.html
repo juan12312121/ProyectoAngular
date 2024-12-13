@@ -1,48 +1,160 @@
 <div class="flex h-screen bg-[#F0F4FF]">
+  <!-- Sidebar -->
   <app-sidebar></app-sidebar>
 
   <div class="flex-1 p-6 overflow-x-auto">
-    <h2 class="text-2xl font-semibold text-[#161a2d] mb-4">Carros en Mantenimiento</h2>
+    <!-- Main Header -->
+    <h2 class="text-2xl font-semibold text-[#161a2d] mb-4">
+      Carros en Mantenimiento
+    </h2>
 
-    <!-- Tabla de carros en mantenimiento -->
-    <table class="min-w-full bg-white border border-gray-300 shadow-lg rounded-lg" id="mantenimiento-table">
-      <thead class="bg-[#4f52ba] text-white">
-        <tr>
-          <th class="px-6 py-3 text-left">Tipo de Mantenimiento</th>
-          <th class="px-6 py-3 text-left">Costo</th>
-          <th class="px-6 py-3 text-left">Fecha de Mantenimiento</th>
-          <th class="px-6 py-3 text-left">Fecha de Creación</th>
-          <th class="px-6 py-3 text-left">Marca</th>
-          <th class="px-6 py-3 text-left">Modelo</th>
-          <th class="px-6 py-3 text-left">Estado de Mantenimiento</th>
-          <th class="px-6 py-3 text-center">Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let mantenimiento of mantenimientos; let i = index">
-          <td class="px-6 py-3 border-b">{{ mantenimiento.tipo_mantenimiento }}</td>
-          <td class="px-6 py-3 border-b">{{ mantenimiento.costo | currency }}</td>
-          <td class="px-6 py-3 border-b">{{ mantenimiento.fecha_mantenimiento | date: 'short' }}</td>
-          <td class="px-6 py-3 border-b">{{ mantenimiento.fecha_creacion | date: 'short' }}</td>
-          <td class="px-6 py-3 border-b">{{ mantenimiento.marca }}</td>
-          <td class="px-6 py-3 border-b">{{ mantenimiento.modelo }}</td>
-          <td class="px-6 py-3 border-b">{{ mantenimiento.estado_mantenimiento }}</td>
-          <td class="px-6 py-3 border-b text-center">
-            <button
-              (click)="terminarMantenimiento(i)"
-              class="bg-[#38a169] text-white p-3 rounded-full shadow-md hover:bg-[#48bb78] transition duration-300"
-              title="Terminar Mantenimiento">
-              <i class="fas fa-check-circle text-xl"></i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <!-- Tab Buttons -->
+    <div class="flex space-x-4 mb-6">
+      <button
+        (click)="setTab('enCurso')"
+        [ngClass]="{
+          'bg-[#4f52ba] text-white scale-105': currentTab === 'enCurso',
+          'bg-gray-200': currentTab !== 'enCurso'
+        }"
+        class="relative px-6 py-3 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-110 hover:bg-[#4f52ba] hover:text-white"
+        title="Mantenimientos en Curso"
+      >
+        <i class="fas fa-tools"></i>
+      </button>
 
-    <!-- Mostrar el total de gastos -->
-    <div class="mt-4 bg-gray-100 p-4 rounded-lg shadow">
-      <h3 class="text-lg font-semibold text-[#161a2d]">Total de Gastos</h3>
-      <p class="text-2xl text-[#4f52ba] font-bold">{{ totalGastos | currency }}</p>
+      <button
+        (click)="setTab('terminados')"
+        [ngClass]="{
+          'bg-[#4f52ba] text-white scale-105': currentTab === 'terminados',
+          'bg-gray-200': currentTab !== 'terminados'
+        }"
+        class="relative px-6 py-3 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-110 hover:bg-[#4f52ba] hover:text-white"
+        title="Mantenimientos Terminados"
+      >
+        <i class="fas fa-check-circle"></i>
+      </button>
+    </div>
+
+    <!-- Mantenimientos en Curso -->
+    <div *ngIf="currentTab === 'enCurso'">
+      <h3 class="text-xl font-semibold text-[#161a2d] mb-4">Mantenimientos en Curso</h3>
+      <table class="min-w-full bg-white border border-gray-300 shadow-lg rounded-lg mb-6" id="mantenimiento-table">
+        <thead class="bg-[#4f52ba] text-white">
+          <tr class="bg-gradient-to-r from-gray-400 to-[#2D9CDB] text-white">
+            <th class="px-6 py-3 text-left">Tipo de Mantenimiento</th>
+            <th class="px-6 py-3 text-left">Costo</th>
+            <th class="px-6 py-3 text-left">Fecha de Mantenimiento</th>
+            <th class="px-6 py-3 text-left">Fecha de Creación</th>
+            <th class="px-6 py-3 text-left">Marca</th>
+            <th class="px-6 py-3 text-left">Modelo</th>
+            <th class="px-6 py-3 text-left">Estado de Mantenimiento</th>
+            <th class="px-6 py-3 text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let mantenimiento of mantenimientosEnCurso | paginate: { itemsPerPage: 5, currentPage: currentPage }; let i = index">
+            <td class="px-6 py-3 border-b">{{ mantenimiento.tipo_mantenimiento }}</td>
+            <td class="px-6 py-3 border-b">{{ mantenimiento.costo | currency }}</td>
+            <td class="px-6 py-3 border-b">{{ mantenimiento.fecha_mantenimiento | date: 'short' }}</td>
+            <td class="px-6 py-3 border-b">{{ mantenimiento.fecha_creacion | date: 'short' }}</td>
+            <td class="px-6 py-3 border-b">{{ mantenimiento.marca }}</td>
+            <td class="px-6 py-3 border-b">{{ mantenimiento.modelo }}</td>
+            <td class="px-6 py-3 border-b">{{ mantenimiento.estado_mantenimiento }}</td>
+            <td class="px-6 py-3 border-b text-center">
+              <button
+                (click)="cambiarEstadoMantenimiento(i, 'Mantenimiento terminado')"
+                class="bg-[#38a169] text-white p-3 rounded-full shadow-md hover:bg-[#48bb78] transition duration-300"
+                title="Terminar Mantenimiento"
+              >
+                <i class="fas fa-check-circle text-xl"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Pagination for En Curso -->
+      <div class="pagination-container flex justify-center items-center space-x-4 mt-4">
+        <button
+          (click)="changePage(currentPage - 1)"
+          [disabled]="currentPage === 1"
+          class="bg-[#4f52ba] text-white p-2 rounded-lg hover:bg-[#2f3c6b] transition"
+        >
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <span class="text-[#161a2d] font-semibold">{{ currentPage }} de {{ totalPages }}</span>
+        <button
+          (click)="changePage(currentPage + 1)"
+          [disabled]="currentPage === totalPages"
+          class="bg-[#4f52ba] text-white p-2 rounded-lg hover:bg-[#2f3c6b] transition"
+        >
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+
+      <!-- Total Costos for En Curso -->
+      <div *ngIf="currentTab === 'enCurso'" class="mt-6 text-right">
+        <p class="text-lg font-semibold text-[#161a2d]">
+          Total de Costos:
+          <span class="text-[#4f52ba]">{{ totalCostosEnCurso | currency }}</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Mantenimientos Terminados -->
+    <div *ngIf="currentTab === 'terminados'">
+      <h3 class="text-xl font-semibold text-[#161a2d] mb-4">Mantenimientos Terminados</h3>
+      <table class="min-w-full bg-white border border-gray-300 shadow-lg rounded-lg mb-6" id="mantenimiento-terminado-table">
+        <thead class="bg-[#4f52ba] text-white">
+          <tr class="bg-gradient-to-r from-gray-400 to-[#2D9CDB] text-white">
+            <th class="px-6 py-3 text-left">Tipo de Mantenimiento</th>
+            <th class="px-6 py-3 text-left">Costo</th>
+            <th class="px-6 py-3 text-left">Fecha de Mantenimiento</th>
+            <th class="px-6 py-3 text-left">Fecha de Creación</th>
+            <th class="px-6 py-3 text-left">Marca</th>
+            <th class="px-6 py-3 text-left">Modelo</th>
+            <th class="px-6 py-3 text-left">Estado de Mantenimiento</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let mantenimiento of mantenimientosTerminados | paginate: { itemsPerPage: 5, currentPage: currentPage }; let i = index">
+            <td class="px-6 py-3 border-b">{{ mantenimiento.tipo_mantenimiento }}</td>
+            <td class="px-6 py-3 border-b">{{ mantenimiento.costo | currency }}</td>
+            <td class="px-6 py-3 border-b">{{ mantenimiento.fecha_mantenimiento | date: 'short' }}</td>
+            <td class="px-6 py-3 border-b">{{ mantenimiento.fecha_creacion | date: 'short' }}</td>
+            <td class="px-6 py-3 border-b">{{ mantenimiento.marca }}</td>
+            <td class="px-6 py-3 border-b">{{ mantenimiento.modelo }}</td>
+            <td class="px-6 py-3 border-b">{{ mantenimiento.estado_mantenimiento }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Pagination for Terminados -->
+      <div class="pagination-container flex justify-center items-center space-x-4 mt-4">
+        <button
+          (click)="changePage(currentPage - 1)"
+          [disabled]="currentPage === 1"
+          class="bg-[#4f52ba] text-white p-2 rounded-lg hover:bg-[#2f3c6b] transition"
+        >
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <span class="text-[#161a2d] font-semibold">{{ currentPage }} de {{ totalPages }}</span>
+        <button
+          (click)="changePage(currentPage + 1)"
+          [disabled]="currentPage === totalPages"
+          class="bg-[#4f52ba] text-white p-2 rounded-lg hover:bg-[#2f3c6b] transition"
+        >
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Total Costos for Terminados -->
+    <div *ngIf="currentTab === 'terminados'" class="mt-6 text-right">
+      <p class="text-lg font-semibold text-[#161a2d]">
+        Total de Costos:
+        <span class="text-[#4f52ba]">{{ totalCostosTerminados | currency }}</span>
+      </p>
     </div>
   </div>
 </div>

@@ -44,6 +44,7 @@ export default class DetalleCarroComponent implements OnInit {
   rentalTypes: string[] = [];   
   totalPrice: number = 0;
   dailyPrice: number = 0;
+  direccion_entrega: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -83,12 +84,17 @@ export default class DetalleCarroComponent implements OnInit {
       this.showLoginRequiredMessage(); // Mostrar mensaje si no está logueado
       return;
     }
-
+    
     const missingData: string[] = [];
     
     // Validar la selección del tipo de renta
     if (!this.selectedRentType) {
       missingData.push('Tipo de renta');
+    }
+
+    // Validar la dirección de entrega
+    if (!this.direccion_entrega) {
+      missingData.push('Dirección de entrega');
     }
 
     if (missingData.length > 0) {
@@ -115,7 +121,7 @@ export default class DetalleCarroComponent implements OnInit {
       return;
     }
 
-    // Preparar los datos de la reserva
+    // Preparar los datos de la reserva, incluyendo la dirección de entrega
     const reservationData = {
       id_reserva: 0, // Autogenerado en la base de datos
       id_usuario: this.userId,
@@ -125,6 +131,7 @@ export default class DetalleCarroComponent implements OnInit {
       estado_reserva: 'Pendiente',
       monto_reserva: this.totalPrice,
       tipo_reserva: this.selectedRentType, // Tipo de renta
+      direccion_entrega: this.direccion_entrega, // Dirección de entrega
     };
 
     // Crear la reserva a través del servicio
@@ -146,7 +153,7 @@ export default class DetalleCarroComponent implements OnInit {
         }
       },
     });
-  }
+}
 
   // Función para mostrar mensaje de error genérico
   showError(message: string): void {

@@ -17,6 +17,9 @@ export class ReservationsService {
  
   private apiUrl = 'http://localhost:3500/reservas';  // API URL
   private apipago = 'http://localhost:3500/pago';
+  private apiemun = 'http://localhost:3500/reservas/lugar-devolucion/enum'
+  private apiUpdateDevolucionUrl = 'http://localhost:3500/reservas/lugar-devolucion'
+  private apienum2 = 'http://localhost:3500/reservas/estado-recogida/enum'
   private apiPaypal = 'http://localhost:3500/execute';
   private verpagos = 'http://localhost:3500/pago/ver-pagos';
   private reportes = 'http://localhost:3500/reportes'
@@ -38,22 +41,110 @@ export class ReservationsService {
     });
   }
 
+  updatePickupStatus2(reservationId: number): Observable<any> {
+    const url = `${this.apiUrl}/recogida/${reservationId}`;  // Concatenar el id_reserva
+    const headers = this.getAuthHeaders(); // Método para obtener encabezados de autenticación
+
+    return this.http.put<any>(url, {}, { headers }).pipe(
+      tap((response) => {
+        console.log('Estado de recogida actualizado:', response);
+      }),
+      catchError((error) => {
+        console.error('Error al actualizar el estado de recogida:', error);
+        return throwError(() => new Error('Error al actualizar el estado de recogida.'));
+      })
+    );
+  }
+
+  getLugarDevolucionEnumValues(): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<any>(this.apiemun, { headers }).pipe(
+      tap((response) => {
+        console.log('Valores del ENUM de lugar_devolucion:', response);
+      }),
+      catchError((error) => {
+        console.error('Error al obtener los valores del ENUM:', error);
+        return throwError(() => new Error('Error al obtener los valores del ENUM.'));
+      })
+    );
+  }
+
+  getEstadoRecogidaEnumValues(): Observable<any> {
+    const headers = this.getAuthHeaders(); // Asegúrate de que esta función devuelve los headers necesarios
+    return this.http.get<any>(this.apienum2, { headers }).pipe(
+      tap((response) => {
+        console.log('Valores del ENUM de estado_recogida_usuario:', response);
+      }),
+      catchError((error) => {
+        console.error('Error al obtener los valores del ENUM estado_recogida_usuario:', error);
+        return throwError(() => new Error('Error al obtener los valores del ENUM estado_recogida_usuario.'));
+      })
+    );
+  }
+
+  
+  updatePickupStatus(reservationId: number, pickupStatus: string): Observable<any> {
+    if (!reservationId || !pickupStatus) {
+      return throwError(() => new Error('El ID de la reserva y el estado de la recogida son necesarios.'));
+    }
+  
+    console.log(`Actualizando estado de recogida de la reserva con ID: ${reservationId} a ${pickupStatus}`);
+  
+    // Llamada a la API para actualizar el estado de recogida con la nueva URL
+    return this.http
+      .put<any>(
+        `${this.apiUrl}/estado-recogida/${reservationId}`, 
+        { recogida: pickupStatus },
+        { headers: this.getAuthHeaders() } 
+      )
+      .pipe(
+        tap((response) => {
+          console.log(`Estado de recogida de la reserva ${reservationId} actualizado con éxito:`, response);
+        }),
+        catchError((error) => {
+          console.error(`Error al actualizar el estado de recogida de la reserva ${reservationId}:`, error);
+          return throwError(() => new Error('Error al actualizar el estado de recogida de la reserva.'));
+        })
+      );
+  }
+
+
+
+
+updateLugarDevolucion(reservationId: number, lugarDevolucion: string): Observable<any> {
+  const url = `${this.apiUpdateDevolucionUrl}/${reservationId}`;  // Asegúrate de que 'apiUpdateDevolucionUrl' esté correctamente definido
+  const headers = this.getAuthHeaders();  // Asegúrate de que 'getAuthHeaders' devuelva los encabezados correctos
+  return this.http.put<any>(url, { lugar_devolucion: lugarDevolucion }, { headers }).pipe(
+    tap((response) => {
+      console.log('Lugar de devolución actualizado:', response);
+    }),
+    catchError((error) => {
+      console.error('Error al actualizar el lugar de devolución:', error);
+      return throwError(() => new Error('Error al actualizar el lugar de devolución.'));
+    })
+  );
+}
+
+
+
+
+
   verPagos(): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.get<any>(`${this.verpagos}/`, { headers });
   }
 
   createReport(reportData: { id_reserva: number, tipo_reporte: string, descripcion: string }): Observable<any> {
-    // Check that the required fields are present
+  
     if (!reportData.id_reserva || !reportData.tipo_reporte || !reportData.descripcion) {
       console.error('Todos los campos son necesarios.');
       return throwError(() => new Error('Faltan campos necesarios.'));
     }
 
-    // Make the POST request to the report API endpoint
+ 
     return this.http
       .post<any>(this.reportes, reportData, {
-        headers: this.getAuthHeaders(),  // Add authorization header
+        headers: this.getAuthHeaders(), 
       })
       .pipe(
         tap((response) => {
@@ -173,7 +264,31 @@ export class ReservationsService {
     return this.http.get<any>(url, { headers, responseType: 'json' });
   }
   
+  updateReturnPlaceStatus(reservationId: number, returnPlaceStatus: string): Observable<any> {
+    if (!reservationId || !returnPlaceStatus) {
+      return throwError(() => new Error('El ID de la reserva y el estado del lugar de devolución son necesarios.'));
+    }
 
+    console.log(`Actualizando lugar de devolución de la reserva con ID: ${reservationId} a ${returnPlaceStatus}`);
+
+    // Llamada a la API para actualizar el estado del lugar de devolución
+    return this.http
+      .put<any>(
+        `${this.apiUrl}/lugar-devolucion/${reservationId}`, // URL con la estructura correcta
+        { devolucion: returnPlaceStatus }, // Cuerpo de la solicitud con el nuevo estado de lugar de devolución
+        { headers: this.getAuthHeaders() } // Encabezados con el token de autenticación
+      )
+      .pipe(
+        tap((response) => {
+          console.log(`Lugar de devolución de la reserva ${reservationId} actualizado con éxito:`, response);
+        }),
+        catchError((error) => {
+          console.error(`Error al actualizar el lugar de devolución de la reserva ${reservationId}:`, error);
+          return throwError(() => new Error('Error al actualizar el lugar de devolución de la reserva.'));
+        })
+      );
+  }
+  
 
 
 

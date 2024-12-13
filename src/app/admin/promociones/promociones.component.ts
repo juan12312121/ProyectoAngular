@@ -2,13 +2,15 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router'; // Importar Router
+import { NgxPaginationModule } from 'ngx-pagination';
 import Swal from 'sweetalert2'; // Importar SweetAlert2
 import { PromotionsService } from '../../core/services/promotions.service';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 
+
 @Component({
   standalone: true,
-  imports: [CommonModule, SidebarComponent, FormsModule],
+  imports: [CommonModule, SidebarComponent, FormsModule,NgxPaginationModule],
   selector: 'app-promociones',
   templateUrl: './promociones.component.html',
   styleUrls: ['./promociones.component.css']
@@ -19,12 +21,12 @@ this.router.navigate(['/anadir-promocion'])
 }
 
 promotions: any[] = []; // Array para almacenar las promociones
-currentPage: number = 1;
-promotionsPerPage: number = 10; // Número de promociones por página
-totalPromotions: number = 0; // Total de promociones
-totalPages: number = 0; // Total de páginas
+  currentPage: number = 1; // Página actual
+  promotionsPerPage: number = 10; // Número de promociones por página
+  totalPromotions: number = 0; // Total de promociones
+  totalPages: number = 0; // Total de páginas
 
-
+  
   // Inyecta el Router aquí
   constructor(
     private promotionsService: PromotionsService,
@@ -55,83 +57,7 @@ totalPages: number = 0; // Total de páginas
   }
   
   // Cambiar el estado de la promoción
-  togglePromotionStatus(promotion: any) {
-    console.log('Cambiando estado de la promoción:', promotion);
-
-    if (!promotion.id_promocion) {
-        console.error('Error: El ID de la promoción no está definido.', promotion);
-        return;
-    }
-
-    // Convertir las fechas de formato ISO 8601 a objetos Date
-    const currentDate = new Date();
-    const startDate = new Date(promotion.fecha_inicio);
-    const endDate = new Date(promotion.fecha_fin);
-
-    // Lógica para alternar entre 'activo', 'inactivo', 'cancelado', o 'expirado'
-    let newStatus: string;
-
-    // Si la promoción está activa
-    if (promotion.estado === 'activo') {
-        // Si la fecha actual es posterior a la fecha de fin, cambiar a 'expirado'
-        if (currentDate > endDate) {
-            newStatus = 'expirado';
-        } else {
-            // Si la fecha no ha pasado, cambiar a 'inactivo' o 'cancelado'
-            newStatus = 'inactivo'; // O 'cancelado' si es necesario
-        }
-    }
-    // Si la promoción está inactiva o cancelada
-    else if (promotion.estado === 'inactivo' || promotion.estado === 'cancelado') {
-        // Si la fecha actual está dentro del rango de fechas, activarla
-        if (currentDate >= startDate && currentDate <= endDate) {
-            newStatus = 'activo';
-        } else {
-            // Si fuera del rango, mantener como 'inactivo' o 'cancelado'
-            newStatus = promotion.estado; // Mantener el estado actual si fuera fuera del rango
-        }
-    } 
-    // Si la promoción está expirada
-    else if (promotion.estado === 'expirado') {
-        // Si la fecha actual está antes de la fecha de fin, se puede volver a 'activo'
-        if (currentDate <= endDate) {
-            newStatus = 'activo';
-        } else {
-            newStatus = 'expirado'; // Mantener el estado expirao
-        }
-    } else {
-        console.error('Estado desconocido de la promoción:', promotion.estado);
-        return;
-    }
-
-    console.log('Nuevo estado a enviar:', newStatus);
-
-    // Llamada a la API para actualizar el estado
-    this.promotionsService.updatePromotionStatus(promotion.id_promocion, newStatus).subscribe({
-        next: () => {
-            // Actualizar el estado localmente en el array después de la actualización exitosa
-            promotion.estado = newStatus;
-            console.log('Estado actualizado localmente:', promotion.estado);
-            Swal.fire({
-                icon: 'success',
-                title: 'Estado actualizado',
-                text: 'El estado de la promoción ha sido actualizado correctamente.',
-                confirmButtonText: 'OK'
-            });
-        },
-        error: (err) => {
-            console.error('Error al actualizar el estado:', err);
-            // Revertir el cambio si hay un error
-            promotion.estado = promotion.estado === 'activo' ? 'inactivo' : 'activo';
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'No se pudo actualizar el estado de la promoción. Intenta de nuevo más tarde.',
-                confirmButtonText: 'OK'
-            });
-        }
-    });
-  }
+  
 
   // Paginación
   previousPage() {
@@ -142,8 +68,10 @@ totalPages: number = 0; // Total de páginas
   }
 
   nextPage() {
-    this.currentPage++;
-    this.loadPromotions(); // Recargar promociones con la nueva página
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.loadPromotions(); // Recargar promociones con la nueva página
+    }
   }
 
   // Eliminar una promoción
@@ -189,4 +117,71 @@ totalPages: number = 0; // Total de páginas
       console.error('ID de la promoción no disponible');
     }
   }
+
+  applyPromotion(promotionId: number) {
+    console.log('Navegando a la vista de Aplicar Promoción con ID:', promotionId); // Verifica el ID
+    if (promotionId) {
+      this.router.navigate(['aplicar', promotionId]); // Asegúrate de que la ruta coincida
+    } else {
+      console.error('ID de la promoción no disponible');
+    }
+  }
+  
+
+
+  // Desactivar una promoción
+  deactivatePromotion(idPromocion: number): void {
+    const data = { idPromocion };
+  
+    this.promotionsService.deactivatePromotion(idPromocion).subscribe({
+      next: (response) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Promoción desactivada',
+          text: 'La promoción ha sido desactivada correctamente.',
+          confirmButtonText: 'OK',
+        });
+  
+        // Recargar las promociones si es necesario
+        this.loadPromotions();
+      },
+      error: (err) => {
+        console.error('Error al desactivar la promoción:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo desactivar la promoción. Intenta de nuevo más tarde.',
+          confirmButtonText: 'OK',
+        });
+      },
+    });
+  }
+  
+  
+  
+
+
+  activatePromotion(promotionId: number) {
+    this.promotionsService.activatePromotion(promotionId).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Promoción activada',
+          text: 'La promoción ha sido activada correctamente.',
+          confirmButtonText: 'OK'
+        });
+        this.loadPromotions(); // Recargar promociones después de activar
+      },
+      error: (err) => {
+        console.error('Error al activar la promoción:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo activar la promoción. Intenta de nuevo más tarde.',
+          confirmButtonText: 'OK'
+        });
+      }
+    });
+  }
+
 }

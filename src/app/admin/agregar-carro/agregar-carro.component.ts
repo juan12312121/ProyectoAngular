@@ -69,18 +69,21 @@ export default class AgregarCarroComponent {
   agregarCarro(event: Event): void {
     event.preventDefault();
     this.isLoading = true; // Establecer estado de carga
-
+  
     if (this.carForm.invalid) {
       this.showErrorAlert('Por favor, complete todos los campos requeridos correctamente.');
       this.isLoading = false; // Reiniciar estado de carga en caso de error
       return;
     }
-
+  
     const formData = new FormData();
     Object.keys(this.carForm.value).forEach(key => {
       formData.append(key, this.carForm.get(key)?.value);
     });
-
+  
+    // Log para ver los datos antes de enviarlos
+    console.log('Datos que se enviarán:', this.carForm.value);
+  
     this.carrosService.addCarro(formData).subscribe({
       next: () => {
         Swal.fire({

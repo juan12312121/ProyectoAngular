@@ -32,8 +32,8 @@ export default class EmpleadosComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    // Obteniendo los usuarios con rol 10 (Empleados)
-    this.authService.getUsersByRole(10).subscribe((data) => {
+    // Obteniendo los usuarios con rol 5 (Choferes)
+    this.authService.getUsersByRole(5).subscribe((data) => {
       this.empleados = data; // Suponiendo que la respuesta es un arreglo de empleados
       this.totalItems = this.empleados.length;
       this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage); // Calcular las páginas totales

@@ -1,170 +1,189 @@
 <app-navbar></app-navbar>
 
-<div class="container mx-auto p-6">
-  <h2 class="text-3xl font-semibold text-gray-800 mb-6">
-    Reservas
-  </h2>
+<div class="container mx-auto p-6 bg-gray-50 mt-12">
+  <h2 class="text-3xl font-semibold text-gray-800 mb-6">Reservas</h2>
+
+  <!-- Select para Filtrar por Estado de Reserva -->
+  <div class="mb-4">
+    <label for="estadoReserva" class="text-sm font-medium text-gray-700 mb-2"
+      >Filtrar por Estado de Reserva:</label
+    >
+    <select
+      id="estadoReserva"
+      [(ngModel)]="selectedEstado"
+      (change)="saveSelectedEstado()"
+      class="border border-gray-300 px-3 py-1 rounded-md text-sm w-auto focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 mt-1"
+    >
+      <option value="">Todos</option>
+      <option value="Pendiente">Pendiente</option>
+      <option value="Confirmada">Confirmada</option>
+      <option value="Cancelada">Cancelada</option>
+      <option value="Completada">Completada</option>
+      <option value="Rechazada">Rechazada</option>
+      <option value="Devolución">Devolución</option>
+    </select>
+  </div>
 
   <!-- Categorización por Estado de Reserva -->
   <div
     *ngIf="reservations.length"
     class="bg-white p-4 rounded-lg shadow-lg mb-6"
   >
-    <h3 class="text-xl font-semibold text-gray-800 mb-4">Reservas</h3>
-    <table class="min-w-full table-auto">
-      <thead>
+    <!-- Tabla de Reservas -->
+    <table class="min-w-full table-auto border-collapse">
+      <thead class="bg-blue-100">
         <tr class="bg-gray-100">
           <th class="px-4 py-2 text-left text-gray-600">Carro</th>
           <th class="px-4 py-2 text-left text-gray-600">Fecha Inicio</th>
           <th class="px-4 py-2 text-left text-gray-600">Fecha Fin</th>
+          <!-- Nueva columna para Dirección de Entrega -->
+          <th class="px-4 py-2 text-left text-gray-600">
+            Dirección de Entrega
+          </th>
           <th class="px-4 py-2 text-left text-gray-600">Estado</th>
           <th class="px-4 py-2 text-left text-gray-600">Estado de Pago</th>
+          <th class="px-4 py-2 text-left text-gray-600">
+            Estado Recogida de usuario
+          </th>
+          <th class="px-4 py-2 text-left text-gray-600">Lugar de Devolución</th>
           <th class="px-4 py-2 text-left text-gray-600">Acciones</th>
         </tr>
       </thead>
       <tbody>
         <tr
-          *ngFor="let reservation of reservations"
+          *ngFor="let reservation of filteredReservations()"
           class="border-t hover:bg-gray-50"
         >
-          <!-- Datos del carro -->
-          <td class="px-4 py-2">
+          <!-- Carro -->
+          <td class="px-4 py-2 text-sm">
             {{ reservation.marca }} {{ reservation.modelo }}
           </td>
-
           <!-- Fechas -->
-          <td class="px-4 py-2">
-            {{ reservation.fecha_inicio | date: 'dd/MM/yyyy' }}
+          <td class="px-4 py-2 text-sm">
+            {{ reservation.fecha_inicio | date : "dd/MM/yyyy" }}
           </td>
-          <td class="px-4 py-2">
-            {{ reservation.fecha_fin | date: 'dd/MM/yyyy' }}
+          <td class="px-4 py-2 text-sm">
+            {{ reservation.fecha_fin | date : "dd/MM/yyyy" }}
           </td>
-
-          <!-- Estado de reserva -->
+          <!-- Dirección de Entrega -->
+          <td class="px-4 py-2 text-sm">
+            {{ reservation.direccion_entrega || "No disponible" }}
+          </td>
+          <!-- Estado de Reserva -->
           <td
-            class="px-4 py-2"
+          class="px-4 py-2 text-sm"
+          [ngClass]="{
+            'text-orange-600': reservation.estado_reserva === 'Pendiente',
+            'text-blue-600': reservation.estado_reserva === 'Completada',
+            'text-red-600': reservation.estado_reserva === 'Cancelada',
+            'text-green-600': reservation.estado_reserva === 'Aceptada',
+            'text-blue-400': reservation.estado_reserva === 'Confirmada',
+            'text-yellow-500': reservation.estado_reserva === 'Devolución',
+            'text-red-800': reservation.estado_reserva === 'Rechazada'
+          }"
+        >
+          <i
             [ngClass]="{
-              'text-yellow-600': reservation.estado_reserva === 'Pendiente',
-              'text-green-600': reservation.estado_reserva === 'Completada',
-              'text-red-600': reservation.estado_reserva === 'Cancelada',
-              'text-blue-600': reservation.estado_reserva === 'Aceptada',
-              'text-orange-600': reservation.estado_reserva === 'Confirmada'
+              'fa-clock': reservation.estado_reserva === 'Pendiente',
+              'fa-check-circle': reservation.estado_reserva === 'Completada',
+              'fa-times-circle': reservation.estado_reserva === 'Cancelada',
+              'fa-thumbs-up': reservation.estado_reserva === 'Aceptada',
+              'fa-check': reservation.estado_reserva === 'Confirmada',
+              'fa-undo': reservation.estado_reserva === 'Devolución',
+              'fa-ban': reservation.estado_reserva === 'Rechazada'
             }"
-          >
-            <i
-              class="fa"
-              [ngClass]="{
-                'fa-clock': reservation.estado_reserva === 'Pendiente',
-                'fa-check-circle': reservation.estado_reserva === 'Completada',
-                'fa-times-circle': reservation.estado_reserva === 'Cancelada',
-                'fa-thumbs-up': reservation.estado_reserva === 'Aceptada',
-                'fa-check': reservation.estado_reserva === 'Confirmada'
-              }"
-            ></i>
-            {{ reservation.estado_reserva }}
-          </td>
+          ></i>
+          <span>{{ reservation.estado_reserva }}</span>
+        
+          <!-- Nota dinámica si el estado es 'Pendiente' -->
+          <span *ngIf="reservation.estado_reserva === 'Pendiente'" class="text-orange-600 text-sm mt-2 block">
+            Espere a que se acepte su renta.
+          </span>
+        </td>
+        
 
-          <!-- Estado de pago -->
           <td
-            class="px-4 py-2"
+            class="px-4 py-2 text-sm"
             [ngClass]="{
               'text-green-600': reservation.estado_pago === 'Pagado',
-              'text-red-600': reservation.estado_pago === 'No Pagado',
-              'text-yellow-600': reservation.estado_reserva === 'Pendiente'
+              'text-orange-600': reservation.estado_pago === 'Pendiente',
+              'text-blue-600': reservation.estado_pago === 'Reembolso'
             }"
           >
-            <i
-              class="fa"
-              [ngClass]="{
-                'fa-check-circle': reservation.estado_pago === 'Pagado',
-                'fa-times-circle': reservation.estado_pago === 'No Pagado'
-              }"
-            ></i>
-            <span *ngIf="reservation.estado_reserva === 'Pendiente'">
-              Esperando a que se confirme la renta
-            </span>
-            <span *ngIf="reservation.estado_reserva !== 'Pendiente'">
-              {{ reservation.estado_pago }}
-            </span>
+            {{ reservation.estado_pago }}
           </td>
 
-          <!-- Acciones -->
+          <!-- Estado Recogida de usuario (Naranja) -->
+          <td class="px-4 py-2 text-sm text-orange-600">
+            {{ reservation.estado_recogida_usuario || "Recogida no iniciada" }}
+          </td>
+
+          <!-- Lugar de Devolución (Naranja) -->
+          <td class="px-4 py-2 text-sm text-orange-600">
+            {{ reservation.lugar_devolucion || "N/A" }}
+          </td>
+
           <td class="px-4 py-2">
-            <div class="flex space-x-2">
-              <!-- Ver detalles -->
+            <div class="flex space-x-2 justify">
               <button
                 class="text-white bg-blue-500 px-3 py-1 rounded-lg hover:bg-blue-600 transition duration-300 flex items-center space-x-2 text-sm"
                 (click)="viewDetails(reservation)"
+                title="Ver Detalles"
               >
-                <i class="fa fa-eye"></i> <span>Ver Detalles</span>
+                <i class="fa fa-eye"></i>
               </button>
-
-              <!-- Cancelar reserva si está pendiente -->
               <button
                 *ngIf="reservation.estado_reserva === 'Pendiente'"
                 (click)="cancelReservation(reservation.id_reserva)"
                 class="text-white bg-red-500 px-3 py-1 rounded-lg hover:bg-red-600 transition duration-300 flex items-center space-x-2 text-sm"
+                title="Cancelar Reserva"
               >
-                <i class="fa fa-times-circle"></i> <span>Cancelar</span>
+                <i class="fa fa-times-circle"></i>
               </button>
-
-              <!-- Mostrar texto 'No Pagar' si la reserva está cancelada o rechazada -->
-              <span
-                *ngIf="
-                  reservation.estado_reserva === 'Cancelada' ||
-                  reservation.estado_reserva === 'Rechazada'
-                "
-                class="text-red-600 font-semibold"
-              >
-                No Pagar
-              </span>
-
-              <!-- Botón "Pagar Renta" -->
               <button
                 *ngIf="
                   reservation.estado_reserva === 'Confirmada' &&
-                  reservation.estado_reserva !== 'Cancelada' &&
-                  reservation.estado_reserva !== 'Rechazada' &&
                   reservation.estado_pago !== 'Pagado'
                 "
                 (click)="goToPayment(reservation.id_reserva)"
                 class="text-white bg-green-500 px-3 py-1 rounded-lg hover:bg-green-600 transition duration-300 flex items-center space-x-2 text-sm"
+                title="Pagar Renta"
               >
-                <i class="fa fa-credit-card"></i> <span>Pagar Renta</span>
+                <i class="fa fa-credit-card"></i>
               </button>
-
-              <!-- Completar Reserva -->
               <button
-              *ngIf="
-                reservation.estado_pago === 'Pagado' &&
-                reservation.estado_reserva !== 'Completada' &&
-                reservation.estado_reserva !== 'Devolución'
-              "
-              (click)="completeReservation(reservation.id_reserva)"
-              class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-300 flex items-center space-x-2 text-sm"
-            >
-              <i class="fa fa-check-circle"></i>
-              <span>Completar Reserva</span>
-            </button>
-            
-
-              <!-- Crear Reporte -->
+                *ngIf="
+                  reservation.estado_pago === 'Pagado' &&
+                  reservation.estado_reserva === 'Confirmada'
+                "
+                (click)="completeReservation(reservation.id_reserva)"
+                class="text-white bg-blue-500 px-3 py-1 rounded-lg hover:bg-blue-600 transition duration-300 flex items-center space-x-2 text-sm"
+                title="Completar Reserva"
+              >
+                <i class="fa fa-check-circle"></i>
+              </button>
               <button
-              *ngIf="reservation.estado_reserva === 'Completada' || reservation.estado_reserva === 'Devolución'"
-              (click)="createReport(reservation.id_reserva)"
-              class="text-white bg-purple-500 px-3 py-1 rounded-lg hover:bg-purple-600 transition duration-300 flex items-center space-x-2 text-sm"
-            >
-              <i class="fa fa-file-alt"></i> <span>Crear Reporte</span>
-            </button>
-            
-
+                *ngIf="
+                  reservation.estado_reserva === 'Completada' ||
+                  reservation.estado_reserva === 'Devolución'
+                "
+                (click)="createReport(reservation.id_reserva)"
+                class="text-white bg-purple-500 px-3 py-1 rounded-lg hover:bg-purple-600 transition duration-300 flex items-center space-x-2 text-sm"
+                title="Crear Reporte"
+              >
+                <i class="fa fa-file-alt"></i>
+              </button>
               <button
-              *ngIf="reservation.estado_reserva === 'Confirmada' && reservation.estado_pago === 'Pagado'"
-              (click)="devolverReserva(reservation.id_reserva)"
-              class="text-white bg-orange-500 px-3 py-1 rounded-lg hover:bg-orange-600 transition duration-300 flex items-center space-x-2 text-sm"
-            >
-              <i class="fa fa-arrow-circle-left"></i> <span>Devolver Reserva</span>
-            </button>
+                *ngIf="
+                  reservation.estado_reserva === 'Confirmada' &&
+                  reservation.estado_pago === 'Pagado'
+                "
+                (click)="devolverReserva(reservation.id_reserva)"
+                class="text-white bg-orange-500 px-3 py-1 rounded-lg hover:bg-orange-600 transition duration-300 flex items-center space-x-2 text-sm"
+                title="Devolver Reserva"
+              >
+                <i class="fa fa-arrow-right"></i>
+              </button>
             </div>
           </td>
         </tr>

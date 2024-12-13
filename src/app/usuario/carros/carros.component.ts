@@ -10,6 +10,7 @@ import { Car, CarrosService } from '../../core/services/carros.service';
 import { NavbarComponent } from '../navbar/navbar.component';
 
 
+
 @Component({
   selector: 'app-carros',
   standalone: true,
@@ -50,14 +51,22 @@ export default class CarrosComponent implements OnInit, OnDestroy {
 
   loadUserCars() {
     this.loadingImage = true;
+    
     this.carrosService.getUserCars().subscribe(
       (data: Car[]) => {
+        console.log('Datos recibidos de la API:', data); // Aquí imprimes los datos recibidos
+        
+        // Ahora también mapeamos el campo 'promocion' y agregamos la imagen
         this.carros = data.map((car) => ({
           ...car,
           imagen: car.imagen
             ? `http://localhost:3500/${car.imagen}`
             : 'http://localhost:3500/uploads/ruta/a/imagen/predeterminada.jpg',
+          promocion: car.promocion, // Incluimos el campo promocion
         }));
+        
+        console.log('Carros después de mapear imágenes y promocion:', this.carros); // Ver los carros después de mapear la imagen y promocion
+  
         this.filteredCarros = this.carros;
         this.loadingImage = false;
       },
@@ -67,6 +76,7 @@ export default class CarrosComponent implements OnInit, OnDestroy {
       }
     );
   }
+  
 
   applyFilters() {
     this.filteredCarros = this.carros.filter((car) => {

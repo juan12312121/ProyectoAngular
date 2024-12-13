@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
 
 // Interfaz para estructurar los datos de mantenimiento
@@ -113,4 +113,48 @@ export class MaintenanceService {
       tap(response => console.log(`Respuesta de la eliminación del mantenimiento con ID ${id}:`, response))
     );
   }
+
+  getTotalGastos(id: number): Observable<any> {
+    console.log(`Obteniendo gasto total para el mantenimiento con ID: ${id}`);
+
+    return this.http.get<any>(`${this.apiUrl}/gastos/${id}`, {
+      headers: this.getHeaders(),
+    }).pipe(
+      tap(response => {
+        console.log('Respuesta del gasto total:', response);
+      })
+    );
+  }
+
+  
+  updateMaintenanceState(id_carro: number, estado_mantenimiento: string): Observable<any> {
+    // Verificar que el estado de mantenimiento sea válido
+    const validStates = ['Mantenimiento terminado'];
+    if (!validStates.includes(estado_mantenimiento)) {
+      throw new Error('Estado de mantenimiento inválido');
+    }
+  
+    // Crear el objeto de datos a enviar
+    const data = { estado_mantenimiento };
+  
+    console.log(`Actualizando estado de mantenimiento del carro con ID: ${id_carro}`);
+    console.log('Datos enviados al backend:', data);
+    console.log('URL completa de la solicitud:', `${this.apiUrl}/estado/${id_carro}`);
+  
+    // Realizar la solicitud PUT para actualizar el estado
+    return this.http.put<any>(`${this.apiUrl}/estado/${id_carro}`, data, {
+      headers: this.getHeaders(),
+    }).pipe(
+      tap(response => {
+        // Log de la respuesta de la actualización
+        console.log('Respuesta recibida del backend:', response);
+      }),
+      catchError(error => {
+        // Log de cualquier error en la solicitud
+        console.error('Error al realizar la solicitud PUT:', error);
+        return throwError(error);
+      })
+    );
+  }
+
 }

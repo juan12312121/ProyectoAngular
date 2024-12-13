@@ -7,23 +7,26 @@
     <div class="overflow-x-auto bg-white rounded-lg shadow-xl">
       <table class="min-w-full table-auto border-collapse">
         <thead>
-          <tr class="bg-[#4f52ba] text-white">
-            <th class="px-6 py-3 text-left text-sm font-medium">ID</th>
-            <th class="px-6 py-3 text-left text-sm font-medium">Tipo de Reporte</th>
-            <th class="px-6 py-3 text-left text-sm font-medium">Descripción</th>
-            <th class="px-6 py-3 text-left text-sm font-medium">Fecha de Generación</th>
-            <th class="px-6 py-3 text-left text-sm font-medium">Estado</th>
-            <th class="px-6 py-3 text-left text-sm font-medium">Acciones</th>
+          <tr class="bg-gradient-to-r from-gray-400 to-[#2D9CDB] text-white">
+            <th class="px-6 py-3 text-left text-sm font-medium border-r border-b border-gray-300">ID</th>
+            <th class="px-6 py-3 text-left text-sm font-medium border-r border-b border-gray-300">Tipo de Reporte</th>
+            <th class="px-6 py-3 text-left text-sm font-medium border-r border-b border-gray-300">Descripción</th>
+            <th class="px-6 py-3 text-left text-sm font-medium border-r border-b border-gray-300">Fecha de Generación</th>
+            <th class="px-6 py-3 text-left text-sm font-medium border-r border-b border-gray-300">Estado</th>
+            <th class="px-6 py-3 text-left text-sm font-medium border-b border-gray-300">Acciones</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let reporte of reportes" class="hover:bg-[#f1f5f9] transition duration-200">
-            <td class="px-6 py-4 text-sm">{{ reporte.idreporte }}</td>
-            <td class="px-6 py-4 text-sm">{{ reporte.tipo_reporte }}</td>
-            <td class="px-6 py-4 text-sm">{{ reporte.descripcion }}</td>
-            <td class="px-6 py-4 text-sm">{{ reporte.fecha_generacion | date : "dd/MM/yyyy HH:mm" }}</td>
-            <td class="px-6 py-4 text-sm">{{ reporte.estado }}</td>
-            <td class="px-6 py-4 text-sm">
+            <td class="px-6 py-4 text-sm border-r border-b border-gray-200">{{ reporte.idreporte }}</td>
+            <td class="px-6 py-4 text-sm border-r border-b border-gray-200">{{ reporte.tipo_reporte }}</td>
+            <td class="px-6 py-4 text-sm border-r border-b border-gray-200 break-words whitespace-normal max-w-[200px]">
+              {{ reporte.descripcion }}
+            </td>
+            
+            <td class="px-6 py-4 text-sm border-r border-b border-gray-200">{{ reporte.fecha_generacion | date : "dd/MM/yyyy HH:mm" }}</td>
+            <td class="px-6 py-4 text-sm border-r border-b border-gray-200">{{ reporte.estado }}</td>
+            <td class="px-6 py-4 text-sm border-b border-gray-200">
               <!-- Button with Tooltip for "Ver Detalles" -->
               <div class="group relative inline-block">
                 <button
@@ -38,17 +41,7 @@
               </div>
               
               <!-- Button with Tooltip for "Caso Arreglado" -->
-              <div *ngIf="reporte.estado !== 'Cerrado' && reporte.estado !== 'Arreglado'" class="group relative inline-block ml-2">
-                <button
-                  class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
-                  (click)="arreglarReporte(reporte.idreporte)"
-                >
-                  <i class="fas fa-check-circle mr-2"></i>  
-                </button>
-                <span class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 text-xs text-white bg-black rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  Arreglado
-                </span>
-              </div>
+              
             </td>
           </tr>
         </tbody>

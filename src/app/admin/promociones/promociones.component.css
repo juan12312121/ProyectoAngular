@@ -1,0 +1,13 @@
+.tippy-box {
+    font-family: 'Poppins', sans-serif;
+    background-color: #161a2d !important; /* Fondo oscuro */
+    color: #fff !important; /* Texto blanco */
+    border-radius: 6px;
+    font-size: 14px;
+    padding: 8px 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .tippy-arrow {
+    color: #161a2d; /* Color del fondo del tooltip */
+  }

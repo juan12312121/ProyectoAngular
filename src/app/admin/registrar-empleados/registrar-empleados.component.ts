@@ -18,21 +18,14 @@ export default class RegistrarEmpleadosComponent {
   correo: string = '';
   password: string = '';
   confirmarContrasena: string = '';
-  rol: number = 5; 
+  rol: number = 5; // Rol por defecto
+  numeroLicencia: string = ''; // Número de licencia por defecto vacío
 
   constructor(private authService: AuthService) {}
 
   onRegister(): void {
-    // Verificar si el rol es 1 (Empleado), lo cual no está permitido
-    if (this.rol === 1) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'No se puede registrar con el rol de empleado (Nivel 1).',
-      });
-      return;
-    }
-
+    console.log('Número de licencia en el registro:', this.numeroLicencia); // Verificar valor aquí
+  
     // Verificar si las contraseñas coinciden
     if (this.password !== this.confirmarContrasena) {
       Swal.fire({
@@ -40,32 +33,47 @@ export default class RegistrarEmpleadosComponent {
         title: 'Error',
         text: 'Las contraseñas no coinciden.',
       });
+      return;  // Si las contraseñas no coinciden, detener el proceso de registro
+    }
+  
+    // Si el rol es 5 (chofer), el número de licencia debe ser obligatorio
+    if (this.rol === 5 && !this.numeroLicencia) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'El número de licencia es obligatorio para choferes.',
+      });
       return;
     }
 
-    // Llamar al servicio para registrar el empleado
-    this.authService.register(this.nombreCompleto, this.username, this.correo, this.password, this.confirmarContrasena, this.rol)
-      .subscribe({
-        next: (response) => {
-          console.log('Registro exitoso', response);
-          
-          // Mostrar mensaje de éxito con SweetAlert
-          Swal.fire({
-            icon: 'success',
-            title: '¡Éxito!',
-            text: 'Empleado registrado exitosamente.',
-          });
-        },
-        error: (err) => {
-          console.error('Error en el registro', err);
-          
-          // Mostrar mensaje de error con SweetAlert
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: err.message || 'Ocurrió un error al registrar al empleado.',
-          });
-        }
-      });
+    console.log('Número de licencia en el servicio:', this.numeroLicencia); // Verificar valor al enviarlo al backend
+    
+    // Llamar al servicio de registro
+    this.authService.register(
+      this.nombreCompleto,
+      this.username,
+      this.correo,
+      this.password,
+      this.confirmarContrasena,
+      this.rol,
+      this.numeroLicencia || '' // Enviar un string vacío si no hay número de licencia
+    ).subscribe({
+      next: (response) => {
+        console.log('Registro exitoso', response);
+        Swal.fire({
+          icon: 'success',
+          title: '¡Éxito!',
+          text: 'Empleado registrado exitosamente.',
+        });
+      },
+      error: (err) => {
+        console.error('Error en el registro', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: err.message || 'Ocurrió un error al registrar al empleado.',
+        });
+      }
+    });
   }
 }

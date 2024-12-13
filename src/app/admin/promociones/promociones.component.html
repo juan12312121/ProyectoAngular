@@ -6,58 +6,156 @@
   <main class="flex-1 p-6 overflow-y-auto">
     <!-- Page Title and Add Promotion Button -->
     <div class="mb-6 flex justify-between items-center">
-      <h1 class="text-3xl font-semibold text-[#161a2d]">Promociones</h1>
+      <h1 class="text-2xl font-bold text-[#161a2d]">Promociones</h1>
       <div class="flex justify-start">
-        <button 
-          (click)="addPromotion()" 
-          class="bg-[#48bb78] text-white px-5 py-3 rounded-md hover:bg-[#38a169] transition duration-300" 
-          title="Agregar nueva promoción">
-          <i class="fas fa-plus mr-2"></i> Agregar Promoción
+        <button
+          (click)="addPromotion()"
+          class="flex items-center bg-green-500 text-white px-5 py-3 rounded-md hover:bg-green-600 transition duration-300"
+          title="Procesar Reembolso"
+        >
+          <i class="fas fa-plus mr-2"></i>
         </button>
       </div>
     </div>
 
+    <div
+      class="mb-4 p-4 bg-yellow-100 text-yellow-700 border border-yellow-300 rounded-lg text-sm font-medium"
+    >
+      <i class="fas fa-info-circle mr-2"></i>
+      <span
+        >Active primero la promoción antes de asignar una promocion a un
+        carro.</span
+      >
+    </div>
+
     <!-- Promotions Table -->
-    <div class="bg-white p-6 rounded-lg shadow-xl mb-6">
-      <h2 class="text-2xl font-semibold text-[#4a5568] mb-5">Listado de Promociones</h2>
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+      <h2 class="text-2xl font-semibold text-gray-700 mb-5">
+        Listado de Promociones
+      </h2>
       <table class="w-full table-auto border-collapse mb-5">
         <thead>
-          <tr class="bg-[#edf2f7] text-[#4a5568]">
-            <th class="border p-4 text-sm font-medium text-left">Código</th>
-            <th class="border p-4 text-sm font-medium text-left">Descripción</th>
-            <th class="border p-4 text-sm font-medium text-left">Fechas</th>
-            <th class="border p-4 text-sm font-medium text-left">Descuento (%)</th>
-            <th class="border p-4 text-sm font-medium text-left">Estado</th>
-            <th class="border p-4 text-sm font-medium text-left">Acciones</th>
+          <tr class="bg-gradient-to-r from-gray-400 to-[#2D9CDB] text-white">
+            <th
+              class="border border-gray-300 p-4 text-sm font-medium text-left"
+            >
+              ID Promoción
+            </th>
+            <th
+              class="border border-gray-300 p-4 text-sm font-medium text-left"
+            >
+              Código
+            </th>
+            <th
+              class="border border-gray-300 p-4 text-sm font-medium text-left"
+            >
+              Descripción
+            </th>
+            <th
+              class="border border-gray-300 p-4 text-sm font-medium text-left"
+            >
+              Fechas
+            </th>
+            <th
+              class="border border-gray-300 p-4 text-sm font-medium text-left"
+            >
+              Descuento (%)
+            </th>
+            <th
+              class="border border-gray-300 p-4 text-sm font-medium text-left"
+            >
+              Estado
+            </th>
+            <th
+              class="border border-gray-300 p-4 text-sm font-medium text-left"
+            >
+              Acciones
+            </th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let promotion of promotions" class="hover:bg-[#f7fafc] transition duration-300">
-            <td class="border p-4 text-sm">{{ promotion.codigo_promocion }}</td>
-            <td class="border p-4 text-sm">{{ promotion.descripcion }}</td>
-            <td class="border p-4 text-sm">{{ promotion.fecha_inicio | date }} - {{ promotion.fecha_fin | date }}</td>
-            <td class="border p-4 text-sm">{{ promotion.descuento }}%</td>
-            <td class="border p-4 text-sm text-center">
-              <button 
-                (click)="togglePromotionStatus(promotion)" 
-                class="bg-[#4f52ba] text-white py-1 px-4 rounded-md transition duration-300 hover:bg-[#3e46a0]" 
-                title="{{ promotion.estado === 'activo' ? 'Desactivar promoción' : 'Activar promoción' }}">
-                <i class="fas" [ngClass]="promotion.estado === 'activo' ? 'fa-pause' : 'fa-play'"></i> 
-                {{ promotion.estado === 'activo' ? 'Desactivar' : 'Activar' }}
-              </button>
+          <tr
+            *ngFor="let promotion of promotions"
+            class="hover:bg-gray-50 transition duration-300"
+          >
+            <td class="border border-gray-300 p-4 text-sm">
+              {{ promotion.id_promocion }}
             </td>
-            <td class="border p-4 text-sm text-center flex justify-center space-x-4">
-              <button 
-                (click)="deletePromotion(promotion.id_promocion)" 
-                class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-500 transition duration-300"
-                title="Eliminar promoción">
-                <i class="fas fa-trash-alt mr-2"></i> Eliminar
+            <td class="border border-gray-300 p-4 text-sm">
+              {{ promotion.codigo_promocion }}
+            </td>
+            <td class="border border-gray-300 p-4 text-sm">
+              {{ promotion.descripcion }}
+            </td>
+            <td class="border border-gray-300 p-4 text-sm">
+              {{ promotion.fecha_inicio | date }} -
+              {{ promotion.fecha_fin | date }}
+            </td>
+            <td class="border border-gray-300 p-4 text-sm">
+              {{ promotion.descuento }}%
+            </td>
+            <td class="border border-gray-300 p-4 text-sm text-center">
+              <!-- Botón de Desactivar solo cuando la promoción está activa -->
+              <button
+                *ngIf="promotion.estado === 'activo'"
+                (click)="deactivatePromotion(promotion.id_promocion)"
+                class="ml-2 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition duration-300 flex items-center space-x-2"
+                [attr.data-tippy-content]="'Desactivar promoción'"
+                title="Desactivar promoción"
+              >
+                <i class="fas fa-pause"></i> <span></span>
               </button>
-              <button 
-                (click)="updatePromotion(promotion)" 
+
+              <!-- Mensaje cuando la promoción está inactiva -->
+              <span
+                *ngIf="promotion.estado !== 'activo'"
+                class="text-sm text-red-500"
+              ></span>
+
+              <!-- Botón Cambiar Estado cuando la promoción no está activa -->
+              <div class="relative group">
+                <button
+                  *ngIf="promotion.estado !== 'activo'"
+                  (click)="activatePromotion(promotion.id_promocion)"
+                  class="ml-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-300 flex items-center space-x-2"
+                  [attr.data-tippy-content]="'Activar promoción'"
+                  title="Activar promoción"
+                >
+                  <i class="fas fa-check-circle"></i> <span></span>
+                </button>
+              </div>
+            </td>
+
+            <td
+              class="border border-gray-300 p-4 text-sm text-center flex justify-center space-x-3"
+            >
+              <!-- Botón de Aplicar Promoción -->
+              <button
+              (click)="applyPromotion(promotion.id_promocion)"
+              class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition duration-300 ease-in-out"
+              data-tippy-content="Asignar carro"
+              aria-label="Asignar carro"
+              title="Asignar carro"
+            >
+              <i class="fas fa-car"></i>
+            </button>
+            
+
+              <button
+                (click)="deletePromotion(promotion.id_promocion)"
+                class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-500 transition duration-300"
+                data-tippy-content="Eliminar promoción"
+                title="Eliminar promocion"
+              >
+                <i class="fas fa-trash-alt"></i>
+              </button>
+              <button
+                (click)="updatePromotion(promotion)"
                 class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-500 transition duration-300"
-                title="Actualizar promoción">
-                <i class="fas fa-edit mr-2"></i> Editar
+                data-tippy-content="Editar promoción"
+                title="Actualizar promoción"
+              >
+                <i class="fas fa-edit"></i>
               </button>
             </td>
           </tr>
@@ -65,21 +163,32 @@
       </table>
 
       <!-- Pagination -->
-      <div class="flex justify-center items-center space-x-3">
-        <button 
-          (click)="previousPage()" 
-          [disabled]="currentPage === 1" 
-          class="bg-[#4299e1] text-white px-4 py-2 rounded-md hover:bg-[#3182ce] transition duration-300" 
-          title="Página anterior">
-          <i class="fas fa-arrow-left mr-2"></i> 
+      <div class="flex justify-center items-center space-x-3 mt-4">
+        <!-- Botón Página Anterior con ícono -->
+        <button
+          (click)="previousPage()"
+          [disabled]="currentPage === 1"
+          class="flex items-center bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          data-tippy-content="Página anterior"
+        >
+          <i class="fas fa-chevron-left"></i>
+          <!-- Icono de flecha hacia la izquierda -->
         </button>
-        <span class="text-lg">Página {{ currentPage }} de {{ totalPages }}</span>
-        <button 
-          (click)="nextPage()" 
-          [disabled]="currentPage === totalPages" 
-          class="bg-[#4299e1] text-white px-4 py-2 rounded-md hover:bg-[#3182ce] transition duration-300" 
-          title="Siguiente página">
-          <i class="fas fa-arrow-right mr-2"></i> 
+
+        <!-- Texto "Página X de Y" -->
+        <span class="text-lg font-medium text-gray-700">
+          Página {{ currentPage }} de {{ totalPages }}
+        </span>
+
+        <!-- Botón Página Siguiente con ícono -->
+        <button
+          (click)="nextPage()"
+          [disabled]="currentPage === totalPages"
+          class="flex items-center bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          data-tippy-content="Siguiente página"
+        >
+          <i class="fas fa-chevron-right"></i>
+          <!-- Icono de flecha hacia la derecha -->
         </button>
       </div>
     </div>

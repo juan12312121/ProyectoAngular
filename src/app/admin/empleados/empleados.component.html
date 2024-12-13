@@ -5,7 +5,7 @@
   <!-- Contenido Principal -->
   <div class="flex-1 p-6 ml-[85px]">
     <!-- Título principal -->
-    <h2 class="text-3xl font-semibold text-gray-800 mb-6">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">
       Empleados Registrados
     </h2>
 
@@ -17,55 +17,62 @@
 
       <!-- Botón para Agregar Nuevo Empleado -->
       <button
-        class="text-white bg-green-500 px-6 py-3 rounded-lg hover:bg-green-600 mb-6 transition-all"
-        (click)="agregarEmpleado()"
-        title="Agregar Nuevo Empleado"
-      >
-        <i class="fas fa-user-plus mr-2"></i> Agregar Nuevo Empleado
-      </button>
+      class="text-white bg-green-500 px-6 py-3 rounded-lg hover:bg-green-600 mb-6 transition-all"
+      (click)="agregarEmpleado()"
+      title="Agregar Nuevo Empleado" 
+    >
+      <i class="fas fa-user-plus mr-2"></i>
+    </button>
+    
 
       <!-- Tabla de Empleados -->
       <table class="min-w-full border-collapse bg-white rounded-lg shadow-lg overflow-hidden">
         <thead class="bg-[#edf2f7]">
-          <tr>
-            <th class="px-6 py-3 border-b text-left text-sm font-medium text-[#4a5568]">ID Empleado</th>
-            <th class="px-6 py-3 border-b text-left text-sm font-medium text-[#4a5568]">Nombre</th>
-            <th class="px-6 py-3 border-b text-left text-sm font-medium text-[#4a5568]">Nombre de Usuario</th>
-            <th class="px-6 py-3 border-b text-left text-sm font-medium text-[#4a5568]">Correo Electrónico</th>
-            <th class="px-6 py-3 border-b text-left text-sm font-medium text-[#4a5568]">Fecha de Registro</th>
+          <tr class="bg-gradient-to-r from-gray-400 to-[#2D9CDB] text-white">
+            <th class="px-6 py-3 border-b border-r text-left text-sm font-medium text-[#4a5568]">ID Empleado</th>
+            <th class="px-6 py-3 border-b border-r text-left text-sm font-medium text-[#4a5568]">Nombre</th>
+            <th class="px-6 py-3 border-b border-r text-left text-sm font-medium text-[#4a5568]">Nombre de Usuario</th>
+            <th class="px-6 py-3 border-b border-r text-left text-sm font-medium text-[#4a5568]">Correo Electrónico</th>
             <th class="px-6 py-3 border-b text-left text-sm font-medium text-[#4a5568]">Acciones</th>
           </tr>
         </thead>
         <tbody>
-          <!-- Render each empleado -->
-          <tr
-            *ngFor="let empleado of paginatedEmpleados"
-            class="hover:bg-[#f7fafc] border-t"
-          >
-            <td class="px-6 py-4 text-sm text-[#4a5568]">{{ empleado.id }}</td>
-            <td class="px-6 py-4 text-sm text-[#4a5568]">
+          <tr *ngFor="let empleado of paginatedEmpleados" class="hover:bg-[#f7fafc] border-t">
+            <!-- Columna: ID Empleado -->
+            <td class="px-6 py-4 text-sm text-[#4a5568] border-r">
+              {{ empleado.id }}
+            </td>
+      
+            <!-- Columna: Nombre Completo -->
+            <td class="px-6 py-4 text-sm text-[#4a5568] border-r">
               {{ empleado.nombre_completo }}
             </td>
-            <td class="px-6 py-4 text-sm text-[#4a5568]">
+      
+            <!-- Columna: Nombre de Usuario -->
+            <td class="px-6 py-4 text-sm text-[#4a5568] border-r">
               {{ empleado.nombre_usuario }}
             </td>
-            <td class="px-6 py-4 text-sm text-[#4a5568]">{{ empleado.correo }}</td>
-            <td class="px-6 py-4 text-sm text-[#4a5568]">
-              {{ empleado.fecha_creacion }}
+      
+            <!-- Columna: Correo Electrónico -->
+            <td class="px-6 py-4 text-sm text-[#4a5568] border-r">
+              {{ empleado.correo }}
             </td>
+      
+            <!-- Columna: Acciones -->
             <td class="px-6 py-4 flex space-x-2">
-              <!-- Botón de Eliminar con ícono y tooltip -->
+              <!-- Botón: Eliminar -->
               <button
                 class="text-white bg-red-500 px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300"
                 (click)="deleteUser(empleado.id)"
                 title="Eliminar Empleado"
               >
-                <i class="fas fa-trash-alt mr-2"></i> Eliminar
+                <i class="fas fa-trash-alt mr-2"></i> 
               </button>
             </td>
           </tr>
         </tbody>
       </table>
+      
 
       <!-- Paginación -->
       <div class="flex justify-center mt-6">

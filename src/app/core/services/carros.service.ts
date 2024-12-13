@@ -4,6 +4,7 @@ import { Observable, catchError, tap, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
 
 export interface Car {
+  selected: unknown;
   id: number;
   marca: string;
   modelo: string;
@@ -17,10 +18,17 @@ export interface Car {
   kilometraje: number;
   imagen: string;
   puertas: number;
+  promocion: string;
   pasajeros: number;
   reviews: { user: string; comment: string }[];  // Propiedad de comentarios o reseñas
   relatedCars: Car[];  // Autos relacionados
+
+ 
+  descuento: number;  
+  precio_con_descuento: number; 
+  precio_original: number;  
 }
+
 
 @Injectable({
   providedIn: 'root',
@@ -61,12 +69,32 @@ export class CarrosService {
 
   // Añadir un nuevo carro
   addCarro(formData: FormData): Observable<Car> {
+    // Crear un objeto vacío para almacenar los datos de FormData
+    const formDataObj: { [key: string]: any } = {};
+  
+    // Iterar sobre los datos del FormData y agregarlos al objeto
+    formData.forEach((value, key) => {
+      formDataObj[key] = value;
+    });
+  
+    // Log para ver los datos que se están enviando en la solicitud
+    console.log('Enviando datos del carro:', formDataObj);
+  
     return this.http.post<Car>(this.apiUrl, formData, { headers: this.getAuthHeaders() })
       .pipe(
-        tap(() => this.carAddedSignal.set(true)),
-        catchError(this.handleError)
+        tap(() => {
+          // Log de éxito al agregar el carro
+          console.log('Carro agregado exitosamente');
+          this.carAddedSignal.set(true);
+        }),
+        catchError((error) => {
+          // Log de error en caso de fallo
+          console.error('Error al agregar el carro:', error);
+          return this.handleError(error);
+        })
       );
   }
+  
 
   saveCarIdToLocalStorage(id: number): void {
     localStorage.setItem('selectedCarId', id.toString());
@@ -82,16 +110,24 @@ export class CarrosService {
       console.error('ID de carro inválido:', id);
       return throwError(() => new Error('ID de carro no válido'));
     }
-
+  
     const headers = this.getAuthHeaders();  // Si se necesita cabecera de autenticación
     return this.http.get<Car>(`${this.apiUrl}/${id}`, { headers: headers || undefined })
       .pipe(
         tap((carro: Car) => {
           console.log('Carro recibido:', carro); // Log del carro recibido
+  
+          // Accede a los valores necesarios:
+          const { descuento, precio_diaro, precio_original } = carro;
+  
+          console.log('Descuento:', descuento);
+          console.log('Precio Diario:', precio_diaro);
+          console.log('Precio Original:', precio_original);
         }),
         catchError(this.handleError) // Manejo de errores
       );
   }
+  
 
   // Actualizar un carro por ID
   updateCar(id: number, carData: FormData): Observable<Car> {

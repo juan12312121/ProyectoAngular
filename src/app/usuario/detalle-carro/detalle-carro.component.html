@@ -1,6 +1,6 @@
 <app-navbar></app-navbar>
 
-<div class="container mx-auto px-5 h-full py-10 max-w-screen-5xl">
+<div class="container mx-auto px-5 py-10 max-w-screen-5xl">
   <!-- Loading Indicator -->
   <ng-container *ngIf="loading; else carContent">
     <p class="text-center text-gray-600">Cargando...</p>
@@ -17,18 +17,21 @@
         {{ errorMessage }}
       </div>
 
-      <!-- Car Information -->
+      <!-- Car Information Section -->
       <ng-container *ngIf="car">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-10">
           <!-- Car Image Section -->
-          <div class="car-image h-85">
+          <div class="relative car-image h-full">
             <img
               [src]="car.imagen"
               [alt]="car.marca + ' ' + car.modelo"
               class="w-full h-full object-cover rounded-lg shadow-lg"
             />
-            <div class="absolute top-2 right-2 text-white bg-black opacity-50 p-2 rounded-full">
-              <i class="fa fa-image"></i> <!-- Icon for car image -->
+            <div
+              class="absolute top-2 right-2 text-white bg-black opacity-50 p-2 rounded-full"
+            >
+              <i class="fa fa-image"></i>
+              <!-- Icon for car image -->
             </div>
           </div>
 
@@ -39,7 +42,9 @@
             <h1
               class="text-blue-600 text-4xl font-semibold mb-4 hover:underline"
             >
-              <i class="fa fa-car"></i> {{ car.marca }} - {{ car.modelo }} ({{ car.anio }})
+              <i class="fa fa-car"></i> {{ car.marca }} - {{ car.modelo }} ({{
+                car.anio
+              }})
             </h1>
             <p class="text-gray-700 mb-5">{{ car.descripcion }}</p>
 
@@ -52,38 +57,66 @@
               </h2>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <p class="text-gray-700">
-                  <i class="fa fa-paint-brush"></i> <strong>Color:</strong> {{ car.color }}
+                  <i class="fa fa-paint-brush"></i> <strong>Color:</strong>
+                  {{ car.color }}
                 </p>
                 <p class="text-gray-700">
-                  <i class="fa fa-door-open"></i> <strong>Puertas:</strong> {{ car.puertas }}
+                  <i class="fa fa-door-open"></i> <strong>Puertas:</strong>
+                  {{ car.puertas }}
                 </p>
                 <p class="text-gray-700">
-                  <i class="fa fa-users"></i> <strong>Pasajeros:</strong> {{ car.pasajeros }}
+                  <i class="fa fa-users"></i> <strong>Pasajeros:</strong>
+                  {{ car.pasajeros }}
                 </p>
               </div>
             </section>
 
+            <!-- Rent Type Selection -->
             <div class="mb-6">
-              <h3 class="text-lg font-semibold mb-4"><i class="fa fa-calendar-alt"></i> Tipo de Reserva</h3>
+              <h3 class="text-lg font-semibold mb-4">
+                <i class="fa fa-calendar-alt"></i> Tipo de Reserva
+              </h3>
               <select
                 class="w-full p-3 border border-gray-300 rounded-lg mb-6"
                 [(ngModel)]="selectedRentType"
                 (change)="onRentTypeChange()"
               >
-                <option *ngFor="let rentType of rentalTypes" [ngValue]="rentType">
+                <option
+                  *ngFor="let rentType of rentalTypes"
+                  [ngValue]="rentType"
+                >
                   {{ rentType }}
                 </option>
               </select>
             </div>
-            
-            <div class="mt-4 text-lg font-semibold text-gray-800">
-              <i class="fa fa-dollar-sign"></i> Precio Diario:
-              <span class="text-blue-600">{{ car.precio_diaro }}</span>
+
+            <!-- Price and Discount Section -->
+            <div class="flex items-center mb-6 space-x-2">
+              <div class="text-2xl font-semibold text-gray-800">
+                Precio Diario:
+                <span class="text-blue-600">{{ car.precio_diaro | currency: 'MXN' }}</span>
+                <!-- Muestra el precio con símbolo MXN -->
+              </div>
+              <div class="text-sm font-semibold flex items-center">
+                <!-- Show Original Price and Discount if applicable -->
+                <span *ngIf="car.promocion && car.promocion !== 'Sin promoción'" class="line-through text-gray-500 mr-3">
+                  {{ car.precio_original | currency: 'MXN' }}
+                  <!-- Precio original con formato de moneda -->
+                </span>
+                <span *ngIf="car.promocion && car.promocion !== 'Sin promoción'" class="bg-red-600 text-white py-1 px-3 rounded-full flex items-center">
+                  <span class="text-sm">{{ car.descuento }}% de descuento</span>
+                  <!-- Descuento en pequeño tamaño -->
+                </span>
+              </div>
             </div>
 
+            <!-- Date Selection -->
             <div class="flex space-x-4 mb-6">
               <div class="w-full">
-                <label for="start-date" class="block text-sm font-semibold text-gray-700">
+                <label
+                  for="start-date"
+                  class="block text-sm font-semibold text-gray-700"
+                >
                   <i class="fa fa-calendar-day"></i> Fecha de inicio
                 </label>
                 <input
@@ -94,9 +127,12 @@
                   (change)="onStartDateChange()"
                 />
               </div>
-            
+
               <div class="w-full">
-                <label for="end-date" class="block text-sm font-semibold text-gray-700">
+                <label
+                  for="end-date"
+                  class="block text-sm font-semibold text-gray-700"
+                >
                   <i class="fa fa-calendar-week"></i> Fecha de fin
                 </label>
                 <input
@@ -107,6 +143,24 @@
                   (change)="onEndDateChange()"
                 />
               </div>
+            </div>
+
+            <!-- Dirección de entrega -->
+            <div class="mb-6">
+              <label
+                for="direccion_entrega"
+                class="block text-sm font-semibold text-gray-700"
+              >
+                <i class="fa fa-map-marker-alt"></i> Dirección de Entrega
+              </label>
+              <input
+                id="direccion_entrega"
+                type="text"
+                class="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 bg-gray-50"
+                [(ngModel)]="direccion_entrega"
+                placeholder="Ingresa la dirección de entrega"
+                required
+              />
             </div>
 
             <!-- Action Buttons -->
@@ -133,10 +187,8 @@
           <app-reviews></app-reviews>
         </section>
 
-
+        <!-- Chatbot -->
         <app-chatbot></app-chatbot>
-        <!-- Related Cars Section -->
-        <!-- Optionally, add related cars here -->
       </ng-container>
     </div>
   </ng-template>

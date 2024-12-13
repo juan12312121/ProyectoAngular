@@ -45,20 +45,32 @@ reservation: any;
   }
 
   loadReservations(): void {
+    console.log('Iniciando carga de reservas...');
     this.isLoading = true;
+
     this.reservationsService.getAllReservations(this.currentPage, this.pageSize).subscribe(
       (data) => {
+        console.log('Datos recibidos del servicio:', data); // Log para los datos recibidos
         this.reservations = data;
+
+        console.log('Antes de filtrar reservas:', this.reservations); // Log antes de aplicar el filtro
         this.filterReservations();
+        console.log('Después de filtrar reservas:', this.reservations); // Log después del filtro
+
         this.totalPages = Math.ceil(this.reservations.length / this.pageSize);
+        console.log('Número total de páginas calculado:', this.totalPages); // Log para verificar el total de páginas
+
         this.isLoading = false;
+        console.log('Carga de reservas completada.');
       },
       (error) => {
+        console.error('Error al cargar las reservas:', error); // Log para errores
         this.errorMessage = 'Error al cargar las reservas';
         this.isLoading = false;
       }
     );
-  }
+}
+
   getChoferById(choferId: number): any {
     return this.choferes.find(chofer => chofer.id === choferId);
   }

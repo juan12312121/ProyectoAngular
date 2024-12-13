@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Subscription } from 'rxjs';
@@ -16,7 +18,7 @@ import { NavbarComponent } from '../navbar/navbar.component';
 @Component({
   selector: 'app-historial',
   standalone: true,
-  imports: [NavbarComponent,FormsModule, CommonModule,NgxPaginationModule,ChatbotComponent],
+  imports: [NavbarComponent,FormsModule,MatIconModule, CommonModule,NgxPaginationModule,ChatbotComponent,MatTooltipModule],
   templateUrl: './historial.component.html',
   styleUrls: ['./historial.component.css']
 })
@@ -30,15 +32,17 @@ payRental(arg0: any) {
 throw new Error('Method not implemented.');
 }
 
-  public reservations: any[] = []; // All reservations
-  public pendingReservations: any[] = []; // Pending reservations
-  public completedReservations: any[] = []; // Completed reservations
-  public canceledReservations: any[] = []; // Canceled reservations
-  public carImages: { [key: string]: string } = {}; // Car images dictionary
-  public loadingImage: boolean = false; // Image loading state
+  public reservations: any[] = []; 
+  public pendingReservations: any[] = []; 
+  public completedReservations: any[] = []; 
+  public canceledReservations: any[] = []; 
+  public carImages: { [key: string]: string } = {}; 
+  public loadingImage: boolean = false; 
   private reservationUpdatedSubscription: Subscription = new Subscription();
   public reservationPaymentStatus: { [key: number]: boolean } = {};
   public pageArray: any[] = [];
+  selectedEstado: string = '';
+
 
   items: any[] = []; // Tu lista de datos
   currentPage: number = 1; // Página actual
@@ -94,6 +98,12 @@ throw new Error('Method not implemented.');
 
   ngOnInit(): void {
     this.loadUserReservations();
+    const storedEstado = localStorage.getItem('selectedEstado');
+    if (storedEstado) {
+      this.selectedEstado = storedEstado;
+    } else {
+      this.selectedEstado = '';
+    }
   }
 
   ngOnDestroy(): void {
@@ -120,10 +130,11 @@ throw new Error('Method not implemented.');
     if (userId) {
       this.reservationsService.getReservationsByUserId(userId).subscribe({
         next: (reservations) => {
+          console.log('Received reservations:', reservations);  // Add this line to inspect the data
           this.reservations = reservations;
           this.totalItems = reservations.length;  // Establecer el total de items
           this.organizeReservationsByType();
-          this.loadCarImages();
+        
         },
         error: (error) => {
           console.error('Error loading reservations:', error);
@@ -131,6 +142,7 @@ throw new Error('Method not implemented.');
       });
     }
   }
+  
   
 
   // Organize reservations by their state
@@ -140,17 +152,7 @@ throw new Error('Method not implemented.');
     this.canceledReservations = this.reservations.filter(r => r.estado_reserva === 'Cancelada');
   }
 
-  // Load car images for reservations
-  loadCarImages() {
-    this.reservations.forEach(reservation => {
-      this.carrosService.getCarro(reservation.id_carro).subscribe(car => {
-        let imageUrl = car.imagen?.replace(/\\/g, '/').replace(/^\/+/, '');
-        this.carImages[reservation.id_carro] = imageUrl
-          ? `http://localhost:3500/${imageUrl}`
-          : 'http://localhost:3500/uploads/ruta/a/imagen/predeterminada.jpg';
-      });
-    });
-  }
+ 
 
   // Handle reservation cancellation
   cancelReservation(reservationId: number): void {
@@ -311,10 +313,7 @@ throw new Error('Method not implemented.');
 
 
 
-  // Get car image URL
-  getCarImage(id_carro: number): string {
-    return this.carImages[id_carro] || 'http://localhost:3500/uploads/';
-  }
+
 
   goToPayment(reservationId: number): void {
     // Make sure 'router' is available before trying to navigate
@@ -347,6 +346,53 @@ throw new Error('Method not implemented.');
     }
   }
 
+  assignReturnPlace(reservation: any): void {
+    // Verifica si la reserva tiene los datos necesarios
+    if (!reservation || !reservation.id_reserva || !reservation.lugar_devolucion) {
+      console.error('Datos incompletos para actualizar lugar de devolución');
+      Swal.fire({
+        title: 'Error',
+        text: 'Datos incompletos para actualizar lugar de devolución',
+        icon: 'error',
+        confirmButtonText: 'Aceptar'
+      });
+      return;
+    }
   
+    // Llama al servicio para actualizar el lugar de devolución
+    this.reservationsService.updateReturnPlaceStatus(reservation.id_reserva, reservation.lugar_devolucion).subscribe({
+      next: (response) => {
+        console.log('Lugar de devolución actualizado con éxito:', response);
+        Swal.fire({
+          title: 'Éxito',
+          text: 'Lugar de devolución asignado correctamente.',
+          icon: 'success',
+          confirmButtonText: 'Aceptar'
+        });
+      },
+      error: (error) => {
+        console.error('Error al actualizar lugar de devolución:', error);
+        Swal.fire({
+          title: 'Error',
+          text: 'Hubo un error al actualizar el lugar de devolución.',
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        });
+      }
+    });
+  }
+
+  saveSelectedEstado(): void {
+    // Guardar el valor del estado de reserva en el localStorage
+    localStorage.setItem('selectedEstado', this.selectedEstado);
+  }
+
+  filteredReservations() {
+    if (this.selectedEstado) {
+      return this.reservations.filter(reservation => reservation.estado_reserva === this.selectedEstado);
+    }
+    return this.reservations;
+  }
+
   
 }

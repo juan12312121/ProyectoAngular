@@ -23,40 +23,43 @@
         <div class="overflow-x-auto">
           <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
             <thead class="bg-[#4f6a91] text-white">
-              <tr>
-                <th class="px-6 py-3 text-left text-sm font-semibold">ID Pago</th>
-                <th class="px-6 py-3 text-left text-sm font-semibold">Método de Pago</th>
-                <th class="px-6 py-3 text-left text-sm font-semibold">Monto</th>
-                <th class="px-6 py-3 text-left text-sm font-semibold">Fecha de Pago</th>
-                <th class="px-6 py-3 text-left text-sm font-semibold">ID Reserva</th>
-                <th class="px-6 py-3 text-left text-sm font-semibold">Marca del Auto</th>
-                <th class="px-6 py-3 text-left text-sm font-semibold">Modelo del Auto</th>
-                <th class="px-6 py-3 text-left text-sm font-semibold">Nombre Usuario</th>
-                <th class="px-6 py-3 text-left text-sm font-semibold">Estado Reserva</th>
-                <th class="px-6 py-3 text-left text-sm font-semibold">Estado Pago</th>
-                <th class="px-6 py-3 text-left text-sm font-semibold">Acciones</th>
+              <tr class="bg-gradient-to-r from-gray-400 to-[#2D9CDB] text-white">
+                <th class="px-6 py-3 text-left text-sm font-semibold border-b border-gray-300">ID Pago</th>
+                <th class="px-6 py-3 text-left text-sm font-semibold border-b border-gray-300">Método de Pago</th>
+                <th class="px-6 py-3 text-left text-sm font-semibold border-b border-gray-300">Monto</th>
+                <th class="px-6 py-3 text-left text-sm font-semibold border-b border-gray-300">Fecha de Pago</th>
+                <th class="px-6 py-3 text-left text-sm font-semibold border-b border-gray-300">ID Reserva</th>
+                <th class="px-6 py-3 text-left text-sm font-semibold border-b border-gray-300">Marca del Auto</th>
+                <th class="px-6 py-3 text-left text-sm font-semibold border-b border-gray-300">Modelo del Auto</th>
+                <th class="px-6 py-3 text-left text-sm font-semibold border-b border-gray-300">Nombre Usuario</th>
+                <th class="px-6 py-3 text-left text-sm font-semibold border-b border-gray-300">Estado Reserva</th>
+                <th class="px-6 py-3 text-left text-sm font-semibold border-b border-gray-300">Estado Pago</th>
+                <th class="px-6 py-3 text-left text-sm font-semibold border-b border-gray-300">Acciones</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let pago of paginacionPagos" class="hover:bg-[#f1f5f9] transition duration-200">
-                <td class="px-6 py-4 border-b text-sm">{{ pago.pago_id }}</td>
-                <td class="px-6 py-4 border-b text-sm">{{ pago.metodo_pago }}</td>
-                <td class="px-6 py-4 border-b text-sm text-right">{{ pago.monto | currency }}</td>
-                <td class="px-6 py-4 border-b text-sm">{{ pago.fecha_pago | date }}</td>
-                <td class="px-6 py-4 border-b text-sm">{{ pago.id_reserva }}</td>
-                <td class="px-6 py-4 border-b text-sm">{{ pago.auto_marca }}</td>
-                <td class="px-6 py-4 border-b text-sm">{{ pago.auto_modelo }}</td>
-                <td class="px-6 py-4 border-b text-sm">{{ pago.usuario_nombre }}</td>
-                <td class="px-6 py-4 border-b text-sm">{{ pago.estado_reserva }}</td>
-                <td class="px-6 py-4 border-b text-sm">{{ pago.estado_pago }}</td>
-                <td class="px-6 py-4 border-b text-center text-sm">
+                <td class="px-6 py-4 border-b border-r border-gray-300 text-sm">{{ pago.pago_id }}</td>
+                <td class="px-6 py-4 border-b border-r border-gray-300 text-sm">{{ pago.metodo_pago }}</td>
+                <td class="px-6 py-4 border-b border-r border-gray-300 text-sm text-right">{{ pago.monto | currency }}</td>
+                <td class="px-6 py-4 border-b border-r border-gray-300 text-sm">{{ pago.fecha_pago | date }}</td>
+                <td class="px-6 py-4 border-b border-r border-gray-300 text-sm">{{ pago.id_reserva }}</td>
+                <td class="px-6 py-4 border-b border-r border-gray-300 text-sm">{{ pago.auto_marca }}</td>
+                <td class="px-6 py-4 border-b border-r border-gray-300 text-sm">{{ pago.auto_modelo }}</td>
+                <td class="px-6 py-4 border-b border-r border-gray-300 text-sm">{{ pago.usuario_nombre }}</td>
+                <td class="px-6 py-4 border-b border-r border-gray-300 text-sm">{{ pago.estado_reserva }}</td>
+                <td class="px-6 py-4 border-b border-r border-gray-300 text-sm">{{ pago.estado_pago }}</td>
+                <td class="px-6 py-4 border-b text-center border-gray-300 text-sm">
                   <!-- Botón para procesar reembolso -->
                   <button 
                   *ngIf="pago.estado_reserva === 'Devolución' && pago.estado_pago !== 'Reembolso'" 
                   (click)="procesarReembolso(pago.id_reserva)" 
-                  class="px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-300">
-                  Procesar Reembolso
+                  class="px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-300"
+                  title="Procesar Reembolso" 
+                >
+                  <i class="fas fa-sync-alt"></i>  
                 </button>
+                
                 </td>
               </tr>
             </tbody>

@@ -5,7 +5,7 @@
   <!-- Contenido Principal -->
   <div class="flex-1 p-6 ml-[85px]">
     <!-- Título principal -->
-    <h2 class="text-3xl font-semibold text-gray-800 mb-6">Clientes Registrados</h2>
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">Clientes Registrados</h2>
 
     <!-- Tabla de Clientes -->
     <div class="bg-white p-6 rounded-lg shadow-xl">
@@ -14,45 +14,37 @@
       <!-- Tabla de Clientes -->
       <table class="min-w-full border-collapse bg-white rounded-lg shadow-lg overflow-hidden">
         <thead class="bg-[#edf2f7]">
-          <tr>
-            <th class="px-6 py-3 border-b text-left text-sm font-medium text-[#4a5568]">ID Cliente</th>
-            <th class="px-6 py-3 border-b text-left text-sm font-medium text-[#4a5568]">Nombre</th>
-            <th class="px-6 py-3 border-b text-left text-sm font-medium text-[#4a5568]">Nombre de Usuario</th>
-            <th class="px-6 py-3 border-b text-left text-sm font-medium text-[#4a5568]">Correo Electrónico</th>
-            <th class="px-6 py-3 border-b text-left text-sm font-medium text-[#4a5568]">Fecha de Registro</th>
+          <tr class="bg-gradient-to-r from-gray-400 to-[#2e9ddd] text-white">
+            <th class="px-6 py-3 border-b border-r text-left text-sm font-medium text-[#4a5568]">ID Cliente</th>
+            <th class="px-6 py-3 border-b border-r text-left text-sm font-medium text-[#4a5568]">Nombre</th>
+            <th class="px-6 py-3 border-b border-r text-left text-sm font-medium text-[#4a5568]">Nombre de Usuario</th>
+            <th class="px-6 py-3 border-b border-r text-left text-sm font-medium text-[#4a5568]">Correo Electrónico</th>
+            <th class="px-6 py-3 border-b border-r text-left text-sm font-medium text-[#4a5568]">Fecha de Registro</th>
             <th class="px-6 py-3 border-b text-left text-sm font-medium text-[#4a5568]">Acciones</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let cliente of paginatedClientes" class="hover:bg-[#f7fafc] border-t">
-            <td class="px-6 py-4 text-sm text-[#4a5568]">{{ cliente.id }}</td>
-            <td class="px-6 py-4 text-sm text-[#4a5568]">{{ cliente.nombre_completo }}</td>
-            <td class="px-6 py-4 text-sm text-[#4a5568]">{{ cliente.nombre_usuario }}</td>
-            <td class="px-6 py-4 text-sm text-[#4a5568]">{{ cliente.correo }}</td>
-            <td class="px-6 py-4 text-sm text-[#4a5568]">{{ cliente.fecha_creacion }}</td>
-            <td class="px-6 py-4 flex space-x-2">
+            <td class="px-6 py-4 border-r text-sm text-[#4a5568]">{{ cliente.id }}</td>
+            <td class="px-6 py-4 border-r text-sm text-[#4a5568]">{{ cliente.nombre_completo }}</td>
+            <td class="px-6 py-4 border-r text-sm text-[#4a5568]">{{ cliente.nombre_usuario }}</td>
+            <td class="px-6 py-4 border-r text-sm text-[#4a5568]">{{ cliente.correo }}</td>
+            <td class="px-6 py-4 border-r text-sm text-[#4a5568]">{{ cliente.fecha_creacion }}</td>
+            <td class="px-6 py-4 text-sm flex space-x-2">
               <button
                 class="text-white bg-[#4299e1] px-4 py-2 rounded hover:bg-[#3182ce] transition duration-300"
                 (click)="verHistorial(cliente.id)" title="Ver Historial">
-                <i class="fas fa-history mr-2"></i>Historial
+                <i class="fas fa-history mr-2"></i> 
               </button>
               <button
                 class="text-white bg-[#e53e3e] px-4 py-2 rounded hover:bg-[#c53030] transition duration-300"
                 (click)="deleteUser(cliente.id)" title="Eliminar">
-                <i class="fas fa-trash-alt mr-2"></i>Eliminar
+                <i class="fas fa-trash-alt mr-2"></i> 
               </button>
             </td>
           </tr>
         </tbody>
       </table>
-     
-      
-      
-      
-      
-      
-      
-      
 
       <!-- Paginación -->
       <div class="flex justify-center mt-6">
@@ -62,7 +54,6 @@
           [disabled]="currentPage === 1"
           (click)="onPageChange(currentPage - 1)" title="Página Anterior">
           <i class="fas fa-chevron-left mr-2"></i> <!-- Ícono de anterior -->
-          
         </button>
 
         <!-- Indicador de la página actual -->
@@ -74,7 +65,6 @@
           [disabled]="currentPage === totalPages"
           (click)="onPageChange(currentPage + 1)" title="Página Siguiente">
           <i class="fas fa-chevron-right mr-2"></i> <!-- Ícono de siguiente -->
-          
         </button>
       </div>
     </div>

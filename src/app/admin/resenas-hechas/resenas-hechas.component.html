@@ -4,7 +4,7 @@
   <main class="flex-1 p-6 overflow-y-auto">
     <!-- Título de la Página -->
     <div class="mb-8 flex justify-between items-center">
-      <h1 class="text-3xl font-extrabold text-[#2D3748]">Valoraciones de Usuarios</h1>
+      <h1 class="text-2xl font-bold  text-[#2D3748]">Valoraciones de Usuarios</h1>
     </div>
 
     <!-- Mensajes de Carga y Error -->
@@ -17,26 +17,26 @@
     </div>
 
     <!-- Tabla de Valoraciones -->
-    <div class="bg-white p-6 rounded-lg shadow-xl mb-8">
+    <div class="bg-white p-4 rounded-lg shadow-xl mb-2">
       <table class="w-full table-auto rounded-lg overflow-hidden shadow-sm">
         <thead>
-          <tr class="bg-gradient-to-r from-[#4A90E2] to-[#2D9CDB] text-white">
-            <th class="px-6 py-3 text-center text-sm font-semibold">#</th>
-            <th class="px-6 py-3 text-center text-sm font-semibold">Nombre de Usuario</th>
-            <th class="px-6 py-3 text-center text-sm font-semibold">Valoración</th>
-            <th class="px-6 py-3 text-center text-sm font-semibold">Comentario</th>
-            <th class="px-6 py-3 text-center text-sm font-semibold">Fecha</th>
-            <th class="px-6 py-3 text-center text-sm font-semibold">Acciones</th>
+          <tr class="bg-gradient-to-r from-gray-400 to-[#2D9CDB] text-white">
+            <th class="px-2 py-2 text-left text-sm font-semibold border-r max-w-xs">#</th>
+            <th class="px-2 py-2 text-left text-sm font-semibold border-r max-w-xs">Nombre de Usuario</th>
+            <th class="px-2 py-2 text-left text-sm font-semibold border-r max-w-xs">Valoración</th>
+            <th class="px-2 py-2 text-left text-sm font-semibold border-r max-w-xs">Comentario</th>
+            <th class="px-2 py-2 text-left text-sm font-semibold border-r max-w-xs">Fecha</th>
+            <th class="px-2 py-2 text-left text-sm font-semibold max-w-xs">Acciones</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let review of paginatedReviews" class="hover:bg-[#EDF2F7] transition-all">
-            <td class="px-6 py-4 text-center text-[#4A5568] text-sm">{{ review.id_valoracion }}</td>
-            <td class="px-6 py-4 text-[#4A5568] text-sm">{{ review.nombre_usuario }}</td>
-            <td class="px-6 py-4 text-center text-[#4A5568] text-sm">{{ review.valoracion }}</td>
-            <td class="px-6 py-4 text-[#4A5568] text-sm">{{ review.comentario }}</td>
-            <td class="px-6 py-4 text-center text-[#4A5568] text-sm">{{ review.fecha_valoracion | date: 'dd/MM/yyyy' }}</td>
-            <td class="px-6 py-4 text-center">
+          <tr *ngFor="let review of paginatedReviews" class="hover:bg-[#EDF2F7] transition-all border-b border-[#E2E8F0]">
+            <td class="px-2 py-2 text-left text-[#4A5568] text-sm border-r">{{ review.id_valoracion }}</td>
+            <td class="px-2 py-2 text-left text-[#4A5568] text-sm border-r">{{ review.nombre_usuario }}</td>
+            <td class="px-2 py-2 text-left text-[#4A5568] text-sm border-r">{{ review.valoracion }}</td>
+            <td class="px-2 py-2 text-left text-[#4A5568] text-sm border-r">{{ review.comentario }}</td>
+            <td class="px-2 py-2 text-left text-[#4A5568] text-sm border-r">{{ review.fecha_valoracion | date: 'dd/MM/yyyy' }}</td>
+            <td class="px-2 py-2 text-left">
               <button 
                 (click)="deleteReview(review.id_valoracion)" 
                 class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-red-500" 
@@ -47,13 +47,13 @@
           </tr>
         </tbody>
       </table>
-
+    
       <!-- Paginación -->
       <div class="flex justify-center items-center mt-6">
         <button 
           (click)="previousPage()" 
           [disabled]="currentPage === 1" 
-          class="bg-[#3182CE] text-white px-6 py-3 rounded-l-lg hover:bg-[#2B6CB0] transition duration-300 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-[#3182CE]" 
+          class="bg-[#3182CE] text-white px-4 py-2 rounded-l-lg hover:bg-[#2B6CB0] transition duration-300 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-[#3182CE]" 
           title="Página Anterior">
           <i class="fas fa-chevron-left"></i>
         </button>
@@ -63,11 +63,12 @@
         <button 
           (click)="nextPage()" 
           [disabled]="currentPage === totalPages" 
-          class="bg-[#3182CE] text-white px-6 py-3 rounded-r-lg hover:bg-[#2B6CB0] transition duration-300 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-[#3182CE]" 
+          class="bg-[#3182CE] text-white px-4 py-2 rounded-r-lg hover:bg-[#2B6CB0] transition duration-300 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-[#3182CE]" 
           title="Página Siguiente">
           <i class="fas fa-chevron-right"></i>
         </button>
       </div>
     </div>
+    
   </main>
 </div>

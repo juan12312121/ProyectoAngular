@@ -154,46 +154,62 @@ getAllChoferes(): Observable<any> {
   }
 
   
-
-  register(nombreCompleto: string, username: string, correo: string, password: string, confirmarContrasena: string, rol: number): Observable<any> {
-    const userRole = this.getUserRole();  // Obtener el rol del usuario que realiza el registro
-  
-    // Verificar que las contraseñas coincidan
+  register(
+    nombreCompleto: string,
+    username: string,
+    correo: string,
+    password: string,
+    confirmarContrasena: string,
+    rol: number,
+    numeroLicencia?: string // Hacerlo opcional
+  ): Observable<any> {
+    // Verificar si las contraseñas coinciden
     if (password !== confirmarContrasena) {
-      return throwError(() => new Error('Las contraseñas no coinciden'));
+      return throwError(() => new Error('Las contraseñas no coinciden.'));
     }
   
-    // Lógica para usuarios con rol 10 (administrador) y 5 (chofer)
-    if (userRole === 10 || userRole === 5) {
-      // Si el usuario logueado tiene rol 10 (administrador) o rol 5 (chofer), no redirigir al login después del registro
-      return this.httpClient.post<any>(this.REGISTER_URL, { nombreCompleto, username, correo, password, rol }).pipe(
-        tap(response => {
-          console.log('Registro exitoso:', response);
-          // Solo redirigir al login si el rol a registrar no es 10 ni 5
-          if (rol !== 10 && rol !== 5) {
-            this.router.navigate(['/login']);  // Redirigir al login después de un registro exitoso para roles que no sean admin o chofer
-          }
-        }),
-        catchError(error => {
-          console.error('Error en el registro:', error);
-          return throwError(() => new Error('Error en el registro'));
-        })
-      );
-    } else {
-      // Lógica para usuarios sin rol 10 o 5
-      return this.httpClient.post<any>(this.REGISTER_URL, { nombreCompleto, username, correo, password, rol }).pipe(
-        tap(response => {
-          console.log('Registro exitoso:', response);
-          // Redirigir al login después de un registro exitoso para roles que no sean admin o chofer
-          this.router.navigate(['/login']);
-        }),
-        catchError(error => {
-          console.error('Error en el registro:', error);
-          return throwError(() => new Error('Error en el registro'));
-        })
-      );
+    // Validar formato de correo (opcional)
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(correo)) {
+      return throwError(() => new Error('El correo electrónico no es válido.'));
     }
+  
+    // Asignar rol por defecto si no se proporciona
+    const userRole = rol || 1;
+  
+    // Log para ver el valor de numeroLicencia
+    console.log('Número de Licencia:', numeroLicencia);
+  
+    // Si el rol es 5, el número de licencia debe ser proporcionado
+    if (userRole === 5 && !numeroLicencia) {
+      return throwError(() => new Error('El número de licencia es requerido para usuarios de nivel 5.'));
+    }
+  
+    // Llamar al backend para registrar al usuario
+    return this.httpClient.post<any>(this.REGISTER_URL, { 
+      nombreCompleto, 
+      username, 
+      correo, 
+      password, 
+      rol: userRole, 
+      numeroLicencia: numeroLicencia || '' // Pasamos una cadena vacía si no hay número de licencia
+    }).pipe(
+      tap(response => {
+        console.log('Registro exitoso:', response);
+        // Realizar cualquier acción adicional después de un registro exitoso
+        if (rol !== 10 && rol !== 5) {
+          // Redirigir si no es rol admin o chofer
+        //  this.router.navigate(['/login']);
+        }
+      }),
+      catchError(error => {
+        console.error('Error en el registro:', error);
+        return throwError(() => new Error('Error al registrar el usuario.'));
+      })
+    );
   }
+  
+  
   
   isSessionActive(): boolean {
     const token = this.getToken();  // Obtener el token desde localStorage
