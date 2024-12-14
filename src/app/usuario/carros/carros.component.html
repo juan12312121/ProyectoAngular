@@ -1,150 +1,222 @@
 <app-navbar></app-navbar>
 
 <div class="min-h-screen flex bg-gray-50">
-    <!-- Sidebar for Filters -->
-    <aside class="w-80 bg-white shadow-lg p-6 flex-shrink-0 sticky top-0 h-screen overflow-auto">
-        <h2 class="text-2xl font-bold mb-6 text-blue-600">Filtrar por:</h2>
+  <!-- Sidebar for Filters -->
+  <aside
+    class="w-80 bg-white shadow-lg p-6 flex-shrink-0 sticky top-0 h-screen overflow-auto"
+  >
+    <h2 class="text-2xl font-bold mb-6 text-blue-600">Filtrar por:</h2>
 
-        <!-- Filtro por Marca -->
-        <div class="mb-6">
-            <h3 class="text-lg font-semibold mb-3 text-gray-700">Marca</h3>
-            <ul class="space-y-2">
-                <li class="flex items-center space-x-2" *ngFor="let marca of ['Toyota', 'Honda', 'Chevrolet', 'Kia', 'Nissan', 'Subaru', 'Mazda']">
-                    <input type="checkbox" id="{{ marca.toLowerCase() }}" class="checkbox" (change)="toggleMarca(marca)">
-                    <label for="{{ marca.toLowerCase() }}" class="text-gray-600">
-                        <i class="fas fa-car"></i> {{ marca }}
-                    </label>
-                </li>
-            </ul>
-        </div>
-        
-        <!-- Filtro por Modelo -->
-        <div class="mb-6">
-            <h3 class="text-lg font-semibold mb-3 text-gray-700">Modelo</h3>
-            <ul class="space-y-2">
-                <li class="flex items-center space-x-2" *ngFor="let modelo of ['Carolla', 'Civic', 'Silverado', 'Soul', 'Altima', 'Outback', 'Corolla', 'CX-3']">
-                    <input type="checkbox" id="{{ modelo.toLowerCase().replace(' ', '-') }}" class="checkbox" (change)="toggleModelo(modelo)">
-                    <label for="{{ modelo.toLowerCase().replace(' ', '-') }}" class="text-gray-600">
-                        <i class="fas fa-cogs"></i> {{ modelo }}
-                    </label>
-                </li>
-            </ul>
-        </div>
+    <!-- Filtro por Marca -->
+    <div class="mb-6">
+      <h3 class="text-lg font-semibold mb-3 text-gray-700">Marca</h3>
+      <ul class="space-y-2">
+        <li
+          class="flex items-center space-x-2"
+          *ngFor="
+            let marca of [
+              'Toyota',
+              'Honda',
+              'Chevrolet',
+              'Kia',
+              'Nissan',
+              'Subaru',
+              'Mazda',
+              'Acura',
+              'Alfa Romeo',
+              'BMW',
+              'Buick',
+              'Cadilac',
+              'Dodge',
+              'Ford',
+              'Hyunda',
 
-        <!-- Filtro por Categoria -->
-        <div class="mb-6">
-            <h3 class="text-lg font-semibold mb-3 text-gray-700">Categoría</h3>
-            <ul class="space-y-2">
-                <li class="flex items-center space-x-2" *ngFor="let categoria of ['SUV', 'Sedán','Camioneta']">
-                    <input type="checkbox" id="{{ categoria.toLowerCase() }}" class="checkbox" (change)="toggleCategoria(categoria)">
-                    <label for="{{ categoria.toLowerCase() }}" class="text-gray-600">
-                        <i class="fas fa-sitemap"></i> {{ categoria }}
-                    </label>
-                </li>
-            </ul>
-        </div>
+            ]
+          "
+        >
+          <input
+            type="checkbox"
+            id="{{ marca.toLowerCase() }}"
+            class="checkbox"
+            (change)="toggleMarca(marca)"
+          />
+          <label for="{{ marca.toLowerCase() }}" class="text-gray-600">
+            <i class="fas fa-car"></i> {{ marca }}
+          </label>
+        </li>
+      </ul>
+    </div>
 
-        <!-- Filtro por Año -->
-        <div class="mb-6">
-            <h3 class="text-lg font-semibold mb-3 text-gray-700">Año</h3>
-            <ul class="space-y-2">
-                <li class="flex items-center space-x-2" *ngFor="let year of [2017,2018,2019,2020, 2021, 2022, 2023, 2024]">
-                    <input type="checkbox" id="year-{{ year }}" class="checkbox" (change)="toggleYear(year)">
-                    <label for="year-{{ year }}" class="text-gray-600">
-                        <i class="fas fa-calendar-alt"></i> {{ year }}
-                    </label>
-                </li>
-            </ul>
-        </div>
+    <!-- Filtro por Modelo -->
+    <div class="mb-6">
+      <h3 class="text-lg font-semibold mb-3 text-gray-700">Modelo</h3>
+      <ul class="space-y-2">
+        <li
+          class="flex items-center space-x-2"
+          *ngFor="
+            let modelo of [
+              'Carolla',
+              'Civic',
+              'Silverado',
+              'Soul',
+              'Altima',
+              'Outback',
+              'Corolla',
+              'CX-3',
+              'MDX',
+              'RDX',
+              'Giulia',
+              'Stelvio',
+              'X5',
+              'Enclave',
+              'Escalde',
+              'Durango',
+              'Focus',
+              'Sonata',
+              'Tucson',
 
-        <!-- Filtro por Precio -->
-        <div class="mb-6">
-            <h3 class="text-lg font-semibold mb-3 text-gray-700">Rango de Precio</h3>
-            <input type="range" min="0" max="1000" step="50" [(ngModel)]="selectedPrice" (change)="filterByPrice()" class="w-full mt-2">
-            <p class="text-gray-700 mt-2">Precio máximo: {{ selectedPrice | currency:'MXN' }}</p>
-        </div>
-    </aside>
+            ]
+          "
+        >
+          <input
+            type="checkbox"
+            id="{{ modelo.toLowerCase().replace(' ', '-') }}"
+            class="checkbox"
+            (change)="toggleModelo(modelo)"
+          />
+          <label
+            for="{{ modelo.toLowerCase().replace(' ', '-') }}"
+            class="text-gray-600"
+          >
+            <i class="fas fa-cogs"></i> {{ modelo }}
+          </label>
+        </li>
+      </ul>
+    </div>
 
-    <!-- Main Content -->
-    <main class="flex-grow p-6 bg-gray-100">
-        <h2 class="text-3xl font-bold mb-6 text-gray-800">Lista de Carros</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div *ngFor="let carro of filteredCarros | paginate: { itemsPerPage: 6, currentPage: p }" class="bg-white shadow-lg rounded-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300 relative">
-                
-                <!-- Imagen del carro con manejo de fondo -->
-                <div class="relative">
-                    <img *ngIf="!loadingImage && carro.imagen" [src]="carro.imagen"
-                        alt="{{ carro.modelo }}" class="w-full h-60 object-cover transition-transform duration-300 transform hover:scale-105">
-                    
-                    <!-- Muestra el descuento si existe -->
-                    <div *ngIf="carro.descuento > 0" class="absolute top-4 left-4 bg-red-600 text-white py-1 px-3 text-sm font-bold rounded-full animate-vibrate">
-                        -{{ carro.descuento }}%
-                    </div>  
-                </div>
-    
-                <!-- Sección de contenido con precio y etiqueta de descuento -->
-                <div class="p-4 space-y-3">
-                    <h3 class="text-2xl font-bold text-gray-800">{{ carro.marca }} {{ carro.modelo }}</h3>
-                    <p class="text-sm text-blue-600 font-semibold">Categoría: {{ carro.categoria }}</p>
-                    
-                    <!-- Descripción con funcionalidad de 'Mostrar más' -->
-                    <p class="text-gray-600 text-sm">
-                        {{ isDescriptionExpanded[carro.id] ? carro.descripcion : truncateText(carro.descripcion, 50) }}
-                        <span
-                            *ngIf="carro.descripcion.length > 50"
-                            (click)="toggleDescription(carro.id)"
-                            class="text-blue-600 cursor-pointer relative group"
-                        >
-                            {{ isDescriptionExpanded[carro.id] ? ' Mostrar menos' : '...' }}
-                            
-                            <!-- Contenedor del tooltip -->
-                            <span class="absolute left-1/2 transform -translate-x-1/2 -top-8 w-max px-2 py-1 rounded-md bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                                {{ isDescriptionExpanded[carro.id] ? 'Mostrar menos' : 'Mostrar más' }}
-                            </span>
-                        </span>
-                    </p>
-                    <div class="flex items-center justify-between space-x-4">
-                        <!-- Mostrar precio con descuento, si hay promoción -->
-                        <div *ngIf="carro.promocion === 'En promoción' && carro.descuento > 0" class="flex items-center">
-                          <p class="text-xl font-semibold text-red-600">
-                            {{ (carro.precio_original * (1 - carro.descuento / 100)) | currency:'MXN' }}
-                          </p>
-                          <span class="text-sm ml-2 text-gray-500 line-through">
-                            {{ carro.precio_original | currency:'MXN' }}
-                          </span>
-                        </div>
-                      
-                        <!-- Mostrar solo precio original si no hay descuento -->
-                        <div *ngIf="!(carro.promocion === 'En promoción' && carro.descuento > 0)" class="flex items-center">
-                          <p class="text-xl font-semibold text-gray-800">
-                            {{ carro.precio_original | currency:'MXN' }}
-                          </p>
-                        </div>
-                      </div>
-                      
-                      
-                    
-                </div>
-    
-                <div class="p-4 border-t border-gray-200">
-                    <button (click)="verDetalles(carro)" class="bg-blue-600 text-white py-2 w-full rounded-lg hover:bg-blue-500 transition duration-300">
-                        <i class="fas fa-info-circle"></i> Ver Detalles
-                    </button>
-                </div>
+    <!-- Filtro por Categoria -->
+    <div class="mb-6">
+      <h3 class="text-lg font-semibold mb-3 text-gray-700">Categoría</h3>
+      <ul class="space-y-2">
+        <li
+          class="flex items-center space-x-2"
+          *ngFor="let categoria of ['SUV', 'Sedán', 'Camioneta', 'Deportivo', 'Convertible', 'Pick-Up', 'Minivan']"
+        >
+          <input
+            type="checkbox"
+            id="{{ categoria.toLowerCase() }}"
+            class="checkbox"
+            (change)="toggleCategoria(categoria)"
+          />
+          <label for="{{ categoria.toLowerCase() }}" class="text-gray-600">
+            <i class="fas fa-sitemap"></i> {{ categoria }}
+          </label>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Filtro por Año -->
+    <div class="mb-6">
+      <h3 class="text-lg font-semibold mb-3 text-gray-700">Año</h3>
+      <ul class="space-y-2">
+        <li
+          class="flex items-center space-x-2"
+          *ngFor="let year of [ 2014,2015,2016,2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]"
+        >
+          <input
+            type="checkbox"
+            id="year-{{ year }}"
+            class="checkbox"
+            (change)="toggleYear(year)"
+          />
+          <label for="year-{{ year }}" class="text-gray-600">
+            <i class="fas fa-calendar-alt"></i> {{ year }}
+          </label>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Filtro por Precio -->
+    <div class="mb-6">
+      <h3 class="text-lg font-semibold mb-3 text-gray-700">Rango de Precio</h3>
+      <input
+        type="range"
+        min="0"
+        max="10000"
+        step="50"
+        [(ngModel)]="selectedPrice"
+        (change)="filterByPrice()"
+        class="w-full mt-2"
+      />
+      <p class="text-gray-700 mt-2">
+        Precio máximo: {{ selectedPrice | currency : "MXN" }}
+      </p>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-grow p-6 bg-gray-100">
+    <h2 class="text-3xl font-bold mb-6 text-gray-800">Lista de Carros</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div
+        *ngFor="let carro of filteredCarros | paginate: { itemsPerPage: 6, currentPage: p }"
+        class="bg-white shadow-lg rounded-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300 relative"
+      >
+        <div class="relative">
+          <img
+            *ngIf="!loadingImage && carro.imagen"
+            [src]="carro.imagen"
+            alt="{{ carro.modelo }}"
+            class="w-full h-60 object-cover transition-transform duration-300 transform hover:scale-105"
+          />
+          <div *ngIf="carro.disponibilidad === 'Rentado'" class="absolute top-4 right-4 bg-red-700 text-white py-1 px-3 text-sm font-bold rounded-full">
+            Rentado
+          </div>
+          <div *ngIf="carro.disponibilidad !== 'Rentado'" class="absolute top-4 right-4 bg-green-700 text-white py-1 px-3 text-sm font-bold rounded-full">
+            Disponible
+          </div>
+          <div *ngIf="carro.descuento > 0" class="absolute top-4 left-4 bg-red-600 text-white py-1 px-3 text-sm font-bold rounded-full animate-vibrate">
+            -{{ carro.descuento }}%
+          </div>
+        </div>
+        <div class="p-4 space-y-3">
+          <h3 class="text-2xl font-bold text-gray-800">{{ carro.marca }} {{ carro.modelo }}</h3>
+          <p class="text-sm text-blue-600 font-semibold">Categoría: {{ carro.categoria }}</p>
+          <p class="text-gray-600 text-sm">
+            {{
+              isDescriptionExpanded[carro.id]
+                ? carro.descripcion
+                : truncateText(carro.descripcion, 50)
+            }}
+            <span *ngIf="carro.descripcion.length > 50" (click)="toggleDescription(carro.id)" class="text-blue-600 cursor-pointer relative group">
+              {{ isDescriptionExpanded[carro.id] ? " Mostrar menos" : "..." }}
+              <span class="absolute left-1/2 transform -translate-x-1/2 -top-8 w-max px-2 py-1 rounded-md bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                {{ isDescriptionExpanded[carro.id] ? "Mostrar menos" : "Mostrar más" }}
+              </span>
+            </span>
+          </p>
+          <div class="flex items-center justify-between space-x-4">
+            <div *ngIf="carro.promocion === 'En promoción' && carro.descuento > 0" class="flex items-center">
+              <p class="text-xl font-semibold text-red-600">
+                {{ carro.precio_original * (1 - carro.descuento / 100) | currency : "MXN" }}
+              </p>
+              <span class="text-sm ml-2 text-gray-500 line-through">{{ carro.precio_original | currency : "MXN" }}</span>
             </div>
+            <div *ngIf="!(carro.promocion === 'En promoción' && carro.descuento > 0)" class="flex items-center">
+              <p class="text-xl font-semibold text-gray-800">{{ carro.precio_original | currency : "MXN" }}</p>
+            </div>
+          </div>
         </div>
-    
-        <app-chatbot></app-chatbot>
-    
-        <div class="mt-6 flex justify-center">
-            <pagination-controls 
-                (pageChange)="p = $event" 
-                class="flex items-center gap-2"
-            ></pagination-controls>
+        <div class="p-4 border-t border-gray-200">
+          <button (click)="verDetalles(carro)" class="bg-blue-600 text-white py-2 w-full rounded-lg hover:bg-blue-500 transition duration-300">
+            <i class="fas fa-info-circle"></i> Ver Detalles
+          </button>
         </div>
-    </main>
-    
-    
-    
-    
+      </div>
+    </div>
+    <app-chatbot></app-chatbot>
+    <div class="mt-6 flex justify-center">
+      <pagination-controls (pageChange)="p = $event" class="flex items-center gap-2"></pagination-controls>
+    </div>
+  </main>
 </div>

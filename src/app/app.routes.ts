@@ -123,7 +123,7 @@ export const routes: Routes = [
     // Redirección a la página principal
    {
         path: '',
-        redirectTo: 'usuario', // Redirige a la ruta de usuario
+        redirectTo: 'login', // Redirige a la ruta de usuario
         pathMatch: 'full', // Asegura que la redirección solo ocurra si la ruta está vacía
     },
     // Ruta por defecto para manejar rutas no definidas

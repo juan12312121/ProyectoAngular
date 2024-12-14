@@ -7,6 +7,8 @@
         Reservas
       </h1>
 
+     
+
       <!-- Mensaje de error -->
       <div *ngIf="errorMessage" class="error-message text-red-500 mb-4">
         <p>{{ errorMessage }}</p>
@@ -19,8 +21,9 @@
 
       <div class="mb-4 p-4 bg-yellow-100 text-yellow-700 border border-yellow-300 rounded-lg text-sm font-medium">
         <i class="fas fa-info-circle mr-2"></i>
-        <span>Solo se puede asignar un chofer si la renta ha sido aceptada.</span>
+        <span>Primero Aceptade la Renta y Despues Asigne Chofer.</span>
       </div>
+
       
   
 
@@ -28,7 +31,8 @@
       <div *ngIf="reservations.length > 0" class="overflow-x-auto mt-6">
         <table class="w-full table-auto rounded-lg overflow-hidden shadow-sm border-collapse">
           <thead>
-            <tr class="bg-gradient-to-r from-gray-400 to-[#2D9CDB] text-white">
+            <tr 
+            class="bg-gradient-to-r from-gray-400 to-[#2D9CDB] text-white">
               <th class="px-4 py-2 text-center text-sm font-semibold border-r">#</th>
               <th class="px-4 py-2 text-center text-sm font-semibold border-r">Marca/Modelo</th>
               <th class="px-4 py-2 text-center text-sm font-semibold border-r">Usuario</th>
@@ -85,6 +89,16 @@
                 </select>
               </td>
               <td class="px-4 py-2 text-center space-x-2">
+                <!-- Ver Detalles Button -->
+                <button
+                  class="bg-gray-500 text-white px-3 py-1 rounded-lg hover:bg-gray-600 transition duration-300"
+                  title="Ver detalles"
+                  (click)="viewDetails(reservation.id_reserva)"
+                >
+                  <i class="fas fa-eye"></i>
+                </button>
+              
+                <!-- Asignar Chofer Button -->
                 <button
                   *ngIf="(reservation.estado_reserva === 'Pendiente' || reservation.estado_reserva === 'Confirmada') && reservation.choferSeleccionadoId"
                   class="bg-green-500 text-white px-3 py-1 rounded-lg hover:bg-green-600 transition duration-300"
@@ -93,6 +107,8 @@
                 >
                   <i class="fas fa-user-check"></i>
                 </button>
+              
+                <!-- Aceptar Reserva Button -->
                 <button
                   *ngIf="reservation.estado_reserva === 'Pendiente'"
                   class="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600 transition duration-300"
@@ -101,6 +117,8 @@
                 >
                   <i class="fas fa-check"></i>
                 </button>
+              
+                <!-- Rechazar Reserva Button -->
                 <button
                   *ngIf="reservation.estado_reserva === 'Pendiente'"
                   class="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition duration-300"
@@ -110,13 +128,16 @@
                   <i class="fas fa-times"></i>
                 </button>
                 <button
-                  class="bg-gray-500 text-white px-3 py-1 rounded-lg hover:bg-gray-600 transition duration-300"
-                  title="Ver detalles"
-                  (click)="viewDetails(reservation.id_reserva)"
-                >
-                  <i class="fas fa-eye"></i>
-                </button>
+                *ngIf="reservation.estado_pago === 'Pagado' && reservation.estado_reserva === 'Confirmada'"
+                (click)="completeReservation(reservation.id_reserva)"
+                class="text-white bg-blue-500 px-3 py-1 rounded-lg hover:bg-blue-600 transition duration-300"
+                title="Completar Reserva"
+              >
+                <i class="fa fa-check-circle text-xl"></i>
+              </button>
               </td>
+              
+              
             </tr>
           </tbody>
         </table>

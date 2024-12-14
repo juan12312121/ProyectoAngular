@@ -47,26 +47,24 @@ export default class CarrosComponent implements OnInit, OnDestroy {
     this.isLoggedIn = this.authService.isAuthenticated();
     // Cargar carros independientemente del estado de autenticación
     this.loadUserCars();
+    
   }
+
+  
 
   loadUserCars() {
     this.loadingImage = true;
-    
     this.carrosService.getUserCars().subscribe(
       (data: Car[]) => {
-        console.log('Datos recibidos de la API:', data); // Aquí imprimes los datos recibidos
-        
-        // Ahora también mapeamos el campo 'promocion' y agregamos la imagen
+        console.log('Datos recibidos de la API:', data);
         this.carros = data.map((car) => ({
           ...car,
           imagen: car.imagen
             ? `http://localhost:3500/${car.imagen}`
             : 'http://localhost:3500/uploads/ruta/a/imagen/predeterminada.jpg',
-          promocion: car.promocion, // Incluimos el campo promocion
+          promocion: car.promocion,
         }));
-        
-        console.log('Carros después de mapear imágenes y promocion:', this.carros); // Ver los carros después de mapear la imagen y promocion
-  
+        console.log('Carros después de mapear imágenes y promocion:', this.carros);
         this.filteredCarros = this.carros;
         this.loadingImage = false;
       },
@@ -76,6 +74,7 @@ export default class CarrosComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   
 
   applyFilters() {

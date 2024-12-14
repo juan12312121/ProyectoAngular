@@ -28,10 +28,68 @@ export default class ReporteChoferComponent {
   descripcion: ''
 };
 
+offensiveMessage = '';
+
+// Lista de palabras ofensivas
+private palabrasSoeces: string[] = [
+  'idiota',
+  'estúpido',
+  'imbécil',
+  'tonto',
+  'maldito',
+  'grosero',
+  'pendejo',
+  'cabron',
+  'chingada',
+  'chingado',
+  'puto',
+  'puta',
+  'pito',
+  'madre',
+  'hijo de puta',
+  'culero',
+  'mierda',
+  'baboso',
+  'tarado',
+  'estupidez',
+  'pinche',
+  'cabrón',
+  'verga',
+  'mamada',
+  'chingón',
+  'culera',
+  'jodido',
+  'perra',
+  'zorra',
+  'estúpida',
+  'marica',
+  'menso',
+  'mamón',
+  'coño',
+  'imbécil',
+  'naco',
+];
+
 constructor(
   private reservationsService: ReservationsService, // Inject the ReservationsService
   private route: ActivatedRoute
 ) {}
+
+
+validateOffensiveWords(): void {
+  const descripcionLower = this.reportData.descripcion.toLowerCase();
+  const contienePalabrasSoeces = this.palabrasSoeces.some((palabra) =>
+    descripcionLower.includes(palabra)
+  );
+
+  if (contienePalabrasSoeces) {
+    this.offensiveMessage =
+      'No permitimos palabras ofensivas en la descripción.';
+  } else {
+    this.offensiveMessage = '';
+  }
+}
+
 
 ngOnInit(): void {
   // Obtener el ID de la reserva desde la URL

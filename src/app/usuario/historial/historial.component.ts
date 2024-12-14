@@ -23,10 +23,6 @@ import { NavbarComponent } from '../navbar/navbar.component';
   styleUrls: ['./historial.component.css']
 })
 export default class HistorialComponent implements OnInit, OnDestroy {
-
-
-
-
   verPagos: any;
 payRental(arg0: any) {
 throw new Error('Method not implemented.');
@@ -207,57 +203,7 @@ throw new Error('Method not implemented.');
     });
   }
 
-  completeReservation(reservationId: number): void {
-    console.log(`[INFO] Attempting to complete reservation with ID: ${reservationId}`);
-  
-    Swal.fire({
-      title: '¿Estás seguro?',
-      text: 'Esta acción marcará la reserva como completada. ¡No se puede deshacer!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí, completar',
-      cancelButtonText: 'No, volver',
-    }).then((result) => {
-      console.log('[INFO] User confirmation:', result);
-  
-      if (result.isConfirmed) {
-        console.log(`[INFO] User confirmed completion for ID: ${reservationId}`);
-  
-        this.reservationsService.completarReserva(reservationId).subscribe({
-          next: (response: any) => {
-            console.log('[SUCCESS] Reservation completed successfully:', response);
-  
-            // Update the reservation list after completing the reservation
-            this.reservations = this.reservations.filter(
-              (reservation) => reservation.id_reserva !== reservationId
-            );
-            this.organizeReservationsByType();
-  
-            Swal.fire({
-              title: 'Completada',
-              text: 'La reserva ha sido completada con éxito.',
-              icon: 'success',
-              confirmButtonColor: '#3085d6',
-            });
-          },
-          error: (error: any) => {
-            console.error('[ERROR] Problem occurred while completing reservation:', error);
-  
-            Swal.fire({
-              title: 'Error',
-              text: 'Hubo un problema al completar la reserva. Por favor, intenta nuevamente.',
-              icon: 'error',
-              confirmButtonColor: '#d33',
-            });
-          },
-        });
-      } else {
-        console.log('[INFO] User cancelled the completion action.');
-      }
-    });
-  }
+
 
   devolverReserva(reservationId: number): void {
     console.log(`[INFO] Attempting to return reservation with ID: ${reservationId}`);

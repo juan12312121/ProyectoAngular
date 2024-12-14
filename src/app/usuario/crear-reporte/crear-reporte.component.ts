@@ -93,6 +93,7 @@ export default class CrearReporteComponent implements OnInit {
       this.offensiveMessage = '';
     }
   }
+  
   onSubmit(): void {
     console.log("Tipo de reporte seleccionado:", this.reportData.tipo_reporte);
     

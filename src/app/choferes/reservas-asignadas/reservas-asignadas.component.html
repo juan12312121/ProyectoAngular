@@ -12,104 +12,115 @@
       <h2 class="text-2xl font-semibold mb-4 text-[#161a2d]">Reservas Asignadas</h2>
 
       <!-- Tabla -->
-      <table class="min-w-full table-auto border-collapse">
+      <table class="min-w-full table-auto border-collapse text-sm">
         <thead>
           <tr class="bg-[#4f52ba] text-white">
-            <th class="px-2 py-2 text-left font-semibold text-sm">ID Reserva</th>
-            <th class="px-2 py-2 text-left font-semibold text-sm">Nombre Cliente</th>
-            <th class="px-2 py-2 text-left font-semibold text-sm">Fecha Reserva</th>
-            <th class="px-2 py-2 text-left font-semibold text-sm">Estado Reserva</th>
-            <th class="px-2 py-2 text-left font-semibold text-sm">Entrega</th>
-            <th class="px-2 py-2 text-left font-semibold text-sm">Estado Recogida</th>
-            <th class="px-2 py-2 text-left font-semibold text-sm">Lugar Devolución</th>
-            <th class="px-2 py-2 text-left font-semibold text-sm">Dirección Entrega</th> <!-- Nueva columna -->
-            <th class="px-2 py-2 text-left font-semibold text-sm">Acciones</th>
+            <th class="px-6 py-3 text-left font-semibold border-r border-[#e0e0e0]">ID Reserva</th>
+            <th class="px-6 py-3 text-left font-semibold border-r border-[#e0e0e0]">Cliente</th>
+            <th class="px-6 py-3 text-left font-semibold border-r border-[#e0e0e0]">Fecha</th>
+            <th class="px-6 py-3 text-left font-semibold border-r border-[#e0e0e0]">Estado</th>
+            <th class="px-6 py-3 text-left font-semibold border-r border-[#e0e0e0]">Estado de entrega o devolución</th>
+            <th class="px-6 py-3 text-left font-semibold border-r border-[#e0e0e0]">Recogida de usuario</th>
+            <th class="px-6 py-3 text-left font-semibold border-r border-[#e0e0e0]">Lugar Devolución</th>
+            <th class="px-6 py-3 text-left font-semibold border-r border-[#e0e0e0]">Dirección</th>
+            <th class="px-6 py-3 text-left font-semibold">Acciones</th>
           </tr>
+          
         </thead>
         <tbody>
-          <!-- Filas dinámicas -->
-          <tr *ngFor="let reserva of reservations" class="border-b hover:bg-[#f0f4ff] transition duration-200">
-            <td class="px-2 py-2 text-sm text-[#161a2d]">{{ reserva.id_reserva }}</td>
-            <td class="px-2 py-2 text-sm text-[#161a2d]">{{ reserva.usuario }}</td>
-            <td class="px-2 py-2 text-sm text-[#161a2d]">{{ reserva.fecha_inicio | date : 'yyyy-MM-dd' }}</td>
+          <tr *ngFor="let reserva of reservations" class="hover:bg-[#f0f4ff] transition duration-200">
+            <td class="border-r px-6 py-4 text-[#161a2d] border-b border-[#e0e0e0]">{{ reserva.id_reserva }}</td>
+            <td class="border-r  px-6 py-4 text-[#161a2d] border-b border-[#e0e0e0]">{{ reserva.usuario }}</td>
+            <td class="border-r  px-6 py-4 text-[#161a2d] border-b border-[#e0e0e0]">{{ reserva.fecha_inicio | date: 'yyyy-MM-dd' }}</td>
             
             <!-- Estado Reserva -->
-            <td class="px-2 py-2 text-sm">
-              <span *ngIf="reserva.estado_reserva === 'Confirmada'" class="bg-blue-500 text-white py-1 px-2 rounded-full text-sm font-semibold">
+            <td class="border-r  px-6 py-4 border-b border-[#e0e0e0]">
+              <span *ngIf="reserva.estado_reserva === 'Confirmada'" class="bg-blue-500 text-white py-1 px-2 rounded-full">
                 Confirmada
               </span>
-              <span *ngIf="reserva.estado_reserva === 'Pendiente'" class="bg-yellow-500 text-white py-1 px-2 rounded-full text-sm font-semibold">
+              <span *ngIf="reserva.estado_reserva === 'Pendiente'" class="bg-yellow-500 text-white py-1 px-2 rounded-full">
                 Pendiente
               </span>
-              <span *ngIf="reserva.estado_reserva === 'Completada'" class="bg-green-500 text-white py-1 px-2 rounded-full text-sm font-semibold">
+              <span *ngIf="reserva.estado_reserva === 'Completada'" class="bg-green-500 text-white py-1 px-2 rounded-full">
                 Completada
               </span>
-              <span *ngIf="reserva.estado_reserva === 'Devolución'" class="bg-red-500 text-white py-1 px-2 rounded-full text-sm font-semibold">
+              <span *ngIf="reserva.estado_reserva === 'Devolución'" class="bg-red-500 text-white py-1 px-2 rounded-full">
                 Devolución
               </span>
             </td>
-    
+            
             <!-- Entrega -->
-            <td class="px-2 py-2 text-sm">
-              <span *ngIf="reserva.entrega === 'Pendiente'" class="bg-orange-400 text-white py-1 px-2 rounded-full text-sm font-semibold">
+            <td class="border-r  px-6 py-4 border-b border-[#e0e0e0]">
+              <span *ngIf="reserva.entrega === 'Pendiente'" class="bg-orange-400 text-white py-1 px-2 rounded-full">
                 Pendiente
               </span>
-              <span *ngIf="reserva.entrega === 'Entregado'" class="bg-green-400 text-white py-1 px-2 rounded-full text-sm font-semibold">
+              <span *ngIf="reserva.entrega === 'Entregado'" class="bg-green-400 text-white py-1 px-2 rounded-full">
                 Entregado
               </span>
-              <span *ngIf="reserva.entrega === 'Recogido'" class="bg-blue-400 text-white py-1 px-2 rounded-full text-sm font-semibold">
+              <span *ngIf="reserva.entrega === 'Recogido'" class="bg-blue-400 text-white py-1 px-2 rounded-full">
                 Recogido
               </span>
             </td>
-    
+            
             <!-- Estado Recogida -->
-            <td class="px-2 py-2 text-sm">
-              <span *ngIf="reserva.estado_recogida_usuario === 'En camino'" class="bg-yellow-500 text-white py-1 px-2 rounded-full text-sm font-semibold">
+            <td  class="border-r  px-6 py-4 border-b border-[#e0e0e0]">
+              <span *ngIf="reserva.estado_recogida_usuario === 'En camino'" class="bg-yellow-500 text-white py-1 px-2 rounded-full">
                 En camino
               </span>
-              <span *ngIf="reserva.estado_recogida_usuario === 'Recogido'" class="bg-green-500 text-white py-1 px-2 rounded-full text-sm font-semibold">
+              <span *ngIf="reserva.estado_recogida_usuario === 'Recogido'" class="bg-green-500 text-white py-1 px-2 rounded-full">
                 Recogido
               </span>
             </td>
-    
+            
             <!-- Lugar Devolución -->
-            <td class="px-2 py-2 text-sm text-[#161a2d]">
-              <span *ngIf="reserva.lugar_devolucion === 'Pendiente'" class="bg-purple-400 text-white py-1 px-2 rounded-full text-sm font-semibold">
+            <td class="border-r  px-6 py-4 text-[#161a2d] border-b border-[#e0e0e0]">
+              <span *ngIf="reserva.lugar_devolucion === 'Pendiente'" class="bg-purple-400 text-white py-1 px-2 rounded-full">
                 Pendiente
               </span>
-              <span *ngIf="reserva.lugar_devolucion !== 'Pendiente'" class="bg-gray-400 text-white py-1 px-2 rounded-full text-sm font-semibold">
+              <span *ngIf="reserva.lugar_devolucion !== 'Pendiente'" class="bg-gray-400 text-white py-1 px-2 rounded-full">
                 {{ reserva.lugar_devolucion }}
               </span>
             </td>
-
+            
             <!-- Dirección Entrega -->
-            <td class="px-2 py-2 text-sm text-[#161a2d]">
-              <span class="bg-gray-300 text-[#161a2d] py-1 px-2 rounded-full text-sm font-semibold">
+            <td class="border-r  px-6 py-4 text-[#161a2d] border-b border-[#e0e0e0]">
+              <span class="bg-gray-300 text-[#161a2d] py-1 px-2 rounded-full">
                 {{ reserva.direccion_entrega }}
               </span>
             </td>
-             <!-- Mostrar dirección de entrega -->
-
+            
             <!-- Acciones -->
-            <td class="px-2 py-2 text-sm">
-              <div class="flex flex-wrap gap-1">
+            <td class="border-r  px-6 py-4 border-b border-[#e0e0e0]">
+              <div class="flex flex-wrap gap-2 justify-center">
                 <!-- Botón para marcar como entregado -->
-                <button *ngIf="reserva.entrega === 'Pendiente'" (click)="changeDeliveryStatus(reserva.id_reserva, 'Entregado')" class="bg-[#4f52ba] hover:bg-[#3c40a1] text-white font-semibold py-1 px-3 rounded-lg shadow-md transition duration-200">
+                <button *ngIf="reserva.entrega === 'Pendiente'" 
+                        (click)="changeDeliveryStatus(reserva.id_reserva, 'Entregado')" 
+                        class="bg-[#4f52ba] hover:bg-[#3c40a1] text-white py-1 px-3 rounded-lg text-sm transition duration-200"
+                        title="Marcar como entregado">
                   <i class="fa fa-check"></i>
                 </button>
-    
+          
                 <!-- Botón para marcar como recogido -->
-                <button *ngIf="reserva.estado_recogida_usuario === 'En camino'" (click)="changeDeliveryStatus(reserva.id_reserva, 'Recogido')" class="bg-yellow-400 hover:bg-yellow-500 text-[#161a2d] font-semibold py-1 px-3 rounded-lg shadow-md transition duration-200">
+                <button *ngIf="reserva.estado_recogida_usuario === 'En camino'" 
+                        (click)="changeDeliveryStatus(reserva.id_reserva, 'Recogido')" 
+                        class="bg-yellow-400 hover:bg-yellow-500 text-[#161a2d] py-1 px-3 rounded-lg text-sm transition duration-200"
+                        title="Marcar como recogido">
                   <i class="fa fa-sync"></i>
                 </button>
-    
-                <!-- Botón para marcar como recogido por el usuario -->
-                <button *ngIf="reserva.estado_reserva === 'Confirmada' && reserva.estado_recogida_usuario !== 'Recogido'" (click)="markUserAsPickedUp(reserva.id_reserva)" class="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-1 px-3 rounded-lg shadow-md transition duration-200">
-                  Recoger
+          
+                <!-- Botón para marcar como recogido -->
+                <button *ngIf="reserva.estado_recogida_usuario === 'En camino'" 
+                        (click)="markUserAsPickedUp(reserva.id_reserva)" 
+                        class="bg-yellow-600 hover:bg-yellow-700 text-[#161a2d] py-1 px-3 rounded-lg text-sm transition duration-200"
+                        title="Marcar como recogido">
+                  <i class="fa fa-check-circle"></i>
                 </button>
-    
+          
                 <!-- Botón para generar reporte -->
-                <button *ngIf="reserva.estado_reserva === 'Completada'" (click)="createReport(reserva.id_reserva)" class="bg-purple-500 hover:bg-purple-600 text-white font-semibold py-1 px-3 rounded-lg shadow-md transition duration-200">
+                <button *ngIf="reserva.estado_reserva === 'Completada'" 
+                        (click)="createReport(reserva.id_reserva)" 
+                        class="bg-purple-500 hover:bg-purple-600 text-white py-1 px-3 rounded-lg text-sm transition duration-200"
+                        title="Generar reporte">
                   <i class="fa fa-file-alt"></i>
                 </button>
               </div>
@@ -117,6 +128,7 @@
           </tr>
         </tbody>
       </table>
+      
 
       <!-- Paginación -->
       <div class="flex justify-center items-center mt-6">

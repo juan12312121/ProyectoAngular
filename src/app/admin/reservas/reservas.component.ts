@@ -29,7 +29,11 @@ export default class ReservasComponent implements OnInit {
   pageSize: number = 8;
   totalPages: number = 0;
   choferes: any[] = [];
+  public pendingReservations: any[] = []; 
   choferSeleccionadoId: number = 0; 
+  public canceledReservations: any[] = []; 
+  filteredReservations: any[] = [];
+  selectedEstado: string = '';
 reservation: any;
 
   constructor(
@@ -42,6 +46,7 @@ reservation: any;
   ngOnInit(): void {
     this.loadReservations();
     this.loadChoferes();
+    
   }
 
   loadReservations(): void {
@@ -60,6 +65,8 @@ reservation: any;
         this.totalPages = Math.ceil(this.reservations.length / this.pageSize);
         console.log('Número total de páginas calculado:', this.totalPages); // Log para verificar el total de páginas
 
+        this.filterReservations();
+
         this.isLoading = false;
         console.log('Carga de reservas completada.');
       },
@@ -70,6 +77,62 @@ reservation: any;
       }
     );
 }
+saveSelectedEstado(): void {
+  // Guardar el valor del estado de reserva en el localStorage
+  localStorage.setItem('selectedEstado', this.selectedEstado);
+}
+
+  completeReservation(reservationId: number): void {
+    console.log(`[INFO] Attempting to complete reservation with ID: ${reservationId}`);
+  
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'Esta acción marcará la reserva como completada. ¡No se puede deshacer!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, completar',
+      cancelButtonText: 'No, volver',
+    }).then((result) => {
+      console.log('[INFO] User confirmation:', result);
+  
+      if (result.isConfirmed) {
+        console.log(`[INFO] User confirmed completion for ID: ${reservationId}`);
+  
+        this.reservationsService.completarReserva(reservationId).subscribe({
+          next: (response: any) => {
+            console.log('[SUCCESS] Reservation completed successfully:', response);
+  
+            // Update the reservation list after completing the reservation
+            this.reservations = this.reservations.filter(
+              (reservation) => reservation.id_reserva !== reservationId
+            );
+            this.organizeReservationsByType();
+  
+            Swal.fire({
+              title: 'Completada',
+              text: 'La reserva ha sido completada con éxito.',
+              icon: 'success',
+              confirmButtonColor: '#3085d6',
+            });
+          },
+          error: (error: any) => {
+            console.error('[ERROR] Problem occurred while completing reservation:', error);
+  
+            Swal.fire({
+              title: 'Error',
+              text: 'Hubo un problema al completar la reserva. Por favor, intenta nuevamente.',
+              icon: 'error',
+              confirmButtonColor: '#d33',
+            });
+          },
+        });
+      } else {
+        console.log('[INFO] User cancelled the completion action.');
+      }
+    });
+  }
 
   getChoferById(choferId: number): any {
     return this.choferes.find(chofer => chofer.id === choferId);
@@ -124,10 +187,16 @@ reservation: any;
   }
 
   filterReservations(): void {
-    this.recentReservations = this.reservations.filter(reservation => reservation.estado_reserva === 'Pendiente');
-    this.completedReservations = this.reservations.filter(reservation => reservation.estado_reserva === 'Completada');
-    this.cancelledReservations = this.reservations.filter(reservation => reservation.estado_reserva === 'Cancelada');
+    if (this.selectedEstado) {
+      this.filteredReservations = this.reservations.filter(reservation => 
+        reservation.estado_reserva === this.selectedEstado
+      );
+    } else {
+      this.filteredReservations = this.reservations;
+    }
+    this.totalPages = Math.ceil(this.filteredReservations.length / this.pageSize);
   }
+
 
   changePage(page: number): void {
     if (page < 1) page = 1;
@@ -139,6 +208,13 @@ reservation: any;
   refreshReservations(): void {
     this.loadReservations();
   }
+
+  organizeReservationsByType(): void {
+    this.pendingReservations = this.reservations.filter(r => r.estado_reserva === 'Pendiente');
+    this.completedReservations = this.reservations.filter(r => r.estado_reserva === 'Completada');
+    this.canceledReservations = this.reservations.filter(r => r.estado_reserva === 'Cancelada');
+  }
+
 
 
 

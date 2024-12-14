@@ -108,7 +108,7 @@ export default class ReservasAsignadasComponent implements OnInit {
         Swal.fire({
           icon: 'success',
           title: '¡Estado de recogida actualizado!',
-          text: `El estado de la reserva ${reservationId} se ha marcado como "Recogido".`,
+          text: `El usario ha sido recogido `,
           confirmButtonText: 'Aceptar',
           confirmButtonColor: '#4f52ba'
         }).then(() => {

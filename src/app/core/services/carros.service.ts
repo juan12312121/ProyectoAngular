@@ -12,7 +12,7 @@ export interface Car {
   color: string;
   tipo_combustible: string;
   precio_diaro: number;
-  disponibilidad: string;
+  disponibilidad: 'Disponible' | 'Rentado';
   categoria: string;
   descripcion: string;
   kilometraje: number;

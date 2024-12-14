@@ -12,6 +12,7 @@ import { ReservationsService } from '../../core/services/reservations.service';
 import Swal from 'sweetalert2';
 
 import { ChatbotComponent } from '../../components/chat-bot/chat-bot.component';
+import { DireccionComponent } from '../../components/direccion/direccion.component';
 import { NavbarComponent } from '../navbar/navbar.component';
 
 @Component({
@@ -23,6 +24,7 @@ import { NavbarComponent } from '../navbar/navbar.component';
     FormsModule,
     ReviewsComponent,
     ChatbotComponent,
+    DireccionComponent
   ],
   templateUrl: './detalle-carro.component.html',
   styleUrls: ['./detalle-carro.component.css'],
@@ -84,30 +86,30 @@ export default class DetalleCarroComponent implements OnInit {
       this.showLoginRequiredMessage(); // Mostrar mensaje si no está logueado
       return;
     }
-    
+  
     const missingData: string[] = [];
-    
+  
     // Validar la selección del tipo de renta
     if (!this.selectedRentType) {
       missingData.push('Tipo de renta');
     }
-
+  
     // Validar la dirección de entrega
     if (!this.direccion_entrega) {
       missingData.push('Dirección de entrega');
     }
-
+  
     if (missingData.length > 0) {
       this.showError('Faltan datos: ' + missingData.join(', '));
       return;
     }
-
+  
     // Validar fechas y otros campos
     if (!this.startDate || !this.endDate) {
       this.showError('Las fechas de inicio y fin son necesarias');
       return;
     }
-
+  
     // Prevenir la renta con fechas pasadas
     const currentDate = new Date();
     const startDateObj = new Date(this.startDate);
@@ -115,12 +117,12 @@ export default class DetalleCarroComponent implements OnInit {
       this.showError('La fecha de inicio no puede ser en el pasado');
       return;
     }
-
+  
     if (this.startDate > this.endDate) {
       this.showError('La fecha de inicio no puede ser posterior a la fecha de fin.');
       return;
     }
-
+  
     // Preparar los datos de la reserva, incluyendo la dirección de entrega
     const reservationData = {
       id_reserva: 0, // Autogenerado en la base de datos
@@ -133,7 +135,10 @@ export default class DetalleCarroComponent implements OnInit {
       tipo_reserva: this.selectedRentType, // Tipo de renta
       direccion_entrega: this.direccion_entrega, // Dirección de entrega
     };
-
+  
+    // Ver los datos que se están enviando
+    console.log('Datos de la reserva:', reservationData);
+  
     // Crear la reserva a través del servicio
     this.reservationsService.createReservation(reservationData).subscribe({
       next: (response) => {
@@ -153,7 +158,8 @@ export default class DetalleCarroComponent implements OnInit {
         }
       },
     });
-}
+  }
+  
 
   // Función para mostrar mensaje de error genérico
   showError(message: string): void {

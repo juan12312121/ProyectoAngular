@@ -206,15 +206,10 @@ updateLugarDevolucion(reservationId: number, lugarDevolucion: string): Observabl
 
 
 
-    createPaymentpaypal(paymentData: { monto: any, metodo_pago: string, fecha_pago: string, reserva_id: number }): Observable<any> {
-      // Aquí no necesitas redefinir paymentData, solo asigna los valores necesarios.
-      paymentData.fecha_pago = new Date().toISOString();  // Asignar la fecha actual.
-      
-      // Ahora hacemos la solicitud HTTP con el paymentData actualizado.
-      return this.http.post<any>(`${this.apipago}/create-paypal-payment`, paymentData);
-    }
-  
-
+createPaymentpaypal(paymentData: { monto: any, metodo_pago: string, fecha_pago: string, reserva_id: number }): Observable<any> {
+  paymentData.fecha_pago = new Date().toISOString();  // Asignar la fecha actual
+  return this.http.post<any>(`${this.apipago}/create-paypal-payment`, paymentData);
+}
 
 
   createPayment(data: any): Observable<any> {

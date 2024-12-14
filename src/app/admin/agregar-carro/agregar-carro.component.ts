@@ -16,6 +16,11 @@ export default class AgregarCarroComponent {
   selectedFileName: string | null = null;
   imagePreviewUrl: string | null = null;
   isLoading = false; // Estado de carga
+  modelos: string[] = [];
+
+
+
+
 
   constructor(private carrosService: CarrosService, private fb: FormBuilder) {
     this.carForm = this.fb.group({
@@ -33,7 +38,15 @@ export default class AgregarCarroComponent {
       puertas: [null, [Validators.required, Validators.min(1)]],
       pasajeros: [null, [Validators.required, Validators.min(1)]],
     });
+
+    this.carForm.get('marca')?.valueChanges.subscribe((marca) => {
+   
+      this.carForm.get('modelo')?.setValue('');
+    });
   }
+
+
+
 
   onFileSelected(event: Event): void {
     const fileInput = event.target as HTMLInputElement;
@@ -121,4 +134,7 @@ export default class AgregarCarroComponent {
     this.selectedFileName = null;
     this.imagePreviewUrl = null;
   }
+
+
+  
 }

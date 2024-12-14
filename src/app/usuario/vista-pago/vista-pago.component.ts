@@ -2,18 +2,20 @@ import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2'; // Importar SweetAlert2
 import { ChatbotComponent } from '../../components/chat-bot/chat-bot.component';
 import { ReservationsService } from '../../core/services/reservations.service';
 import { NavbarComponent } from '../navbar/navbar.component';
+
+import { NgxPayPalModule } from 'ngx-paypal';
 
 
 
 @Component({
   selector: 'app-vista-pago',
   standalone: true,
-  imports: [NavbarComponent, CommonModule, FormsModule,ChatbotComponent],
+  imports: [NavbarComponent, CommonModule, FormsModule,ChatbotComponent,NgxPayPalModule],
   templateUrl: './vista-pago.component.html',
   styleUrls: ['./vista-pago.component.css']
 })
@@ -30,7 +32,8 @@ export default class VistaPagoComponent implements OnInit {
 
   constructor(
     private reservasService: ReservationsService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -120,10 +123,10 @@ export default class VistaPagoComponent implements OnInit {
           title: 'Pago realizado con éxito',
           text: 'Tu pago ha sido procesado exitosamente.',
           confirmButtonText: 'Aceptar'
+        }).then(() => {
+          // Redirigir a la ruta 'reservas-usuario' después del pago exitoso
+          this.router.navigate(['/reservas-usuario']);
         });
-  
-        // Redirigir o mostrar mensaje de éxito
-        // Ejemplo: this.router.navigate(['/gracias']);
       },
       (error) => {
         console.error('Error al procesar el pago:', error);
@@ -131,6 +134,7 @@ export default class VistaPagoComponent implements OnInit {
       }
     );
   }
+
 
   // Regresar a la lista de reservas
   regresar() {
@@ -164,7 +168,7 @@ export default class VistaPagoComponent implements OnInit {
     
     const paymentData = {
       monto: montoReserva,
-      metodo_pago: 'PayPal',  // Usar 'PayPal' en lugar de 'paypal'
+      metodo_pago: 'PayPal', 
       fecha_pago: this.fechaPago,
       reserva_id: this.reservaId
     };
