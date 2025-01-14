@@ -53,27 +53,28 @@ export default class CarrosComponent implements OnInit, OnDestroy {
   
 
   loadUserCars() {
-    this.loadingImage = true;
-    this.carrosService.getUserCars().subscribe(
-      (data: Car[]) => {
-        console.log('Datos recibidos de la API:', data);
-        this.carros = data.map((car) => ({
-          ...car,
-          imagen: car.imagen
-            ? `http://localhost:3500/${car.imagen}`
-            : 'http://localhost:3500/uploads/ruta/a/imagen/predeterminada.jpg',
-          promocion: car.promocion,
-        }));
-        console.log('Carros después de mapear imágenes y promocion:', this.carros);
-        this.filteredCarros = this.carros;
-        this.loadingImage = false;
-      },
-      (error) => {
-        console.error('Error al obtener los coches', error);
-        this.loadingImage = false;
-      }
-    );
-  }
+  this.loadingImage = true;
+  this.carrosService.getUserCars().subscribe(
+    (data: Car[]) => {
+      console.log('Datos recibidos de la API:', data);
+      this.carros = data.map((car) => ({
+        ...car,
+        imagen: car.imagen
+          ? `https://backend-2-f5qo.onrender.com/${car.imagen}`
+          : 'https://backend-2-f5qo.onrender.com/uploads/ruta/a/imagen/predeterminada.jpg',
+        promocion: car.promocion,
+      }));
+      console.log('Carros después de mapear imágenes y promocion:', this.carros);
+      this.filteredCarros = this.carros;
+      this.loadingImage = false;
+    },
+    (error) => {
+      console.error('Error al obtener los coches', error);
+      this.loadingImage = false;
+    }
+  );
+}
+
 
   
 
