@@ -3,9 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
-import { AuthService } from '../../core/services/auth.service'; // Si necesitas autenticación
-import { Car, CarrosService } from '../../core/services/carros.service'; // Asegúrate de que el servicio y modelo sean correctos
-import { Promotion, PromotionsService } from '../../core/services/promotions.service'; // Importar el servicio de promociones y el modelo
+import { AuthService } from '../../core/services/auth.service'; 
+import { Car, CarrosService } from '../../core/services/carros.service'; 
+import { Promotion, PromotionsService } from '../../core/services/promotions.service'; 
 import { SidebarComponent } from '../sidebar/sidebar.component';
 
 @Component({
