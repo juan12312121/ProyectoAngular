@@ -40,7 +40,7 @@ register(): void {
         return;
     }
 
-    const numeroLicencia = this.rol === 5 ? this.numeroLicencia : undefined;
+    let numeroLicencia = this.rol === 5 ? this.numeroLicencia : undefined;
 
     this.authService.register(
         this.nombre,
