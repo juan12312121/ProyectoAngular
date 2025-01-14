@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class GeminiService {
-  private baseUrl = 'http://localhost:3500/api/gemini'; // URL del backend
+  private baseUrl = 'https://backend-2-f5qo.onrender.com//api/gemini'; // URL del backend
 
   constructor(private http: HttpClient) {}
 
