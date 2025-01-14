@@ -263,7 +263,7 @@ onEndDateChange(): void {
       } = carData;
 
       if (marca && modelo && descripcion && anio && precio_diaro) {
-        const imageUrl = imagen ? `http://localhost:3500/${imagen}` : null;
+       const imageUrl = imagen ? `https://backend-2-f5qo.onrender.com/${imagen}` : null;
         const precioDiarioNumero = parseFloat(precio_diaro);
 
         if (isNaN(precioDiarioNumero)) {
