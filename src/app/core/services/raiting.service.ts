@@ -15,12 +15,12 @@ nombre_usuario: any;
 }
 
 interface RatingsResponse {
-  data: Review[]; // Aquí, `Review[]` es el array de reseñas que ya tienes definido
+  data: Review[]; 
 }
 
 
 
-const API_URL = 'http://localhost:3500/valoracion';
+const API_URL = 'http://backend-2-f5qo.onrender.com/valoracion';
 
 @Injectable({
   providedIn: 'root',
