@@ -15,14 +15,14 @@ export class ReservationsService {
     throw new Error('Method not implemented.');
   }
  
-  private apiUrl = 'http://localhost:3500/reservas';  // API URL
-  private apipago = 'http://localhost:3500/pago';
-  private apiemun = 'http://localhost:3500/reservas/lugar-devolucion/enum'
-  private apiUpdateDevolucionUrl = 'http://localhost:3500/reservas/lugar-devolucion'
-  private apienum2 = 'http://localhost:3500/reservas/estado-recogida/enum'
-  private apiPaypal = 'http://localhost:3500/execute';
-  private verpagos = 'http://localhost:3500/pago/ver-pagos';
-  private reportes = 'http://localhost:3500/reportes'
+private apiUrl = 'https://backend-2-f5qo.onrender.com/reservas'; 
+private apipago = 'https://backend-2-f5qo.onrender.com/pago';
+private apiemun = 'https://backend-2-f5qo.onrender.com/reservas/lugar-devolucion/enum';
+private apiUpdateDevolucionUrl = 'https://backend-2-f5qo.onrender.com/reservas/lugar-devolucion';
+private apienum2 = 'https://backend-2-f5qo.onrender.com/reservas/estado-recogida/enum';
+private apiPaypal = 'https://backend-2-f5qo.onrender.com/execute';
+private verpagos = 'https://backend-2-f5qo.onrender.com/pago/ver-pagos';
+private reportes = 'https://backend-2-f5qo.onrender.com/reportes';
 
  
   private reservationUpdatedSubject = new Subject<void>();
