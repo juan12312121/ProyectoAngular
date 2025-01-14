@@ -155,7 +155,7 @@ getAllChoferes(): Observable<any> {
   }
 
   
- register(
+register(
     nombreCompleto: string,
     username: string,
     correo: string,
@@ -179,7 +179,6 @@ getAllChoferes(): Observable<any> {
         return throwError(() => new Error('El número de licencia es requerido para usuarios de nivel 5.'));
     }
 
-    // ❗ Solo enviar el campo si es necesario
     const requestBody: any = {
         nombreCompleto, 
         username, 
@@ -188,7 +187,7 @@ getAllChoferes(): Observable<any> {
         rol: userRole
     };
 
-    if (userRole === 5) {
+    if (userRole === 5 && numeroLicencia) {
         requestBody.numeroLicencia = numeroLicencia;
     }
 
@@ -202,6 +201,7 @@ getAllChoferes(): Observable<any> {
         })
     );
 }
+
   
   
   
