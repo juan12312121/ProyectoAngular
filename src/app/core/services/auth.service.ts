@@ -10,9 +10,10 @@ import { catchError, Observable, tap, throwError } from 'rxjs';
 export class AuthService {
   private LOGIN_URL = 'https://backend-2-f5qo.onrender.com/usuario/login';  
 private REGISTER_URL = 'https://backend-2-f5qo.onrender.com/usuario/registro'; 
-  private USERS_BY_ROLE_URL = 'http://localhost:3500/usuario/role/';
-  private BASE_URL = 'http://localhost:3500/usuario/';
-  private BASE_URL2 = 'http://localhost:3500/usuario/choferes'
+private USERS_BY_ROLE_URL = 'https://backend-2-f5qo.onrender.com/usuario/role/';
+private BASE_URL = 'https://backend-2-f5qo.onrender.com/usuario/';
+private BASE_URL2 = 'https://backend-2-f5qo.onrender.com/usuario/choferes';
+
 
 
   private userId: number | null = null;
