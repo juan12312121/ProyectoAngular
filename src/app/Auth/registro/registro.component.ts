@@ -12,51 +12,50 @@ import { AuthService } from '../../core/services/auth.service';
 })
 export default class RegistroComponent {
   nombre: string = '';
-  nickname: string = '';  
+  nickname: string = '';  // Cambio de 'usuario' a 'nickname'
   email: string = '';
   contrasena: string = '';
   confirmarContrasena: string = '';
-  rol: number = 1; 
-  numeroLicencia?: string = ''; // ✅ Agregado para corregir el error
+  rol: number = 1; // Default role is user (1)
 
-  passwordVisible: boolean = false;  
-  confirmPasswordVisible: boolean = false;  
+  passwordVisible: boolean = false;  // Estado para visibilidad de la contraseña
+  confirmPasswordVisible: boolean = false;  // Estado para visibilidad de la contraseña de confirmación
 
   constructor(private authService: AuthService, private router: Router) {}
 
+  // Función para alternar la visibilidad de la contraseña
   togglePasswordVisibility(): void {
     this.passwordVisible = !this.passwordVisible;
   }
 
+  // Función para alternar la visibilidad de la contraseña de confirmación
   toggleConfirmPasswordVisibility(): void {
     this.confirmPasswordVisible = !this.confirmPasswordVisible;
   }
 
-register(): void {
+  register(): void {
     console.log('Iniciando registro');
 
+    // Validación de contraseñas
     if (this.contrasena !== this.confirmarContrasena) {
-        console.error('Las contraseñas no coinciden');
-        return;
+      console.error('Las contraseñas no coinciden');
+      return;
     }
 
-    let numeroLicencia = this.rol === 5 ? this.numeroLicencia : undefined;
-
-    this.authService.register(
-        this.nombre,
-        this.nickname,
-        this.email,
-        this.contrasena,
-        this.confirmarContrasena,
-        this.rol,
-        numeroLicencia
-    ).subscribe({
-        next: () => {
-            console.log('Registro exitoso');
-            this.router.navigate(['/login']);
-        },
-        error: (err) => console.error('Error al registrarse:', err),
+    console.log('Enviando datos al servicio:', {
+      nickname: this.nickname,
+      email: this.email,
+      contrasena: this.contrasena,
+      rol: this.rol // Include role in the registration
     });
-}
 
+    // Asegúrate de pasar 'this.confirmarContrasena' también
+    this.authService.register(this.nombre, this.nickname, this.email, this.contrasena, this.confirmarContrasena, this.rol).subscribe({
+      next: () => {
+        console.log('Registro exitoso');
+        this.router.navigate(['/login']);
+      },
+      error: (err) => console.error('Error al registrarse:', err),
+    });
+  }
 }
