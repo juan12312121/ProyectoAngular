@@ -40,16 +40,7 @@ register(): void {
         return;
     }
 
-    // Definir numeroLicencia solo si el rol es 5
     const numeroLicencia = this.rol === 5 ? this.numeroLicencia : undefined;
-
-    console.log('Enviando datos al servicio:', {
-        nickname: this.nickname,
-        email: this.email,
-        contrasena: this.contrasena,
-        rol: this.rol,
-        numeroLicencia: numeroLicencia
-    });
 
     this.authService.register(
         this.nombre,
@@ -67,4 +58,5 @@ register(): void {
         error: (err) => console.error('Error al registrarse:', err),
     });
 }
+
 }
