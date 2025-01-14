@@ -32,39 +32,39 @@ export default class RegistroComponent {
     this.confirmPasswordVisible = !this.confirmPasswordVisible;
   }
 
- register(): void {
+register(): void {
     console.log('Iniciando registro');
 
     if (this.contrasena !== this.confirmarContrasena) {
-      console.error('Las contraseñas no coinciden');
-      return;
+        console.error('Las contraseñas no coinciden');
+        return;
     }
 
-    // ✅ Se utiliza la propiedad correctamente definida
+    // Definir numeroLicencia solo si el rol es 5
     const numeroLicencia = this.rol === 5 ? this.numeroLicencia : undefined;
 
     console.log('Enviando datos al servicio:', {
-      nickname: this.nickname,
-      email: this.email,
-      contrasena: this.contrasena,
-      rol: this.rol,
-      numeroLicencia: numeroLicencia
+        nickname: this.nickname,
+        email: this.email,
+        contrasena: this.contrasena,
+        rol: this.rol,
+        numeroLicencia: numeroLicencia
     });
 
     this.authService.register(
-      this.nombre,
-      this.nickname,
-      this.email,
-      this.contrasena,
-      this.confirmarContrasena,
-      this.rol,
-      numeroLicencia
+        this.nombre,
+        this.nickname,
+        this.email,
+        this.contrasena,
+        this.confirmarContrasena,
+        this.rol,
+        numeroLicencia
     ).subscribe({
-      next: () => {
-        console.log('Registro exitoso');
-        this.router.navigate(['/login']);
-      },
-      error: (err) => console.error('Error al registrarse:', err),
+        next: () => {
+            console.log('Registro exitoso');
+            this.router.navigate(['/login']);
+        },
+        error: (err) => console.error('Error al registrarse:', err),
     });
- }
+}
 }
