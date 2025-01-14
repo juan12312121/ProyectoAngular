@@ -34,7 +34,7 @@ export interface Car {
   providedIn: 'root',
 })
 export class CarrosService {
-  private apiUrl = 'http://localhost:3500/carros';
+private apiUrl = 'https://backend-2-f5qo.onrender.com/carros';
   public carAddedSignal = signal<boolean>(false);
 
   constructor(private http: HttpClient, private authService: AuthService) {}
