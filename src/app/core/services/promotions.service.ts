@@ -20,7 +20,7 @@ export interface Promotion {
 export class PromotionsService {
 
   // URL del backend (asegúrate de que sea la URL correcta)
-  private apiUrl = 'http://backend-2-f5qo.onrender.com/promociones'; 
+  private apiUrl = 'https://backend-2-f5qo.onrender.com/promociones'; 
 
   // Constructor con HttpClient y AuthService inyectados
   constructor(private http: HttpClient, private authService: AuthService) {}
