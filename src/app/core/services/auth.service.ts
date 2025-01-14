@@ -25,7 +25,7 @@ private BASE_URL2 = 'https://backend-2-f5qo.onrender.com/usuario/choferes';
 
 // Método para eliminar un usuario
 deleteUser(id: number): Observable<any> {
-  const url = `http://localhost:3500/usuario/users/${id}`;  // Cambia aquí para incluir '/usuario'
+  const url = `http://https://backend-2-f5qo.onrender.com/usuario/users/${id}`;  // Cambia aquí para incluir '/usuario'
   const token = localStorage.getItem('authToken');
   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
@@ -49,7 +49,7 @@ verHistorial(usuarioId: number): Observable<any> {
   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
   // Realiza la solicitud GET para obtener el historial
-  const url = `http://localhost:3500/usuario/historial/${usuarioId}`;
+  const url = `http://https://backend-2-f5qo.onrender.com/usuario/historial/${usuarioId}`;
   return this.httpClient.get<any>(url, { headers }).pipe(
     tap(response => {
       console.log('Historial del usuario:', response);
@@ -62,7 +62,7 @@ verHistorial(usuarioId: number): Observable<any> {
 }
 
 getUserById(id: number): Observable<any> {
-  const url = `http://localhost:3500/usuario/users/${id}`;
+  const url = `http://https://backend-2-f5qo.onrender.com/usuario/users/${id}`;
   const token = localStorage.getItem('authToken');  // Obtener el token de localStorage
   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);  // Incluir el token en los encabezados
 
@@ -228,7 +228,7 @@ getAllChoferes(): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
   
     // Suponemos que la API tiene un endpoint como '/usuario/{id}' para obtener el perfil del usuario
-    const url = `http://localhost:3500/usuario/users/${userId}`;
+    const url = `http://https://backend-2-f5qo.onrender.com/usuario/users/${userId}`;
   
     return this.httpClient.get<any>(url, { headers }).pipe(
       catchError(error => {
