@@ -33,7 +33,7 @@ export enum TipoMantenimiento {
   providedIn: 'root',
 })
 export class MaintenanceService {
-  private apiUrl = 'http://localhost:3500/mantenimiento';
+private apiUrl = 'https://backend-2-f5qo.onrender.com/mantenimiento';
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
