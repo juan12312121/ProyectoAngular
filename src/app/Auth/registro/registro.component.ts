@@ -17,6 +17,7 @@ export default class RegistroComponent {
   contrasena: string = '';
   confirmarContrasena: string = '';
   rol: number = 1; 
+  numeroLicencia?: string = ''; // ✅ Agregado para corregir el error
 
   passwordVisible: boolean = false;  
   confirmPasswordVisible: boolean = false;  
@@ -39,7 +40,7 @@ export default class RegistroComponent {
       return;
     }
 
-    // Condicionar el número de licencia para ser opcional
+    // ✅ Se utiliza la propiedad correctamente definida
     const numeroLicencia = this.rol === 5 ? this.numeroLicencia : undefined;
 
     console.log('Enviando datos al servicio:', {
@@ -65,6 +66,5 @@ export default class RegistroComponent {
       },
       error: (err) => console.error('Error al registrarse:', err),
     });
+ }
 }
-}
-
