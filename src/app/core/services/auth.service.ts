@@ -8,8 +8,8 @@ import { catchError, Observable, tap, throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private LOGIN_URL = 'http://localhost:3500/usuario/login'; // URL de la API para login
-  private REGISTER_URL = 'http://localhost:3500/usuario/registro'; // URL de la API para registro
+  private LOGIN_URL = 'https://backend-2-f5qo.onrender.com/usuario/login';  
+private REGISTER_URL = 'https://backend-2-f5qo.onrender.com/usuario/registro'; 
   private USERS_BY_ROLE_URL = 'http://localhost:3500/usuario/role/';
   private BASE_URL = 'http://localhost:3500/usuario/';
   private BASE_URL2 = 'http://localhost:3500/usuario/choferes'
