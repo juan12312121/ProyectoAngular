@@ -155,7 +155,7 @@ getAllChoferes(): Observable<any> {
   }
 
   
-  register(
+ register(
     nombreCompleto: string,
     username: string,
     correo: string,
@@ -179,15 +179,20 @@ getAllChoferes(): Observable<any> {
         return throwError(() => new Error('El número de licencia es requerido para usuarios de nivel 5.'));
     }
 
-    // Se envía una cadena vacía si no se proporciona el número de licencia
-    return this.httpClient.post<any>(this.REGISTER_URL, {
+    // ❗ Solo enviar el campo si es necesario
+    const requestBody: any = {
         nombreCompleto, 
         username, 
         correo, 
         password, 
-        rol: userRole, 
-        numeroLicencia: numeroLicencia || '' 
-    }).pipe(
+        rol: userRole
+    };
+
+    if (userRole === 5) {
+        requestBody.numeroLicencia = numeroLicencia;
+    }
+
+    return this.httpClient.post<any>(this.REGISTER_URL, requestBody).pipe(
         tap(response => {
             console.log('Registro exitoso:', response);
         }),
