@@ -66,4 +66,5 @@ export default class RegistroComponent {
       error: (err) => console.error('Error al registrarse:', err),
     });
 }
+}
 
