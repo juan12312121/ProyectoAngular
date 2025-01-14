@@ -20,7 +20,7 @@ interface RatingsResponse {
 
 
 
-const API_URL = 'http://backend-2-f5qo.onrender.com/valoracion';
+const API_URL = 'https://backend-2-f5qo.onrender.com/valoracion';
 
 @Injectable({
   providedIn: 'root',
