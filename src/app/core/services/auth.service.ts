@@ -187,6 +187,7 @@ register(
         rol: userRole
     };
 
+    // ✅ Agregar el campo solo si es necesario
     if (userRole === 5 && numeroLicencia) {
         requestBody.numeroLicencia = numeroLicencia;
     }
