@@ -12,50 +12,58 @@ import { AuthService } from '../../core/services/auth.service';
 })
 export default class RegistroComponent {
   nombre: string = '';
-  nickname: string = '';  // Cambio de 'usuario' a 'nickname'
+  nickname: string = '';  
   email: string = '';
   contrasena: string = '';
   confirmarContrasena: string = '';
-  rol: number = 1; // Default role is user (1)
+  rol: number = 1; 
 
-  passwordVisible: boolean = false;  // Estado para visibilidad de la contraseña
-  confirmPasswordVisible: boolean = false;  // Estado para visibilidad de la contraseña de confirmación
+  passwordVisible: boolean = false;  
+  confirmPasswordVisible: boolean = false;  
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  // Función para alternar la visibilidad de la contraseña
   togglePasswordVisibility(): void {
     this.passwordVisible = !this.passwordVisible;
   }
 
-  // Función para alternar la visibilidad de la contraseña de confirmación
   toggleConfirmPasswordVisibility(): void {
     this.confirmPasswordVisible = !this.confirmPasswordVisible;
   }
 
-  register(): void {
+ register(): void {
     console.log('Iniciando registro');
 
-    // Validación de contraseñas
     if (this.contrasena !== this.confirmarContrasena) {
       console.error('Las contraseñas no coinciden');
       return;
     }
 
+    // Condicionar el número de licencia para ser opcional
+    const numeroLicencia = this.rol === 5 ? this.numeroLicencia : undefined;
+
     console.log('Enviando datos al servicio:', {
       nickname: this.nickname,
       email: this.email,
       contrasena: this.contrasena,
-      rol: this.rol // Include role in the registration
+      rol: this.rol,
+      numeroLicencia: numeroLicencia
     });
 
-    // Asegúrate de pasar 'this.confirmarContrasena' también
-    this.authService.register(this.nombre, this.nickname, this.email, this.contrasena, this.confirmarContrasena, this.rol).subscribe({
+    this.authService.register(
+      this.nombre,
+      this.nickname,
+      this.email,
+      this.contrasena,
+      this.confirmarContrasena,
+      this.rol,
+      numeroLicencia
+    ).subscribe({
       next: () => {
         console.log('Registro exitoso');
         this.router.navigate(['/login']);
       },
       error: (err) => console.error('Error al registrarse:', err),
     });
-  }
 }
+
